@@ -16,6 +16,6 @@ public class RaUsage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int year;
+    private int usage_year;
     private double sales; // usage는 예약어 → 컬럼명 변경 필요하다고 함
 }
