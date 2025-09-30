@@ -9,75 +9,100 @@
 
 <style>
     .header {
-    background: transparent;
-    border-bottom: 1px solid #43564a;
+		background: transparent;
+		border-bottom: 1px solid #43564a;
     }
 
     .logo a {
-    color: #43564a;
+    	color: #43564a;
     }
 
-    section.about-carbon {
-        padding: 120px 200px;
-        max-width: 1560px;
+
+    section {
+        padding: 180px 200px 120px;
+        max-width: 1920px;
         margin: 0 auto;
-        line-height: 1.8;
     }
 
-    .about-carbon-title-box h3{
-          font-size: 36px;
-          font-weight: 700;
-          color: #000000;
-          margin-bottom: 40px;
-    }
-
-    .about-carbon-subtitle{
-         display: inline-block;
-          font-size: 14px;
-          font-weight: 600;
-          letter-spacing: 1.5px;
-          color: #2e5a3e;
-          margin-bottom: 30px;
-    }
-
-    .about-carbon-flex-box{
+    .section-wrapper {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        gap: 80px;
         align-items: flex-start;
-        gap: 60px;
-        padding: 0px;
     }
 
-    .about-carbon-text h5{
-          font-size: 20px;
-          line-height: 1.6;
-          margin-bottom: 20px;
-          color: #000000;
-          font-weight: 600;
+    .section-header {
+        flex-shrink: 0;
+        width: 400px;
     }
 
-    .about-carbon-subtext{
+	.section-label {
+        display: block;
         font-size: 16px;
-        color: #333;
-        line-height: 1.8;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #2E5A3E;
         margin-bottom: 40px;
     }
 
-    .hashtags {
-          display: flex;
-          gap: 12px;
-          margin-top: 20px;
-          flex-wrap: wrap;
-}
+	.section-title {
+        font-size: 48px;
+        font-weight: 700;
+        line-height: 1.3;
+        color: #000000;
+        margin-bottom: 0;
+    }
 
-    .hashtags span {
-        padding: 8px 16px;
-        border: 1px solid #2e5a3e;
-        border-radius: 20px;
+	.carbon-content {
+		flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+
+	.content-text {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.6;
+        color: #000000;
+    }
+
+	 .lead-text strong {
+        font-weight: 700;
+    }
+
+	.body-text {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.8;
+        color: #000000;
+
+    }
+
+    .body-text p {
+        margin: 0;
+    }
+
+    .tags {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .tag {
+        padding: 10px 20px;
+        border: 1px solid #2E5A3E;
+        border-radius: 990px;
         font-size: 14px;
-        color: #2e5a3e;
+        font-weight: 400;
+        color: #2E5A3E;
         background: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+        background: rgba(46, 90, 62, 0.05);
     }
 
 
@@ -88,21 +113,21 @@
 {{> layout/header}}
 
 <!--'탄소 중립은' 섹션-->
-<section class="about-carbon">
-    <div class="about-carbon-title-box">
-        <span class="about-carbon-subtitle">ABOUT CARBON NEUTRALITY</span>
-        <h3>탄소 중립은</h3>
-    </div>
+<section id="carbon-neutrality">
+	<div class="section-wrapper">
+		<div class="section-header">
+        	<span class="section-label">ABOUT CARBON NEUTRALITY</span>
+        	<h2 class="section-title">탄소 중립은</h2>
+    	</div>
 
-    <div class="about-carbon-flex-box">
-        <div class="about-carbon-text">
-            <h5>인간의 활동으로 배출되는 이산화탄소를<br>
-                흡수하거나 제거하여 실질적인 배출량을 <strong>‘0’</strong>으로 만드는 <br>
+    <div class="carbon-content">
+        <div class="content-text">
+            인간의 활동으로 배출되는 이산화탄소를 흡수하거나 제거하여 <br>
+                실질적인 배출량을 <strong>‘0’</strong>으로 만드는 <br>
                 지속가능한 기후 대응 전략입니다.
-            </h5>
         </div>
 
-        <div class="about-carbon-subtext">
+        <div class="body-text">
             <p>
                 지구 온난화와 기후위기의 주된 원인인 온실가스를 줄이기 위해, 전 세계는 탄소중립 달성을 핵심 과제로 삼고 있습니다. <br>
                 탄소중립은 단순히 배출을 줄이는 데 그치지 않고, 재생에너지 확대, 에너지 효율 개선, 순환경제 실현, 친환경 기술 개발 등을 통해 달성할 수 있습니다. <br>
@@ -111,17 +136,32 @@
             </p>
         </div>
 
-        <div class="hashtags">
-           <span class="">#탄소중립</span>
-            <span class="">#친환경솔루션</span>
-            <span class="">#재생에너지</span>
-            <span class="">#순환경제</span>
-            <span class="">#온실가스감축</span>
+        <div class="tags">
+           <span class="tag">#탄소중립</span>
+            <span class="tag">#친환경솔루션</span>
+            <span class="tag">#재생에너지</span>
+            <span class="tag">#순환경제</span>
+            <span class="tag">#온실가스감축</span>
         </div>
+	</div>
     </div>
 </section>
 
 <!--'탄소 중립은' 섹션 끝-->
+
+<!--건설로 실현하는 탄소 중립 섹션-->
+<section id="construction">
+
+
+
+
+
+
+
+
+</section>
+<!--건설로 실현하는 탄소 중립 섹션 끝-->
+
 
 
 
