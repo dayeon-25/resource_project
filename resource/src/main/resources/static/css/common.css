@@ -1,4 +1,9 @@
 /*공통으로 들어가는 것: 헤더, 푸터, 네비게이션, 로고 + 반응형 생각하기 */
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
 
 * {
     margin: 0;
@@ -16,6 +21,7 @@ body {
     font-family: var(--font-primary);
     line-height: 1.8;
      overflow-x: hidden;
+     overflow-y: scroll;
 }
 
 /*헤더*/

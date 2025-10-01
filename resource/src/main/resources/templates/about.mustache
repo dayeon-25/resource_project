@@ -4,123 +4,21 @@
     <meta charset="UTF-8">
     <title>Intro Page</title>
     <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/about.css">
 
 </head>
-
-<style>
-    .header {
-		background: transparent;
-		border-bottom: 1px solid #43564a;
-    }
-
-    .logo a {
-    	color: #43564a;
-    }
-
-
-    section {
-        padding: 180px 200px 120px;
-        max-width: 1920px;
-        margin: 0 auto;
-    }
-
-    .section-wrapper {
-        display: flex;
-        gap: 80px;
-        align-items: flex-start;
-    }
-
-    .section-header {
-        flex-shrink: 0;
-        width: 400px;
-    }
-
-	.section-label {
-        display: block;
-        font-size: 16px;
-        font-weight: 500;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #2E5A3E;
-        margin-bottom: 40px;
-    }
-
-	.section-title {
-        font-size: 48px;
-        font-weight: 700;
-        line-height: 1.3;
-        color: #000000;
-        margin-bottom: 0;
-    }
-
-	.carbon-content {
-		flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 40px;
-    }
-
-
-	.content-text {
-        font-size: 24px;
-        font-weight: 600;
-        line-height: 1.6;
-        color: #000000;
-    }
-
-	 .lead-text strong {
-        font-weight: 700;
-    }
-
-	.body-text {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 1.8;
-        color: #000000;
-
-    }
-
-    .body-text p {
-        margin: 0;
-    }
-
-    .tags {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .tag {
-        padding: 10px 20px;
-        border: 1px solid #2E5A3E;
-        border-radius: 990px;
-        font-size: 14px;
-        font-weight: 400;
-        color: #2E5A3E;
-        background: transparent;
-        transition: all 0.3s ease;
-    }
-
-    .tag:hover {
-        background: rgba(46, 90, 62, 0.05);
-    }
-
-
-
-</style>
 
 <body>
 {{> layout/header}}
 
 <!--'탄소 중립은' 섹션-->
-<section id="carbon-neutrality">
-	<div class="section-wrapper">
-		<div class="section-header">
-        	<span class="section-label">ABOUT CARBON NEUTRALITY</span>
-        	<h2 class="section-title">탄소 중립은</h2>
-    	</div>
+<section id="carbon-neutrality" class="carbon-neutrality-section">
+	<div class="section-header">
+        <span class="section-label">ABOUT CARBON NEUTRALITY</span>
+        <h2 class="section-title">탄소 중립은</h2>
+    </div>
 
-    <div class="carbon-content">
+    <div class="section-content">
         <div class="content-text">
             인간의 활동으로 배출되는 이산화탄소를 흡수하거나 제거하여 <br>
                 실질적인 배출량을 <strong>‘0’</strong>으로 만드는 <br>
@@ -143,28 +41,156 @@
             <span class="tag">#순환경제</span>
             <span class="tag">#온실가스감축</span>
         </div>
-	</div>
     </div>
 </section>
 
 <!--'탄소 중립은' 섹션 끝-->
 
 <!--건설로 실현하는 탄소 중립 섹션-->
-<section id="construction">
+<section id="construction" class="construction-section">
+    <div class="construction-header">
+        <span class="construction-label">ABOUT CARBON NEUTRALITY</span>
+        <h2 class="construction-title">건설로 실현하는 탄소 중립</h2>
+    </div>
 
+    <div class="construction-grid">
+        <div class="construction-card">
+            <div class="construction-image">
+                <img src="/images/construction1.png">
+            </div>
+            <h3 class="card-title">저탄소 자재 사용</h3>
+            <p class="card-text">순환골재, 저탄소 시멘트 등</p>
+        </div>
 
+        <div class="construction-card">
+            <div class="construction-image">
+                <img src="/images/construction2.png">
+            </div>
+            <h3 class="card-title">에너지 효율 운영</h3>
+            <p class="card-text">ZEB, 스마트 빌딩 관리</p>
+        </div>
 
+        <div class="construction-card">
+            <div class="construction-image">
+                <img src="/images/construction3.png">
+            </div>
+            <h3 class="card-title">순환 경제</h3>
+            <p class="card-text">폐기물에서 자원으로</p>
+        </div>
 
+        <div class="construction-card">
+            <div class="construction-image">
+                <img src="/images/construction4.png">
+            </div>
+            <h3 class="card-title">디지털 기술 사용</h3>
+            <p class="card-text">BIM, AI, IoT 등</p>
+        </div>
 
-
-
+        </div>
 
 </section>
+
 <!--건설로 실현하는 탄소 중립 섹션 끝-->
 
+<!--순환 골재는 섹션-->
+<section id="recycled-aggregate" class="aggregate-section">
+    <div class="section-header">
+        <span class="section-label">ABOUT RECYCLED AGGREGATE</span>
+        <h2 class="section-title">순환 골재는</h2>
+    </div>
+
+    <div class="aggregate-content">
+        <div class="content-text">
+            건설폐기물을 물리적 또는 화학적 처리과정 등을 거쳐 <br>
+            품질기준에 적합하게 만들어 다시 건설 자원으로 활용하는 <br>
+            친환경 대체 자재입니다.
+        </div>
+
+    <div class="body-text">
+        <p>
+            순환골재는 기존 천연골재 채취로 인한 환경 파괴를 줄이고, 건설 폐기물 매립 문제를 해결하는 효과가 있습니다. <br>
+            또한 생산 과정에서 온실가스 배출량을 감소시켜 탄소중립 실현에도 기여합니다.
+        </p>
+    </div>
+
+    <div class="aggregate-images">
+        <div class="aggregate-image">
+            <img src="/images/aggregate1.png" alt="순환골재 1">
+        </div>
+
+        <div class="aggregate-image">
+            <img src="/images/aggregate2.png" alt="순환골재 2">
+        </div>
+
+        <div class="aggregate-image">
+            <img src="/images/aggregate3.png" alt="순환골재 3">
+        </div>
+
+        <div class="aggregate-image">
+            <img src="/images/aggregate4.png" alt="순환골재 4">
+        </div>
+
+    </div>
+</div>
+</section>
+<!--순환 골재는 섹션 끝-->
+
+<!--사용 용도 섹션-->
+<section id="usage" class="usage-section">
+
+    <div class="usage-content">
+    <div class="usage-header">
+        <span class="usage-label">탄소저감</span>
+        <h2 class="usage-title">순환골재로 이어가는<br>
+            친환경 미래</h2>
+    </div>
+
+
+    <div class="usage-item">
+        <div class="usage-image-wrapper">
+            <img src="/images/usage1.png" alt="도로건설">
+            <div class="usage-image-title">도로 건설</div>
+        </div>
+        <div class="usage-text">
+            도로의 기층 및 보조 기층 재료로 활용되어 <br>
+            내구성과 경제성을 동시에 확보합니다.
+        </div>
+    </div>
+
+
+    <div class="usage-item">
+        <div class="usage-image-wrapper">
+            <img src="/images/usage2.png" alt="건물기초">
+            <div class="usage-image-title">건물 기초</div>
+        </div>
+        <div class="usage-text">
+            건물의 기초 콘크리트 제조에 사용되어 <br>
+            구조적 안정성을 제공합니다.
+        </div>
+    </div>
+
+        <div class="usage-item">
+            <div class="usage-image-wrapper">
+                <img src="/images/usage3.png" alt="조경공사">
+                <div class="usage-image-title">조경 공사</div>
+            </div>
+            <div class="usage-text">
+                공원과 정원의 배수층 및 보행로 조성에 활용되어 <br>
+                자연친화적 공간을 만듭니다.
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--사용 용도 섹션 끝-->
+
+<!--시뮬레이션 섹션-->
+<section id="simulation" class="simulation-section">
 
 
 
+    </section>
+<!--시뮬레이션 섹션 끝-->
 {{> layout/footer}}
 </body>
 </html>
