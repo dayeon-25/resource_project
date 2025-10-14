@@ -6,18 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
-@Entity
-@Table(name = "ra_usage")
-public class RaUsage {
+@Table(name = "ra_region")
+public class RaRegion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int year;
-    private double sales;
+    private String region;
+    private double ratio;
 }

@@ -6,18 +6,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
-@Entity
-@Table(name = "ra_usage")
-public class RaUsage {
+@Table(name = "analysis_result")
+public class AnalysisResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int year;
-    private double sales;
+    @Column(name = "orig_img_id")
+    private Long origImgId;
+
+    private double plastic;
+    private double vinyl;
+    private double wood;
+
+    private boolean suitable;
+
+    private int count;
 }
