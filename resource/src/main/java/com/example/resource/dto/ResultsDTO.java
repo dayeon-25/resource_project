@@ -18,7 +18,7 @@ public class ResultsDTO {
     private LocalDateTime analysisDate;
 
     // 분석 결과
-    private double glass;
+    private double plastic;
     private double vinyl;
     private double wood;
     private boolean suitable;
