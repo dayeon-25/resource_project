@@ -7,26 +7,63 @@
 
 <style>
 
+
+
+
 </style>
 
 </head>
 <body>
-<form method="post" action="/login">
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-    <div>
-        <label for="username">아이디</label>
-        <input type="text" id="username" name="username">
-    </div>
+<header class="header">
+    <div class="header-container">
 
-    <div>
-        <label for="password">비밀번호</label>
-        <input type="password" id="password" name="password">
-    </div>
+        <div class="logo">
+            <a href="/">Re:source</a>
+        </div>
 
-    <div>
-        <button type="submit">로그인</button>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="/about" class="nav-link">ABOUT</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/analyze" class="nav-link">ANALYZE</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/mypage" class="nav-link">MY</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/login" class="nav-link nav-link-login">LOG OUT</a>
+                </li>
+            </ul>
+        </nav>
     </div>
-</form>
+</header>
+
+
+<div class="login-wrapper">
+    <div class="login-container">
+        <form method="post" action="/login">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+
+            <div class="form-group">
+                <label for="username">이메일</label>
+                <input type="text" id="username" name="username" placeholder="이메일을 입력해 주세요">
+            </div>
+
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="비밀번호를 입력해 주세요">
+            </div>
+
+            <button type="submit" class="btn-login">로그인</button>
+        </form>
+
+        <div class="signup-link">
+            회원이 아니신가요? <a href="/signup">회원가입</a>
+        </div>
+    </div>
+</div>
 
 {{#message}}
     <script>
