@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+
+    <style>
+        *{
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        }
+
+        body{
+        font-size: 16px;
+        font-family:'pretendard', sans-serif;
+        background: #fafafa;
+        }
+
+        .main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap:2rem;
+        }
+
+        .title_container{
+        text-align: center;
+        }
+
+        #title{
+        font-size: 3rem;
+        font-weight: bold;
+        padding : 0.5rem;
+        }
+
+        .distinction_container{
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        border: 1px solid black;
+        background: white;
+        padding:1rem;
+        }
+        .distinction_container_left{
+        padding: 1rem;
+        }
+
+        #distinction_label{
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        }
+
+        .button_group{
+        display: flex;
+        gap: 0.5rem;
+        }
+
+        .button_group button{
+        width:8rem;
+        height:2rem;
+        border-radius:10px;
+        cursor: pointer;
+        }
+
+        #view_detail_button{
+        color:white;
+        background: black;
+        }
+
+        #new_analyze_button{
+        color:black;
+        background: white;
+        }
+
+        #distinction_mark{
+        border: none;
+        font-size: 0.7rem;
+        text-align: center;
+        border-radius: 10px;
+        color:white;
+        background: green;
+        width: 3rem;
+        height: 1.5rem;
+        }
+
+        .result_title{
+        font-size: 1.8rem;
+        text-align: center;
+        width:80%
+        }
+
+        .result_container{
+        width: 80%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-radius: 10px;
+        padding:1.5rem;
+
+        }
+
+        .result_left, .result_right{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+
+        .result_left > h4, .result_right > h4{
+        align-self: flex-start;
+        margin-left:20%;
+        }
+
+        .result_left img, .result_right img{
+        width:60%;
+        height:300px;
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 10px;
+        }
+
+        .result_recap{
+        width: 60%;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        }
+
+        #recap_number,#recap_ratio{
+        flex: 1;
+        padding: 1rem;
+        background: #cccccc;
+        border-radius: 10px;
+        }
+
+        .barchart_title {
+        width: 60%;
+        margin-bottom: 1rem;
+        }
+
+        .barchart_title h4,
+        .barchart_title p {
+        margin-bottom: 0.5rem;
+        text-align: left;
+        }
+
+        .bar_container {
+        width: 60%;
+        height:350px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        padding:1rem;
+        }
+
+
+        .ratio_container {
+        display: flex;
+        width:60%;
+        flex-direction: column;
+        align-items: center;
+        gap:1rem;
+        margin-bottom: 2rem;
+        }
+
+
+        .ratio_box{
+        display: flex;
+        width:100%;
+        background: #cccccc;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        height: 2.5rem;
+        align-items: center;
+        }
+
+        .ratio_box p {
+        line-height: 1;
+        }
+
+
+        .color_mark{
+        display: inline-block;
+        width:0.8rem;
+        height:0.8rem;
+        background:red;
+        border-radius: 3px;
+        vertical-align: middle;
+        margin:0 0.8rem;
+        }
+
+        .donut_title{
+        width:60%;
+        margin-bottom: 1rem;
+        }
+
+        .donut_title h4,
+        .donut_title p{
+        text-align: left;
+        margin-bottom: 0.5rem;
+        }
+
+
+        .donut_container {
+        width: 60%;
+        height:300px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        padding:1rem;
+        }
+
+        .recommendation{
+        width: 80%;
+        border: 1px solid black;
+        border-radius: 10px;
+        background: white;
+        padding:1rem;
+        text-align: center;
+        }
+
+        /* 모달 배경 */
+        .modal {
+            display: none; /* 기본은 숨김 */
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        /* 모달 박스 */
+        .modal-container {
+            background: white;
+            color: black;
+            margin: 1% auto;
+            padding: 3rem;
+            width: 60%;
+            height: 90vh;
+            overflow-y: auto; /* 내용이 넘치면 모달 내부에서만 스크롤 */
+            overflow-x: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+
+        /* 닫기 버튼 */
+        .modal-close {
+            margin:-2rem -1.5rem;
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-line{
+            border:0.1rem solid #8b8b8b;
+        }
+
+        .modal-main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width:100%;
+        }
+
+        .modal-top{
+        display:grid;
+        grid-template-columns: 5.5fr 4.5fr;
+        width:96%;
+        margin:0 auto;
+        column-gap: 7rem;
+        }
+
+        #download-button{
+        font-size:1rem;
+        color:white;
+        background: black;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-left: 1rem;
+        vertical-align: middle;
+        }
+
+        .modal-total-result-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        position: relative;
+        width: 100%;
+        }
+
+        /* 세 번째 <p>만 오른쪽 끝으로 */
+        .modal-total-result-title p:last-child {
+            margin-left: auto;
+            font-size: 0.8rem;
+        }
+
+        .modal-donut-container {
+        width: 80%;
+        height: 300px;
+        }
+        .modal-middle{
+        margin-top:0.5rem;
+        width:96%;
+        }
+
+        .modal-middle-title{
+        display:flex;
+        align-items:flex-end;
+        }
+
+        .modal-grid{
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 3rem;
+        }
+
+        .modal-grid-item{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        }
+
+        .modal-item-img{
+        width:100%;
+        height:200px;
+        }
+
+        .modal-item-label{
+        margin-top:0.5rem;
+        font-weight: bold;
+        }
+
+        .modal-bottom{
+        margin:0.5rem 0 1rem 0;
+        display:flex;
+        width:96%;
+        }
+
+
+
+
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="main">
+    <div class="title_container">
+        <p id="title">순환 골재 품질 분석</p>
+        <p>AI 기반 불순물 검출 및 품질 </p>
+    </div>
+    <div class="distinction_container">
+        <div class="distinction_container_left">
+            <h2 id="distinction_label">분석 완료 - 품질 {{result.suitable}}</h2>
+            <p style="font-size:0.8rem; margin-bottom:1rem;">총 3개의 불순물이 검출되었습니다. 전체 비율 {{result.total}}%</p>
+            <div class="button_group">
+                <button id="view_detail_button">상세 분석 보기</button>
+                <button id="new_analyze_button">새로운 분석</button>
+            </div>
+        </div>
+        <button id="distinction_mark">{{result.suitable}}</button>
+    </div>
+    <div class="result_title">
+        <h2>불순물 검출 결과</h2>
+        <hr style="border: 0.2rem solid black; margin:1rem 0;">
+    </div>
+    <div class="result_container">
+        <div class="result_left">
+            <h4>선택한 이미지</h4>
+            <img src="data:image/jpeg;base64,{{result.origImage}}" alt="원본 이미지">
+            <div class="result_recap">
+                <div id="recap_number">
+                    <h3>총 불순물 개수</h3>
+                    <p class="recap_text" style="font-size:1.5rem;"><strong>3</strong></p>
+                    <p style="font-size:0.7rem;">검출된 전체 불순물</p>
+                </div>
+                <div id="recap_ratio">
+                    <h3>전체 불순물 비율</h3>
+                    <p class="recap_text" style="font-size:1.5rem;"><strong>{{result.total}}%</strong></p>
+                    <p style="font-size:0.7rem;">전체 골재 대비</p>
+                </div>
+            </div>
+            <div class="barchart_title">
+                <h4>검출 불순물 비율 비교</h4><p style="font-size:0.8rem;">AI 기반 불순물 검출 및 품질 기준 적합성 판단</p>
+            </div>
+            <div class="bar_container">
+                <canvas id="bar-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="result_right">
+            <h4>이미지 분석 결과</h4>
+            <img src="data:image/jpeg;base64,{{result.rcnnResult}}" alt="결과 이미지">
+            <div class="ratio_container">
+                <div class="ratio_box">
+                    <p><span class="color_mark" style="background:#3b4d08;"></span>폐비닐({{result.vinyl}}%)</p>
+                </div>
+                <div class="ratio_box">
+                    <p><span class="color_mark" style="background:#303e51;"></span>폐플라스틱({{result.plastic}}%)</p>
+                </div>
+                <div class="ratio_box">
+                    <p><span class="color_mark" style="background:#be563d;"></span>폐목재({{result.wood}}%)</p>
+                </div>
+            </div>
+            <div class="donut_title">
+                <h4>불순물 구성 비율</h4>
+                <p style="font-size:0.8rem;">검출된 불순물 중 각 종류가 차지하는 비율</p>
+            </div>
+            <div class="donut_container">
+                <canvas id="donut-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="recommendation">
+        <h3 style="margin-bottom:0.5rem;">품질 관리 개선 사항</h3>
+        <p id="recommendation_text"></p>
+    </div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-container">
+        <span class="modal-close" id="modal-close">&times;</span>
+        <p>분석일시 {{result.analysisDate}}</p>
+        <hr class="modal-line" style="margin-bottom:2rem;">
+        <div class="modal-main">
+            <div class="modal-top">
+                <div class="modal-top-left">
+                    <p style="font-size:3rem; font-weight:bold;">순환골재 품질 분석<br>리포트<span id="download-button">리포트 다운로드</span></p>
+                    <p style="margin-bottom:2rem; font-size:0.8rem;">AI기반 불순물 검출 및 품질 기준 적합성 판단 결과</p>
+                <div class="modal-total-result">
+                    <div class="modal-total-result-title">
+                        <h2>종합 결과</h2>
+                        <p style="font-size:0.6rem; margin-left:0.2rem;">R-CNN을 메인으로, PCA/색상 분석은 보조 지표로 활용</p>
+                        <p style="font-size:0.8rem;">기준: KS F2576</p>
+                    </div>
+                    <hr class="modal-line" style="margin:0.5rem 0;">
+                </div>
+                </div>
+                <div class="modal-top-right">
+                    <h3 style="margin-bottom:1rem;">종류별 불순물 구성 비율</h3>
+                    <div class="modal-donut-container">
+                        <canvas id="modal-donut-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-middle">
+                <div class="modal-middle-title">
+                    <h2>R-CNN 객체 검출 분석</h2>
+                    <p style="margin-left:0.3rem;">불순물 객체 검출 과정</p>
+                </div>
+                <hr class="modal-line" style="margin:0.5rem 0 1rem 0;">
+                <div class="modal-grid">
+                    <div class="modal-grid-item">
+                        <img src="data:image/jpeg;base64,{{result.origImage}}" alt="원본 이미지" class="modal-item-img">
+                        <p class="modal-item-label">&lt;원본 이미지&gt;</p>
+                    </div>
+                    <div class="modal-grid-item">
+                        <div class="modal-item-img"></div>
+                    </div>
+                    <div class="modal-grid-item">
+                        <img src="data:image/jpeg;base64,{{result.rcnnResult}}" alt="결과 이미지" class="modal-item-img">
+                        <p class="modal-item-label">&lt;결과 이미지&gt;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-middle">
+                <div class="modal-middle-title">
+                    <h2>OpenCV 분석</h2>
+                    <p style="margin-left:0.3rem;">색상 기반 불순물 검출 과정</p>
+                </div>
+                <hr class="modal-line" style="margin:0.5rem 0 1rem 0;">
+                <div class="modal-grid">
+                    <div class="modal-grid-item">
+                        <img src="data:image/jpeg;base64,{{result.origImage}}" alt="원본 이미지" class="modal-item-img">
+                        <p class="modal-item-label">&lt;원본 이미지&gt;</p>
+                    </div>
+                    <div class="modal-grid-item">
+                        <img src="data:image/jpeg;base64,{{result.opencvPro}}" alt="과정 이미지" class="modal-item-img">
+                        <p class="modal-item-label">&lt;과정 이미지&gt;</p>
+                    </div>
+                    <div class="modal-grid-item">
+                        <img src="data:image/jpeg;base64,{{result.opencvResult}}" alt="결과 이미지" class="modal-item-img">
+                        <p class="modal-item-label">&lt;결과 이미지&gt;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-bottom">
+                <h2>PCA 분석</h2>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    const newAnalyzeButton = document.getElementById("new_analyze_button");
+    newAnalyzeButton.addEventListener("click", function () {
+        window.location.href=`/analyze`;
+    });
+
+    const distinctionLabel = document.getElementById("distinction_label");
+    distinctionLabel.style.color = ("{{result.suitable}}" === "적합") ? "#2f9055" : "#b52b09";
+
+
+    const distinctMark = document.getElementById('distinction_mark');
+    distinctMark.style.backgroundColor = ("{{result.suitable}}" === "적합") ? "#2f9055" : "#b52b09";
+
+    const total = Number("{{result.total}}");
+    const recapTexts = document.querySelectorAll('.recap_text');
+    recapTexts.forEach(p => {
+        if(total>1){
+            p.style.color = "#b52b09";
+            } else {
+            p.style.color = "#2f9055";
+        }
+    });
+
+
+    const recommendationText = document.getElementById('recommendation_text');
+
+    if(total > 1){
+        recommendationText.innerHTML = `검출된 불순물 비율(${total}%)이 KS기준(1.0% 이하)을 초과합니다.<br>
+    추가 선별 과정을 통해 불순물 제거 후 재검사를 권장합니다.`;
+    }else{
+        recommendationText.innerHTML = `검출된 불순물 비율(${total}%)이 KS기준(1.0% 이하)을 만족합니다.<br>
+    추가 선별 과정없이 진행하셔도 좋습니다.`;
+    }
+
+
+    new Chart(document.getElementById("bar-chart").getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ["폐비닐","폐플라스틱","폐목재"],
+            datasets: [
+            {
+                label: "전체 이미지 불순물 평균 검출량",
+                data: [{{result.avgVinyl}},{{result.avgPlastic}},{{result.avgWood}}],
+                backgroundColor: '#f1512e'
+            },
+            {
+                label: "해당 이미지 불순물 검출량",
+                data: [{{result.vinyl}},{{result.plastic}},{{result.wood}}],
+                backgroundColor: 'black'
+            }
+            ]
+        },
+        options: {
+            responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
+            maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
+            plugins: {
+                legend: { display: true }, // 범례 표시 여부
+            }
+        }
+    });
+
+    const ratioVinyl={{result.vinyl}}/({{result.vinyl}}+{{result.plastic}}+{{result.wood}})*100;
+    const ratioPlastic={{result.plastic}}/({{result.vinyl}}+{{result.plastic}}+{{result.wood}})*100;
+    const ratioWood={{result.wood}}/({{result.vinyl}}+{{result.plastic}}+{{result.wood}})*100;
+
+    new Chart(document.getElementById("donut-chart").getContext('2d'), {
+       type: 'doughnut',
+       data: {
+           labels: ["폐비닐","폐플라스틱","폐목재"],
+           datasets: [{
+               data: [ratioVinyl,ratioPlastic,ratioWood],
+               backgroundColor: ['#3b4d08','#303e51','#be563d']
+           }]
+       },
+       options: {
+           responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
+           maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
+           plugins: {
+               legend: { display: true }, // 범례 표시 여부
+           }
+       }
+   });
+
+
+    const modal = document.getElementById('modal');
+    const viewDetailButton = document.getElementById('view_detail_button');
+
+    viewDetailButton.addEventListener('click', function() {
+        modal.style.display = 'block';
+    });
+
+    document.getElementById("modal-close").addEventListener("click",function (){
+        modal.style.display="none";
+    });
+
+    window.addEventListener("click",function (e){
+        if(e.target.id==='modal'){
+            modal.style.display="none";
+        }
+    });
+
+
+    new Chart(document.getElementById("modal-donut-chart").getContext('2d'), {
+       type: 'doughnut',
+       data: {
+           labels: ["폐비닐","폐플라스틱","폐목재"],
+           datasets: [{
+               data: [ratioVinyl,ratioPlastic,ratioWood],
+               backgroundColor: ['#3b4d08','#303e51','#be563d']
+           }]
+       },
+       options: {
+           responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
+           maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
+           plugins: {
+               legend: { display: true }, // 범례 표시 여부
+           }
+       }
+   });
+
+
+
+
+
+
+</script>
+</body>
+</html>
