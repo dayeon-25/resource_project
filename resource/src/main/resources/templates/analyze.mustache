@@ -291,6 +291,7 @@
         </style>
     </head>
     <body>
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
         <div class="main">
             <div class="title_container">
                 <p id="title">순환 골재 품질 분석</p>
@@ -485,6 +486,7 @@
         ];
         const resultLabel = document.getElementById('result_label');
         const resultButton = document.getElementById('result_button');
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
 
 
          function runProgress(index) {
@@ -517,34 +519,6 @@
                 }, intervalTime);
             }
 
-<!--   analyzeStart.addEventListener('click', () => {-->
-<!--    if (fileInput.files.length === 0) return;-->
-
-<!--    analyzeStart.style.display = 'none';-->
-<!--    reselectButton.style.display = 'none';-->
-<!--    distinctionLabel.style.display = 'none';-->
-
-<!--    const file = fileInput.files[0];-->
-<!--    const formData = new FormData();-->
-<!--    formData.append('image', file);-->
-
-<!--    // 서버 응답을 굳이 기다리지 않음-->
-<!--    fetch('/analyze/result', {-->
-<!--        method: 'POST',-->
-<!--        body: formData-->
-<!--    }).catch(err => {-->
-<!--        console.error('이미지 업로드 중 오류:', err);-->
-<!--        alert('이미지 업로드 실패! 서버 확인 필요');-->
-<!--    });-->
-
-<!--    // 서버 응답 여부와 관계없이 바로 진행-->
-<!--    analyzeContainer.style.display = 'flex';-->
-<!--    analyzeContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });-->
-
-<!--    runProgress(0);-->
-<!--});-->
-
-
 
         analyzeStart.addEventListener('click', async() =>{
             if (fileInput.files.length === 0) return;
@@ -560,6 +534,8 @@
             try{
                 const res = await fetch('/api/images/upload',{
                     method: 'POST',
+                    headers: { 'X-CSRF-TOKEN':csrfToken
+                    },
                     body: formData
                 });
                 data = await res.json();
@@ -577,7 +553,7 @@
 
         resultButton.addEventListener('click', () => {
             const origImageId = data.id;
-            window.location.href = `/result/${origImageId}`;
+            window.location.href = `/result`;
         });
 
     </script>

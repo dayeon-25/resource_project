@@ -46,6 +46,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.ResourceApplication.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
     "Gradle.resource [:com.example.resource.ResourceApplication.main()].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
