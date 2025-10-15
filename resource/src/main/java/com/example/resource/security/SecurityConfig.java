@@ -29,8 +29,8 @@ public class SecurityConfig {
                 )
                 .logout((logout)->logout.logoutUrl("/logout"))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/error","/css/**", "webjars/**","images/**").permitAll()
-                        .requestMatchers("/", "/about", "/analyze").permitAll()
+                        .requestMatchers("/error","/css/**", "/webjars/**","/images/**").permitAll()
+                        .requestMatchers("/", "/about").permitAll()
                         .requestMatchers("/api/pred").permitAll()
                         .requestMatchers("/signup").permitAll()
                         .anyRequest().authenticated());
