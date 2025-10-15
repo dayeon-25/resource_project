@@ -1,0 +1,9 @@
+body.mypage .header {
+    border-bottom: 0.3px solid #43554A;
+}
+
+body.mypage .logo a,
+body.mypage .nav-link {
+    color: #43554A;
+}
+

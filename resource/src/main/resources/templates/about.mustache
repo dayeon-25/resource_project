@@ -5,192 +5,789 @@
     <title>Intro Page</title>
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/about.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
 
 </head>
-
 <body>
 {{> layout/header}}
 
 <!--'탄소 중립은' 섹션-->
 <section id="carbon-neutrality" class="carbon-neutrality-section">
-	<div class="section-header">
-        <span class="section-label">ABOUT CARBON NEUTRALITY</span>
-        <h2 class="section-title">탄소 중립은</h2>
-    </div>
+	<span class="section-label">ABOUT CARBON NEUTRALITY</span>
 
-    <div class="section-content">
-        <div class="content-text">
-            인간의 활동으로 배출되는 이산화탄소를 흡수하거나 제거하여 <br>
-                실질적인 배출량을 <strong>‘0’</strong>으로 만드는 <br>
-                지속가능한 기후 대응 전략입니다.
-        </div>
+	<div class="carbon-content-wrapper">
+		<div class="section-header">
+			<h2 class="section-title">탄소 중립은</h2>
+		</div>
 
-        <div class="body-text">
-            <p>
-                지구 온난화와 기후위기의 주된 원인인 온실가스를 줄이기 위해, 전 세계는 탄소중립 달성을 핵심 과제로 삼고 있습니다. <br>
-                탄소중립은 단순히 배출을 줄이는 데 그치지 않고, 재생에너지 확대, 에너지 효율 개선, 순환경제 실현, 친환경 기술 개발 등을 통해 달성할 수 있습니다. <br>
-                국가와 기업뿐만 아니라 개인의 생활 방식 변화 역시 중요한 요소이며, 작은 실천이 모여 큰 변화를 만들어낼 수 있습니다. <br>
-                탄소중립은 미래 세대를 위한 선택이 아닌 지금 우리가 반드시 실천해야 할 과제입니다.
-            </p>
-        </div>
+		<div class="section-content">
+			<div class="content-text">
+				인간의 활동으로 배출되는 이산화탄소를 흡수하거나 제거하여 <br>
+				실질적인 배출량을 <strong>‘0’</strong>으로 만드는 <br>
+				지속가능한 기후 대응 전략입니다.
+			</div>
 
-        <div class="tags">
-           <span class="tag">#탄소중립</span>
-            <span class="tag">#친환경솔루션</span>
-            <span class="tag">#재생에너지</span>
-            <span class="tag">#순환경제</span>
-            <span class="tag">#온실가스감축</span>
-        </div>
-    </div>
+			<div class="body-text">
+				<p>
+					지구 온난화와 기후위기의 주된 원인인 온실가스를 줄이기 위해, 전 세계는 탄소중립 달성을 핵심 과제로 삼고 있습니다. <br>
+                    탄소중립은 단순히 배출을 줄이는 데 그치지 않고, 재생에너지 확대, 에너지 효율 개선, 순환경제 실현, 친환경 기술 개발 등을 통해 달성할 수 있습니다. <br>
+					국가와 기업뿐만 아니라 개인의 생활 방식 변화 역시 중요한 요소이며, 작은 실천이 모여 큰 변화를 만들어낼 수 있습니다. <br>
+					탄소중립은 미래 세대를 위한 선택이 아닌 지금 우리가 반드시 실천해야 할 과제입니다.
+				</p>
+			</div>
+
+			<div class="tags">
+			   <span class="tag">#탄소중립</span>
+				<span class="tag">#친환경솔루션</span>
+				<span class="tag">#재생에너지</span>
+				<span class="tag">#순환경제</span>
+				<span class="tag">#온실가스감축</span>
+			</div>
+		</div>
+	</div>
 </section>
-
 <!--'탄소 중립은' 섹션 끝-->
 
 <!--건설로 실현하는 탄소 중립 섹션-->
 <section id="construction" class="construction-section">
-    <div class="construction-header">
-        <span class="construction-label">ABOUT CARBON NEUTRALITY</span>
-        <h2 class="construction-title">건설로 실현하는 탄소 중립</h2>
-    </div>
+    <span class="construction-label">ABOUT CARBON NEUTRALITY</span>
+
+        <div class="construction-header">
+            <h2 class="construction-title">건설로 실현하는 탄소 중립</h2>
+        </div>
 
     <div class="construction-grid">
         <div class="construction-card">
             <div class="construction-image">
                 <img src="/images/construction1.png">
-            </div>
+				<div class="card-overlay">
             <h3 class="card-title">저탄소 자재 사용</h3>
             <p class="card-text">순환골재, 저탄소 시멘트 등</p>
         </div>
+			</div>
+		</div>
 
         <div class="construction-card">
             <div class="construction-image">
                 <img src="/images/construction2.png">
-            </div>
+				<div class="card-overlay">
             <h3 class="card-title">에너지 효율 운영</h3>
             <p class="card-text">ZEB, 스마트 빌딩 관리</p>
         </div>
+			</div>
+		</div>
 
         <div class="construction-card">
             <div class="construction-image">
                 <img src="/images/construction3.png">
-            </div>
+				<div class="card-overlay">
             <h3 class="card-title">순환 경제</h3>
             <p class="card-text">폐기물에서 자원으로</p>
         </div>
+			</div>
+		</div>
 
         <div class="construction-card">
             <div class="construction-image">
                 <img src="/images/construction4.png">
-            </div>
+				<div class="card-overlay">
             <h3 class="card-title">디지털 기술 사용</h3>
             <p class="card-text">BIM, AI, IoT 등</p>
         </div>
-
         </div>
-
+		</div>
+	</div>
 </section>
-
 <!--건설로 실현하는 탄소 중립 섹션 끝-->
 
 <!--순환 골재는 섹션-->
 <section id="recycled-aggregate" class="aggregate-section">
-    <div class="section-header">
-        <span class="section-label">ABOUT RECYCLED AGGREGATE</span>
-        <h2 class="section-title">순환 골재는</h2>
-    </div>
+    <div class="aggregate-sticky">
+        <div class="aggregate-content">
+            <div class="aggregate-top">
+                <div class="texts">
+                    <p><strong>순환골재는</strong></p>
+                    <p>건설폐기물을 재활용해 만든 친환경 건설 자재입니다.</p>
+                    <p>천연골재 채취로 인한 환경 파괴와 폐기물 매립 문제를 줄이고,</p>
+                    <p>온실가스 배출 감소로 탄소중립 실현에 기여합니다.</p>
+                </div>
+            </div>
 
-    <div class="aggregate-content">
-        <div class="content-text">
-            건설폐기물을 물리적 또는 화학적 처리과정 등을 거쳐 <br>
-            품질기준에 적합하게 만들어 다시 건설 자원으로 활용하는 <br>
-            친환경 대체 자재입니다.
-        </div>
 
-    <div class="body-text">
-        <p>
-            순환골재는 기존 천연골재 채취로 인한 환경 파괴를 줄이고, 건설 폐기물 매립 문제를 해결하는 효과가 있습니다. <br>
-            또한 생산 과정에서 온실가스 배출량을 감소시켜 탄소중립 실현에도 기여합니다.
-        </p>
-    </div>
-
+    <div class="aggregate-down">
     <div class="aggregate-images">
-        <div class="aggregate-image">
+        <div class="aggregate-image image1">
             <img src="/images/aggregate1.png" alt="순환골재 1">
         </div>
 
-        <div class="aggregate-image">
+        <div class="aggregate-image image2">
             <img src="/images/aggregate2.png" alt="순환골재 2">
         </div>
 
-        <div class="aggregate-image">
+        <div class="aggregate-image image3">
             <img src="/images/aggregate3.png" alt="순환골재 3">
         </div>
 
-        <div class="aggregate-image">
+        <div class="aggregate-image image4">
             <img src="/images/aggregate4.png" alt="순환골재 4">
         </div>
-
     </div>
-</div>
+     </div>
+    </div>
+    </div>
 </section>
+
+<!--순환 골재는 JS-->
+<script>
+ document.addEventListener("DOMContentLoaded", () => {
+   const section = document.querySelector('.aggregate-section');
+   const textLines = document.querySelectorAll('.texts p');
+   const images = document.querySelectorAll('.aggregate-image');
+
+   function animateOnScroll() {
+     const scrollTop = window.scrollY || window.pageYOffset;
+     const sectionTop = section.offsetTop;
+     const sectionHeight = section.offsetHeight;
+     const viewportHeight = window.innerHeight;
+
+     let progress = 0;
+
+     if (scrollTop + viewportHeight >= sectionTop && scrollTop <= sectionTop + sectionHeight) {
+       progress = (scrollTop + viewportHeight - sectionTop) / (viewportHeight + sectionHeight);
+       progress = Math.min(1, Math.max(0, progress));
+     }
+
+     textLines.forEach((line, i) => {
+       const start = 0.1 + i * 0.08;
+       const end = start + 0.3;
+       const p = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+
+       line.style.opacity = p;
+       line.style.transform = `translateY(${20 - 20 * p}px)`;
+     });
+
+     images.forEach((img, i) => {
+       const start = 0.5 + i * 0.1;
+       const end = start + 0.3;
+       const p = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+
+       if(p > 0) img.classList.add('active');
+       else img.classList.remove('active');
+     });
+   }
+
+   window.addEventListener('scroll', animateOnScroll);
+   window.addEventListener('resize', animateOnScroll);
+
+   animateOnScroll();
+ });
+
+</script>
 <!--순환 골재는 섹션 끝-->
 
-<!--사용 용도 섹션-->
-<section id="usage" class="usage-section">
+<!--사용 용도 섹션1-->
+<div class="usage-section1-wrapper">
+    <section id="usage" class="usage-section usage-section1">
+        <div class="usage-intro">
+            <h2 class="usage-intro-text">WASTE TO RESOURCE</h2>
+        </div>
+    </section>
+</div>
 
+<!--사용 용도 섹션1 JS-->
+<script>
+    const usageWrapper = document.querySelector('.usage-section1-wrapper');
+    const usageText = document.querySelector('.usage-intro-text');
+
+    const USAGE_CONFIG = {
+      fadeIn: {
+        startProgress: 0.1,
+        endProgress: 0.3,
+        scaleFrom: 0.8,
+        scaleTo: 1
+      },
+
+      hold: {
+        startProgress: 0.3,
+        endProgress: 0.5
+      },
+
+      fadeOut: {
+        startProgress: 0.5,
+        endProgress: 0.9,
+        moveDistance: -400
+      }
+    };
+
+    function calculateProgress(current, start, end) {
+      return Math.max(0, Math.min(1, (current - start) / (end - start)));
+    }
+
+    function animateUsageSection1() {
+      const wrapperRect = usageWrapper.getBoundingClientRect();
+      const wrapperHeight = usageWrapper.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const scrollStart = wrapperRect.top;
+      const scrollRange = wrapperHeight - viewportHeight;
+      const progress = Math.max(0, Math.min(1, -scrollStart / scrollRange));
+
+      if (progress >= USAGE_CONFIG.fadeIn.startProgress && progress <= USAGE_CONFIG.fadeIn.endProgress) {
+        const fadeInProgress = calculateProgress(progress, USAGE_CONFIG.fadeIn.startProgress, USAGE_CONFIG.fadeIn.endProgress);
+        const scale = USAGE_CONFIG.fadeIn.scaleFrom +
+          (USAGE_CONFIG.fadeIn.scaleTo - USAGE_CONFIG.fadeIn.scaleFrom) * fadeInProgress;
+
+        usageText.style.opacity = fadeInProgress;
+        usageText.style.transform = `scale(${scale})`;
+      }
+
+      else if (progress > USAGE_CONFIG.hold.startProgress && progress <= USAGE_CONFIG.hold.endProgress) {
+        usageText.style.opacity = 1;
+        usageText.style.transform = `scale(1)`;
+      }
+
+      else if (progress > USAGE_CONFIG.fadeOut.startProgress && progress <= USAGE_CONFIG.fadeOut.endProgress) {
+        const fadeOutProgress = calculateProgress(progress, USAGE_CONFIG.fadeOut.startProgress, USAGE_CONFIG.fadeOut.endProgress);
+        const moveY = USAGE_CONFIG.fadeOut.moveDistance * fadeOutProgress;
+        const opacity = 1 - fadeOutProgress;
+
+        usageText.style.opacity = opacity;
+        usageText.style.transform = `translateY(${moveY}px) scale(1)`;
+      }
+
+      else if (progress < USAGE_CONFIG.fadeIn.startProgress) {
+        usageText.style.opacity = 0;
+        usageText.style.transform = `scale(${USAGE_CONFIG.fadeIn.scaleFrom})`;
+      }
+
+      else if (progress > USAGE_CONFIG.fadeOut.endProgress) {
+        usageText.style.opacity = 0;
+        usageText.style.transform = `translateY(${USAGE_CONFIG.fadeOut.moveDistance}px)`;
+      }
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          animateUsageSection1();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+
+    animateUsageSection1();
+</script>
+
+<!--사용 용도 섹션2-->
+<section id="usage" class="usage-section usage-section2">
     <div class="usage-content">
     <div class="usage-header">
         <span class="usage-label">탄소저감</span>
-        <h2 class="usage-title">순환골재로 이어가는<br>
-            친환경 미래</h2>
+        <h2 class="usage-title">
+			순환골재로 <br>
+			이어가는<br>
+            친환경 미래
+		</h2>
     </div>
+
+<div class="usage-list">
+    	<div class="usage-item">
+			<div class="usage-card">
+				<div class="usage-image">
+					<img src="/images/usage1.png" alt="도로건설">
+						<h3 class="usage-image-title">도로 건설</h3>
+				</div>
+				<p class="usage-text">
+					도로의 기층 및 보조 기층 재료로 활용되어 <br>
+					내구성과 경제성을 동시에 확보합니다.
+				</p>
+			</div>
+	</div>
 
 
     <div class="usage-item">
-        <div class="usage-image-wrapper">
-            <img src="/images/usage1.png" alt="도로건설">
-            <div class="usage-image-title">도로 건설</div>
-        </div>
-        <div class="usage-text">
-            도로의 기층 및 보조 기층 재료로 활용되어 <br>
-            내구성과 경제성을 동시에 확보합니다.
-        </div>
-    </div>
+		<div class="usage-card">
+			<div class="usage-image">
+				<img src="/images/usage2.png" alt="건물기초">
+				<h3 class="usage-image-title">건물 기초</h3>
+			</div>
+			<p class="usage-text">
+				건물의 기초 콘크리트 제조에 사용되어 <br>
+				구조적 안정성을 제공합니다.
+			</p>
+		</div>
+	</div>
 
-
-    <div class="usage-item">
-        <div class="usage-image-wrapper">
-            <img src="/images/usage2.png" alt="건물기초">
-            <div class="usage-image-title">건물 기초</div>
-        </div>
-        <div class="usage-text">
-            건물의 기초 콘크리트 제조에 사용되어 <br>
-            구조적 안정성을 제공합니다.
-        </div>
-    </div>
 
         <div class="usage-item">
-            <div class="usage-image-wrapper">
-                <img src="/images/usage3.png" alt="조경공사">
-                <div class="usage-image-title">조경 공사</div>
-            </div>
-            <div class="usage-text">
-                공원과 정원의 배수층 및 보행로 조성에 활용되어 <br>
-                자연친화적 공간을 만듭니다.
-            </div>
-
+			<div class="usage-card">
+				<div class="usage-image">
+					<img src="/images/usage3.png" alt="조경공사">
+					<h3 class="usage-image-title">조경 공사</h3>
+				</div>
+					<p class="usage-text">
+						공원과 정원의 배수층 및 보행로 조성에 활용되어 <br>
+						자연친화적 공간을 만듭니다.
+					</p>
+			</div>
+		</div>
         </div>
+	</div>
+
+	<div class="usage-marquee">
+		<div class="marquee-content">
+             <span class="marquee-list">
+                <span class="marquee-item">WASTE TO RESOURCE</span>
+                <span class="marquee-item">WASTE TO RESOURCE</span>
+                <span class="marquee-item">WASTE TO RESOURCE</span>
+                <span class="marquee-item">WASTE TO RESOURCE</span>
+                <span class="marquee-item">WASTE TO RESOURCE</span>
+             </span>
+		</div>
+	</div>
+
+
+</section>
+
+<!--사용 용도 섹션2 JS-->
+<script>
+
+</script>
+<!--사용 용도 섹션 끝-->
+
+<!--통계 섹션-->
+<section id="stat" class="stat-section">
+    <div class="section-header">
+        <span class="section-label">STAT</span>
+        <h2 class="simulation-title">데이터로 보는 순환골재</h2>
     </div>
 </section>
-<!--사용 용도 섹션 끝-->
+<!--통계 섹션 끝-->
+
+
 
 <!--시뮬레이션 섹션-->
 <section id="simulation" class="simulation-section">
+	<div class="section-header">
+		<span class="section-label">SIMULATION</span>
+		<h2 class="simulation-title">순환골재의 사용 효과</h2>
+	</div>
+
+	<div class="simulation-content">
+		<p class="simulation-description">
+			건설 환경에서의 순환골재 사용 비율을 조정하여 탄소 저감 효과 및 경제적 효과를 확인해보세요.
+		</p>
+		<p class="simulation-text">
+			*건물 면적이 1000m^3 일 때 사용되는 골재량(t) 기준
+		</p>
+
+		<!-- 슬라이더 부분-->
+		<div class="simulation-slider">
+			<div class="slider-container">
+				<div class="slider-values">
+					<span>0%</span>
+					<span>100%</span>
+				</div>
+				<div class="slider-track">
+					<div class="slider-content" id="sliderContent">
+						<input type="range" id="recycleSlider" min="0" max="100" value="50">
+					</div>
+				</div>
+			</div>
 
 
+	<!--숫자 카운터 부분-->
+	<div class="simulation-results">
+		<div class="result-card">
+			<h3 class="result-title">탄소 저감 효과</h3>
+			<div class="result-value">
+				<span class="result-label">저감된 탄소 배출량</span>
+				<span class="result-number" id="carbonValue">825.6</span>
+				<span class="result-unit">kgCO2 </span>
+		</div>
+	</div>
 
+		<div class="result-card">
+			<h3 class="result-title">비용 절감 효과</h3>
+			<div class="result-value">
+				<span class="result-label">절감된 비용량</span>
+				<span class="result-number" id="costValue">584</span>
+				<span class="result-unit">만원</span>
+		</div>
+	</div>
+		</div>
+	</div>
+	</div>
     </section>
 <!--시뮬레이션 섹션 끝-->
+
+
+<!--한계 섹션-->
+<section id="limitation" class="limitation-section">
+	<div class="section-header">
+		<span class="section-label">LIMITATION</span>
+		<h2 class="limitation-title">순환골재 사용량 증가의 한계</h2>
+
+		<div class="limitation-texts">
+			<p class="limitation-text1">* 2016년도 의무 사용량 확대(40%)로 인한 사용량 증가</p>
+			<p class="limitation-text2">* 2019년도 ~ 사용량 정체</p>
+		</div>
+	</div>
+
+	<div class="chart-container">
+		<canvas id="limitationChart"></canvas>
+	</div>
+
+	<p class="chart-source">참고 : 한국환경공단_순환골재 폐기물 데이터</p>
+</section>
+
+
+<!--한계 섹션 JS -->
+<script>
+	const years = [2011, 2013, 2015, 2017, 2019, 2021, 2023, 2025];
+
+	<!--2011~2019까지 실제 데이터, 2023~2025는 예측 데이터 사용-->
+	const usageData = [39663247.87, 37505727.45, 36447265.56, 44784696.06,
+            54073761.09, 52177874.85, 51000000,  50000000];
+
+	const dataBefore = [39663247.87, 37505727.45, 36447265.56, 44784696.06,
+            54073761.09, null, null, null];
+
+	const dataAfter = [null, null, null, null, 54073761.09, 52177874.85, 51000000,  50000000];
+
+	const limitationCtx = document.getElementById('limitationChart').getContext('2d');
+
+	const limitationChartInstance = new Chart(limitationCtx, {
+		type: 'line',
+		data: {
+			labels: years,
+			datasets: [
+				{
+					label: '사용량(증가)',
+					data: dataBefore,
+					borderColor: '#000000',
+					backgroundColor: 'transparent',
+					borderWidth: 2,
+					pointRadius: 3,
+					pointBackgroundColor: '#fff',
+					pointBorderColor: '#000',
+					pointBorderWidth: 2,
+					tension: 0.1 },
+				{
+					label: '사용량(정체)',
+					data: dataAfter,
+					borderColor: '#BE563D',
+					borderWidth: 4,
+					pointRadius: 3,
+					pointBackgroundColor: '#fff',
+					pointBorderColor: '#BE563D',
+					pointBorderWidth: 2,
+					tension: 0.1 }
+				]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					legend: {
+						display: false
+					},
+					tooltip: {
+						callbacks: {
+							label: function(context) {
+								return '사용량: ' + context.parsed.y.toLocaleString() + '톤';
+							}
+						}
+					}
+				},
+				scales: {
+					x: {
+						grid: {
+							color: '#E5E5E5'
+						}
+					},
+					y: {
+						min: 35000000,
+                        max: 55000000,
+                        ticks: {
+                            stepSize: 5000000,
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            color: '#E5E5E5'
+                        }
+                    }
+                }
+            }
+        });
+</script>
+
+
+
+<!--한계 섹션 끝-->
+<!--문제 그래프 섹션-->
+<section id="why" class="why-section">
+	<div class="section-header">
+		<span class="section-label">WHY?</span>
+		<h2 class="why-title">순환골재, 왜 확산되지 못하고 있을까?</h2>
+		<p class="why-subtitle">품질 신뢰성 우려로 인한 순환골재 사용 기피</p>
+	</div>
+
+	<div class="legend">
+		<div class="legend-item">
+			<div class="legend-color1"></div>
+				<span class="legend-text">전문가 그룹</span>
+		</div>
+		<div class="legend-item">
+			<div class="legend-color2"></div>
+			<span class="legend-text">종사자 그룹</span>
+		</div>
+	</div>
+
+	<div class="chart-container">
+		<canvas id="whyChart"></canvas>
+	</div>
+
+	<p class="chart-source">출처 : LH(한국토지주택공사) 토지주택연구원 ‘순환골재 활성화 정책 제안을 위한 현장 실태조사 및 전문가 설문’</p>
+</section>
+
+<!--문제 섹션 JS -->
+<script>
+	const whyCtx = document.getElementById('whyChart').getContext('2d');
+
+	const whyChartInstance = new Chart(whyCtx, {
+		type: 'bar',
+		data: {
+			labels: [
+				'사용자 인지도\n문제',
+				'콘크리트 품질\n신뢰성 우려',
+				'발주처\n사용 제한'
+			],
+			datasets: [
+				{
+					label: '전문가 그룹',
+					data: [17, 73, 8],
+					backgroundColor: '#43564A',
+					borderWidth: 0,
+					barPercentage: 0.5,
+					categoryPercentage: 0.6
+				},
+				{
+					label: '종사자 그룹',
+					data: [44, 33, 22],
+					backgroundColor: '#ffffff',
+					borderWidth: 0,
+					barPercentage: 0.5,
+					categoryPercentage: 0.6
+					}
+			]
+		},
+
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+
+			plugins: {
+				legend: {
+					display: false
+				},
+				tooltip: {
+					callbacks: {
+						label: function(context) {
+							return context.dataset.label + ': ' + context.parsed.y + '%';
+						}
+					}
+				}
+			},
+
+			scales: {
+				x: {
+					grid: {
+						display: false,
+						drawBorder: false
+					},
+					ticks: {
+						color: '#ffffff',
+						font: {
+							size: 16,
+							weight: '500'
+						},
+						maxRotation: 0,
+						autoSkipPadding: 20
+					}
+				},
+
+				y: {
+					beginAtZero: true,
+					max: 80,
+					grid: {
+						color: 'rgba(255, 255, 255, 0.1)',
+						drawBorder: false
+					},
+					ticks: {
+						display: false
+					}
+				}
+			},
+
+			layout: {
+				padding: {
+					top: 30,
+					bottom: 20
+				}
+			}
+		},
+
+		plugins: [{
+			afterDatasetsDraw: function(chart) {
+				const ctx = chart.ctx;
+				chart.data.datasets.forEach(function(dataset, i) {
+					const meta = chart.getDatasetMeta(i);
+					meta.data.forEach(function(bar, index) {
+						const data = dataset.data[index];
+
+						ctx.fillStyle = '#ffffff';
+						ctx.font = 'bold 20px Inter';
+						ctx.textAlign = 'center';
+						ctx.textBaseline = 'bottom';
+
+						const x = bar.x;
+						const y = bar.y - 10;
+
+						ctx.fillText(data + '%', x, y);
+					});
+				});
+			}
+		}]
+	});
+</script>
+<!--문제 그래프 섹션 끝-->
+
+
+<!--과정 섹션-->
+<section id="procedure" class="procedure-section">
+	<div class="section-header">
+		<span class="section-label">PROCEDURE</span>
+		<h2 class="procedure-title">품질 신뢰 회복의 핵심, 분리 선별 과정</h2>
+	</div>
+
+	<div class="timeline-container">
+		<div class="timeline-start">
+			<div class="start-dot"></div>
+			<div class="timeline-label">순환 골재 처리 공정</div>
+		</div>
+
+		<div class="timeline">
+			<div class="timeline-step has-top">
+				<div class="step-top">
+					<div class="step-number">STEP.1</div>
+					<div class="step-text">철거</div>
+				</div>
+					<div class="step-dot"></div>
+				</div>
+
+			<div class="timeline-step has-bottom">
+				<div class="step-dot"></div>
+				<div class="step-bottom">
+					<div class="step-number">STEP.2</div>
+					<div class="step-text">운반</div>
+					</div>
+				</div>
+
+			<div class="timeline-step has-top">
+				<div class="step-top">
+					<div class="step-number">STEP.3</div>
+					<div class="step-text">파쇄</div>
+				</div>
+					<div class="step-dot"></div>
+				</div>
+
+			<div class="timeline-step highlight has-bottom">
+				<div class="step-dot"></div>
+				<div class="step-bottom">
+					<div class="step-number">STEP.4</div>
+					<div class="step-text">분리 선별</div>
+				</div>
+			</div>
+
+			<div class="timeline-step has-top">
+				<div class="step-top">
+					<div class="step-number">STEP.5</div>
+					<div class="step-text">순환 골재 생산</div>
+				</div>
+					<div class="step-dot"></div>
+				</div>
+
+			<div class="timeline-step has-bottom">
+				<div class="step-dot"></div>
+				<div class="step-bottom">
+					<div class="step-text">순환 골재 사용</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="procedure-subtitle">분리 선별이 중요한 이유</div>
+</section>
+<!--과정 섹션 끝-->
+
+<!--솔루션 섹션-->
+<section id="solution" class="solution-section">
+	<div class="section-header">
+		<span class="section-label">SOLUTION</span>
+		<h2 class="solution-title">우리의 솔루션</h2>
+	</div>
+
+	<div class="solution-cards">
+		<div class="solution-card">
+			<div class="card-content">
+				<h3 class="card-title">R-CNN 객체 검출</h3>
+			</div>
+
+			<p class="card-description">
+				순환 골재 이미지에서 플라스틱, 비닐, 유리 등 <br>
+				다양한 불순물을 픽셀 단위까지 정밀하게 분리합니다.
+			</p>
+		</div>
+
+		<div class="solution-card">
+			<div class="card-content">
+				<h3 class="card-title">OpenCV 분석</h3>
+			</div>
+
+			<p class="card-description">
+				영상의 색상, 밝기, 경계 등 기초적인 영상 처리 기법을 <br>
+				활용하여 불순물 영역을 빠르게 검출합니다.
+			</p>
+		</div>
+
+		<div class="solution-card">
+			<div class="card-content">
+				<h3 class="card-title">PCA 분석</h3>
+			</div>
+
+		<p class="card-description">
+			이미지의 색상 및 질감 정보를 축소하여<br>
+			핵심 특징을 추출합니다. <br>
+			추출된 주성분을 기반으로 클러스터링을 수행하여<br>
+			불순물을 그룹화하고,<br>
+			배경과 대비되는 영역을 시각적으로 강조합니다.<br>
+		</p>
+		</div>
+	</div>
+
+		<div class="button-section">
+			<button class="btn-analyze" onclick="location.href='/analyze'"> 품질 검사 </button>
+		</div>
+
+</section>
+<!--솔루션 섹션 끝-->
+
+
 {{> layout/footer}}
 </body>
 </html>

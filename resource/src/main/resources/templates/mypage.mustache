@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>My page</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/mypage.css">
+
+</head>
+<body class="mypage">
+{{> layout/header}}
+<!--사용자 정보 -->
+<div class="container">
+    <div class="user-section">
+
+        <div class="user-info-grid" id="userInfoGrid">
+            <!--        더미        -->
+        </div>
+
+            <button class="account-settings-btn" onclick="openAccountSettings()">
+                계정 설정
+            </button>
+        </div>
+
+
+    <!--분석 이력 -->
+    <div class="analysis-section">
+        <div class="cards-wrapper">
+            <div class="nav-arrow left" onclick="scrollCards(-1)">‹</div>
+            <div class="nav-arrow right" onclick="scrollCards(1)">›</div>
+
+            <div class="cards-container" id="cardsContainer">
+                <!--        더미        -->
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+//더미 데이터
+
+    const MOCK_USER_DATA = {
+        name: "세라",
+        totalAnalysisCount: 6,
+        lastAnalyzedDate: "2025.10.04",
+        joinDate: "2024-01-01"
+    };
+
+    const MOCK_ANALYSIS_HISTORY = [
+            {
+                id: 1,
+                thumbnailUrl: null,
+                impurityRate: 3.3,
+                isSuitable: false,
+                analyzedDate: "2025.10.04",
+                analyzedTime: "13:00",
+                analyzedImageUrl: null
+            },
+            {
+                id: 2,
+                thumbnailUrl: null,
+                impurityRate: 2.1,
+                isSuitable: true,
+                analyzedDate: "2025.10.03",
+                analyzedTime: "15:30",
+                analyzedImageUrl: null
+            },
+            {
+                id: 3,
+                thumbnailUrl: null,
+                impurityRate: 4.7,
+                isSuitable: false,
+                analyzedDate: "2025.10.02",
+                analyzedTime: "09:15",
+                analyzedImageUrl: null
+            },
+            {
+                id: 4,
+                thumbnailUrl: null,
+                impurityRate: 1.8,
+                isSuitable: true,
+                analyzedDate: "2025.10.01",
+                analyzedTime: "10:45",
+                category: "금속",
+                analyzedImageUrl: null
+            }
+    ];
+
+    const USE_MOCK_DATA = true;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+            console.log('페이지 로드 완료');
+
+            console.log(`데이터 모드: ${USE_MOCK_DATA ? 'MOCK DATA' : 'REAL API'}`);
+
+            await Promise.all([
+                loadUserInfo(),
+                loadAnalysisHistory()
+            ]);
+        });
+
+    // 사용자 정보 가져오기
+    async function loadUserInfo() {
+            try {
+                let userData;
+
+                if (USE_MOCK_DATA) {
+                    console.log('더미 데이터 로드');
+                    await delay(500);
+                    userData = MOCK_USER_DATA;
+                } else {
+                    console.log('API 호출: /api/member/me');
+                    const response = await fetch('/api/member/me', {
+                        credentials: 'include'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('사용자 정보를 불러올 수 없습니다.');
+                    }
+
+                    userData = await response.json();
+                }
+                console.log('사용자 데이터:', userData);
+                displayUserInfo(userData);
+
+            } catch (error) {
+                console.error('사용자 정보 로딩 실패:', error);
+                document.getElementById('greeting').textContent = '사용자 정보를 불러올 수 없습니다.';
+            }
+        }
+
+
+        // 분석 이력 가져오기
+        async function loadAnalysisHistory() {
+            try {
+                let analysisData;
+
+                if (USE_MOCK_DATA) {
+                    console.log('더미 데이터 분석 이력 로드');
+                    await delay(700);
+
+                    const start = currentPage * pageSize;
+                    const end = start + pageSize;
+                    analysisData = MOCK_ANALYSIS_HISTORY.slice(start, end);
+                } else {
+                    console.log(`API 호출: /api/member/analysis-history?page=${currentPage}`);
+                    const response = await fetch(
+                        `/api/member/analysis-history?page=${currentPage}&size=${pageSize}`,
+                        { credentials: 'include' }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error('분석 이력을 불러올 수 없습니다.');
+                    }
+
+                    const pageData = await response.json();
+                    analysisData = pageData.content;
+                }
+
+                console.log('분석 이력:', analysisData);
+                displayAnalysisCards(analysisData);
+
+            } catch (error) {
+                console.error('분석 이력 로딩 실패:', error);
+                document.getElementById('cardsContainer').innerHTML =
+                    '<div style="text-align:center;padding:48px;color:#999;">분석 이력을 불러올 수 없습니다.</div>';
+            }
+        }
+
+        // 사용자 정보 화면에 보이기
+        function displayUserInfo(userData) {
+            document.getElementById('greeting').textContent =
+                `'${userData.name}'님, 안녕하세요`;
+
+            const userInfoGrid = document.getElementById('userInfoGrid');
+            userInfoGrid.innerHTML = `
+                <div class="info-item">
+                    <div class="info-label">총 분석 이력</div>
+                    <div class="info-value">${userData.totalAnalysisCount}건</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">최근 분석일</div>
+                    <div class="info-value">${userData.lastAnalyzedDate || '-'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">가입일</div>
+                    <div class="info-value">${formatDate(userData.joinDate)}</div>
+                </div>
+            `;
+        }
+
+        // 분석 이력 카드
+        function displayAnalysisCards(analyses) {
+            const container = document.getElementById('cardsContainer');
+
+            if (!analyses || analyses.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; padding:60px; color:#999;">
+                        <div style="font-size:48px; margin-bottom:16px;"></div>
+                        <p>아직 분석 이력이 없습니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = analyses.map(analysis => `
+                <div class="analysis-card" onclick="showDetail(${analysis.id})">
+                    ${analysis.thumbnailUrl ?
+                        `<img src="${analysis.thumbnailUrl}" alt="분석 이미지" class="card-image">` :
+                        ''}
+
+                    <div class="card-badge ${analysis.isSuitable ? 'badge-suitable' : 'badge-unsuitable'}">
+                        ${analysis.isSuitable ? '적합' : '부적합'}
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-datetime">
+                            ${analysis.analyzedDate} ${analysis.analyzedTime}
+                        </div>
+                        <div class="card-bottom">
+                            <div class="card-info">
+                                <h3>불순물 비율</h3>
+                                <div class="card-rate">${analysis.impurityRate}%</div>
+                            </div>
+                            <a href="#" class="card-detail-btn" onclick="event.stopPropagation();">
+                                상세 분석 보기 &gt;
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+</script>
+</body>
+</html>
+

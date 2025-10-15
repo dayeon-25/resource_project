@@ -4,25 +4,78 @@
     <meta charset="UTF-8">
     <title>Footer</title>
 </head>
-
-
 <body>
+
+<!--스크롤 탑 버튼-->
+<div class="scroll-top-container">
+	<button class="scroll-top-btn" id="scrollTopBtn">
+		<img src="/images/scrolltop-Button.png">
+	</button>
+</div>
+
+<footer class="footer">
+	<div class="footer-content">
+		<h2 class="footer-logo">Re:source</h2>
+		<p class="footer-copyright">@2025 Re:source. All rights reserved.</p>
+	</div>
+</footer>
+
+
+<!--툴바-->
 <div class="toolbar">
     <button class="tool-btn" onclick="location.href='/'" title="홈">
         <img src="images/toolbar-home.png" alt="홈">
     </button>
 
 
-        <button class="tool-btn" onclick="location.href='/about'" title="소개">
-            <img src="images/toolbar-about.png" alt="소개">
-        </button>
+	<button class="tool-btn" onclick="location.href='/about'" title="소개">
+		<img src="images/toolbar-about.png" alt="소개">
+	</button>
 
 
     <button class="tool-btn" onclick="location.href='/analyze'" title="분석">
         <img src="images/toolbar-analyze.png" alt="분석">
     </button>
 
+	<button class="tool-btn" onclick="location.href='/mypage'" title="마이페이지">
+		<img src="images/toolbar-mypage.png" alt="마이페이지">
+	</button>
 </div>
+
+
+<!--스크롤 탑 버튼, 툴바 JS-->
+<script>
+const scrollTopBtn = document.getElementById('scrollTopBtn');
+const toolbar = document.querySelector('.toolbar');
+
+scrollTopBtn.addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+window.addEventListener('scroll', function() {
+    const scrollTopBtnRect = scrollTopBtn.getBoundingClientRect();
+    const toolbarRect = toolbar.getBoundingClientRect();
+    const scrollTopBtnTop = scrollTopBtn.offsetTop;
+
+    const btnPageTop = window.pageYOffset + scrollTopBtnRect.top;
+    const toolbarHeight = toolbarRect.height;
+    const toolbarBottom = window.pageYOffset + toolbarRect.bottom;
+
+	const gap = 20;
+
+    if (toolbarBottom >= btnPageTop - gap) {
+        toolbar.classList.add('stopped');
+
+        toolbar.style.bottom = (document.documentElement.scrollHeight - scrollTopBtnTop + gap) + 'px';
+    } else {
+        toolbar.classList.remove('stopped');
+        toolbar.style.bottom = '';
+    }
+});
+</script>
 
 </body>
 </html>

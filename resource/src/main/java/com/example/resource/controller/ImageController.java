@@ -24,6 +24,11 @@ class ImageController {
         return "test_upload";
     }
 
+    @GetMapping("/analyze")
+    public String analyze() {
+        return "analyze";
+    }
+
 
 //    @PostMapping("/upload")
 //    public String handleUpload(@RequestParam("file") MultipartFile file, Model model) throws IOException {
