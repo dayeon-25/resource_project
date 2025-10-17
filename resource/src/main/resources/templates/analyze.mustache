@@ -8,6 +8,7 @@
         <title>Document</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
 
+
         <style>
             *{
             box-sizing: border-box;
@@ -297,7 +298,7 @@
                 <p id="title">순환 골재 품질 분석</p>
 
                 <p id="notice">R-CNN,PCA,OpenCV를 활용하여 순환골재 내 불순물을 검출하고,
-                    품질 기준에 적합한지 여부를 판정합니다 <img src="/img/notice_icon.png" alt="알림" id="notice_icon" style="cursor:pointer;"></p>
+                    품질 기준에 적합한지 여부를 판정합니다 <img src="/images/notice_icon.png" alt="알림" id="notice_icon" style="cursor:pointer;"></p>
 
                 <div id="popup" class="popup">
                     <div class="popup_content">
@@ -312,15 +313,15 @@
                 <h2>샘플 이미지 예시</h2>
                 <div class="sample_grid">
                     <div class="sample_item">
-                        <img src="/img/good_sample.png" alt="좋은 예시1" class="sample_img">
+                        <img src="/images/good_sample.png" alt="좋은 예시1" class="sample_img">
                         <div class="sample_label good">좋은 예시</div>
                     </div>
                     <div class="sample_item">
-                        <img src="/img/good_sample2.png" alt="좋은 예시2" class="sample_img">
+                        <img src="/images/good_sample2.png" alt="좋은 예시2" class="sample_img">
                         <div class="sample_label good">좋은 예시</div>
                     </div>
                     <div class="sample_item">
-                        <img src="/img/bad_sample.png" alt="나쁜 예시" class="sample_img">
+                        <img src="/images/bad_sample.png" alt="나쁜 예시" class="sample_img">
                         <div class="sample_label bad">나쁜 예시</div>
                     </div>
                 </div>
@@ -407,7 +408,6 @@
             </div>
             <div id="result_label">분석이 완료되었습니다. 분석결과를 확인해주세요.</div>
             <button id="result_button">분석 결과</button>
-
         </div>
     <script>
         const popup = document.getElementById('popup');
@@ -441,13 +441,13 @@
 
         const validExtensions = ['jpeg', 'jpg', 'png','webp'];
         const fileExt=file.name.split('.').pop().toLowerCase();
-        const maxSize=40*1024*1024;
+        const maxSize=10*1024*1024;
 
         if(!validExtensions.includes(fileExt)){
         distinctionLabel.innerText='지원되지 않는 파일 형식입니다. 다른 파일을 선택해주세요.';
         distinctionLabel.style.color = 'red';
         }else if(file.size > maxSize){
-        distinctionLabel.innerText='파일 용량이 40MB를 초과했습니다. 다른 파일을 선택해주세요.';
+        distinctionLabel.innerText='파일 용량이 10MB를 초과했습니다. 다른 파일을 선택해주세요.';
         distinctionLabel.style.color = 'red';
         }else{
         distinctionLabel.innerText='이미지가 분석 요구사항을 만족합니다. 분석을 시작할 수 있습니다';

@@ -302,7 +302,7 @@
         height: 300px;
         }
         .modal-middle{
-        margin-top:0.5rem;
+        margin:0.5rem 0 1rem 0;
         width:96%;
         }
 
@@ -336,10 +336,25 @@
 
         .modal-bottom{
         margin:0.5rem 0 1rem 0;
-        display:flex;
         width:96%;
         }
 
+        .bottom-grid{
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        text-align: left;
+        }
+
+        .bottom-grid-title{
+        display:flex;
+        align-items:flex-end;
+        }
+
+
+        .modal-bar-container{
+        width:100%;
+        height:300px;
+        }
 
 
 
@@ -488,12 +503,31 @@
                     </div>
                 </div>
             </div>
+
             <div class="modal-bottom">
-                <h2>PCA 분석</h2>
+                <div class="bottom-grid">
+                    <div class="bottom-grid-item">
+                        <div class="bottom-grid-title">
+                            <h2>PCA 분석</h2>
+                            <p style="margin-left:0.3rem;">색상 기반 불순물 검출 과정</p>
+                        </div>
+                        <hr class="modal-line" style="margin:0.5rem 0 1rem 0;">
+                        <img src="data:image/jpeg;base64,{{result.pca}}" alt="결과 이미지" class="modal-item-img">
+                    </div>
+                         <div class="bottom-grid-item">
 
+                         </div>
+                    <div class="bottom-grid-item">
+                        <h4>불순물 검출량 비교</h4>
+                        <div class="modal-bar-container">
+                            <canvas id="modal-bar-chart"></canvas>
+                        </div>
+                    </div>
 
-
+                </div>
             </div>
+
+
 
         </div>
     </div>
@@ -562,6 +596,33 @@
             }
         }
     });
+
+    new Chart(document.getElementById("modal-bar-chart").getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ["폐비닐","폐플라스틱","폐목재"],
+            datasets: [
+            {
+                label: "전체 이미지 불순물 평균 검출량",
+                data: [{{result.avgVinyl}},{{result.avgPlastic}},{{result.avgWood}}],
+                backgroundColor: '#f1512e'
+            },
+            {
+                label: "해당 이미지 불순물 검출량",
+                data: [{{result.vinyl}},{{result.plastic}},{{result.wood}}],
+                backgroundColor: 'black'
+            }
+            ]
+        },
+        options: {
+            responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
+            maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
+            plugins: {
+                legend: { display: true }, // 범례 표시 여부
+            }
+        }
+    });
+
 
     const ratioVinyl={{result.vinyl}}/({{result.vinyl}}+{{result.plastic}}+{{result.wood}})*100;
     const ratioPlastic={{result.plastic}}/({{result.vinyl}}+{{result.plastic}}+{{result.wood}})*100;
