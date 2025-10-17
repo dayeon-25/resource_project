@@ -2,10 +2,8 @@ package com.example.resource.controller;
 
 
 import com.example.resource.dto.ResultDTO;
-import com.example.resource.entity.AnalysisImage;
 import com.example.resource.entity.AnalysisResult;
 import com.example.resource.entity.OrigImage;
-import com.example.resource.repository.AnalysisImageRepository;
 import com.example.resource.repository.AnalysisResultRepository;
 import com.example.resource.repository.OrigImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +18,6 @@ import java.util.Base64;
 @Controller
 @RequiredArgsConstructor
 public class ResultController {
-    private final AnalysisImageRepository analysisImgRepository;
     private final AnalysisResultRepository analysisResultRepository;
     private final OrigImageRepository origImageRepository;
 

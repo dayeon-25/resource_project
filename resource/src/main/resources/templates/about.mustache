@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/about.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
 
 
 </head>
@@ -358,13 +360,242 @@
 <!--사용 용도 섹션 끝-->
 
 <!--통계 섹션-->
-<section id="stat" class="stat-section">
-    <div class="section-header">
-        <span class="section-label">STAT</span>
-        <h2 class="simulation-title">데이터로 보는 순환골재</h2>
+<section id="stats" class="stats-section">
+    <!-- 왼쪽: 바 + 라인 -->
+    <div class="stats-section-left">
+        <div class="bar-chart-container">
+            <div class="bar-chart-title">
+                <h2>건설폐기물 재활용률</h2>
+                <p>2018-2021년 재활용률(%):(재활용량/발생량)x100</p>
+            </div>
+            <div class="bar-chart-size">
+                <canvas id="usage-bar-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="line-chart-container">
+            <div class="line-chart-title">
+                <h2>건설폐기물 발생량 대비 순환골재 사용량</h2>
+                <p>2020-2023년 추이 (단위:만톤)</p>
+            </div>
+            <div class="donut-chart-size">
+                <canvas id="usage-line-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 가운데: 제목 + 지도 -->
+    <div class="stats-section-center">
+        <div class="korea-map-container" style="text-align:center;">
+            <h1 class="section-title">데이터로 보는 순환골재</h1>
+            <p>지도위에 마우스를 올리면 지역별 생산량을 확인하실 수 있습니다.</p>
+            <svg id="usage-korea-map"></svg>
+        </div>
+    </div>
+
+    <!-- 오른쪽: 도넛 -->
+    <div class="stats-section-right">
+        <div class="total-number-container">
+            <div class="up-total-number">
+                <p>무슨무슨 총량</p>
+                <h1>4,323</h1>
+            </div>
+            <div class="down-total-number">
+                <p>무슨무슨 총량</p>
+                <h1>4,323</h1>
+            </div>
+        </div>
+        <div class="donut-chart-container">
+            <div class="donut-chart-title">
+                <h2>용도별 순환골재 사용량</h2>
+                <p>2020-2021년 평균 (단위:만톤)</p>
+            </div>
+            <div class="donut-chart-size">
+                <canvas id="usage-donut-chart"></canvas>
+            </div>
+        </div>
     </div>
 </section>
+
+
+<div id="tooltip" style="
+    position: absolute;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.2s;
+"></div>
 <!--통계 섹션 끝-->
+
+<!--통계 섹션 JS-->
+<script>
+    new Chart(document.getElementById("usage-line-chart").getContext('2d'), {
+       type: 'line',
+       data: {
+           labels: ["2020","2021","2022","2023"],
+           datasets: [
+           {
+               label: "건설 폐기물 발생량",
+               data: [8644,8381,7681,6437],
+                borderColor: '#13a162'
+            },
+            {
+                label: "순환 골재 사용량",
+                data: [5024,5217,5333,5111],
+                borderColor: '#d04522'
+            }
+            ]
+        },
+        options: {
+            responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
+            maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
+            plugins: {
+                legend: { display: true }, // 범례 표시 여부
+            }
+        }
+    });
+
+
+     new Chart(document.getElementById("usage-donut-chart").getContext('2d'), {
+       type: 'doughnut',
+       data: {
+           labels: ["성토용","도로기층용","복토용","콘크리트용","기타"],
+           datasets: [{
+               data: [38,27,21,10,5],
+               backgroundColor: ['#035220','#4b5b70','#be563d','#a46645','#4e4c4c']
+           }]
+       },
+       options: {
+           responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
+           maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
+           plugins: {
+               legend: { display: true }, // 범례 표시 여부
+           }
+       }
+   });
+
+   new Chart(document.getElementById("usage-bar-chart").getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ["2018","2019","2020","2021"],
+            datasets: [
+            {
+                label: "건설폐기물 재활용률",
+                data: [50,60,65,60],
+                backgroundColor: '#f1512e'
+            }
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
+            maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
+            plugins: {
+                legend: { display: true }, // 범례 표시 여부
+            }
+        }
+    });
+
+      const regionColors = {
+        "서울특별시": "#f94144",
+        "부산광역시": "#f3722c",
+        "대구광역시": "#f8961e",
+        "인천광역시": "#f9844a",
+        "광주광역시": "#f9c74f",
+        "대전광역시": "#90be6d",
+        "울산광역시": "#43aa8b",
+        "세종특별자치시": "#4d908e",
+        "경기도": "#577590",
+        "강원도": "#277da1",
+        "충청북도": "#720026",
+        "충청남도": "#d00000",
+        "전라북도": "#ffb703",
+        "전라남도": "#fb8500",
+        "경상북도": "#023047",
+        "경상남도": "#219ebc",
+        "제주특별자치도": "#8ecae6"
+    };
+
+    const regionData = {
+    "서울특별시": "10%",
+    "부산광역시": "12%",
+    "대구광역시": "8%",
+    "인천광역시": "9%",
+    "광주광역시": "7%",
+    "대전광역시": "6%",
+    "울산광역시": "5%",
+    "세종특별자치시": "3%",
+    "경기도": "20%",
+    "강원도": "4%",
+    "충청북도": "3%",
+    "충청남도": "6%",
+    "전라북도": "4%",
+    "전라남도": "5%",
+    "경상북도": "7%",
+    "경상남도": "8%",
+    "제주특별자치도": "3%"
+};
+
+
+
+    const svg = d3.select("#usage-korea-map");
+    const tooltip = d3.select("#tooltip");
+
+   fetch('/data/skorea-provinces-2018-topo.json')
+    .then(res => res.json())
+    .then(data =>{
+    const geoData = topojson.feature(data, data.objects.skorea_provinces_2018_geo);
+
+    const projection = d3.geoMercator()
+        .center([128,36])
+        .scale(5500)
+        .translate([250,380]);
+
+    const path = d3.geoPath().projection(projection);
+
+    svg.selectAll("path")
+        .data(geoData.features)
+        .enter()
+        .append("path")
+        .attr("d", path)
+        .attr("stroke","#333")
+        .attr("fill", "white")
+        .attr("stroke-width",0.5)
+        .on("mouseover", function(event,d){
+            // hover 색 변경
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("fill", d=> regionColors[d.properties.name] || "#ffd700")
+                .attr("transform", "translate(0,-5)"); // 살짝 위로
+            // tooltip 표시
+            if(d.properties && d.properties.name){
+                tooltip.style("opacity", 1)
+                       .html(`${d.properties.name}: ${regionData[d.properties.name] || "-"}`);
+            }
+        })
+        .on("mousemove", function(event){
+            tooltip.style("left", (event.pageX + 10) + "px")
+                   .style("top", (event.pageY + 10) + "px");
+        })
+        .on("mouseout", function(){
+            // 색 원상복귀
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .attr("fill", "white")
+                .attr("transform", "translate(0,0)"); // 원래 위치
+            // tooltip 숨김
+            tooltip.style("opacity", 0);
+        });
+    });
+
+</script>
+
 
 
 
@@ -670,115 +901,240 @@
 
 <!--과정 섹션-->
 <section id="procedure" class="procedure-section">
-	<div class="section-header">
+
+	<div class="procedure-header">
 		<span class="section-label">PROCEDURE</span>
-		<h2 class="procedure-title">품질 신뢰 회복의 핵심, 분리 선별 과정</h2>
+		<h2 class="section-title">품질 신뢰 회복의 핵심, 분리 선별 과정</h2>
 	</div>
 
-	<div class="timeline-container">
-		<div class="timeline-start">
-			<div class="start-dot"></div>
-			<div class="timeline-label">순환 골재 처리 공정</div>
-		</div>
+	<div class="timeline-wrapper">
 
-		<div class="timeline">
-			<div class="timeline-step has-top">
-				<div class="step-top">
-					<div class="step-number">STEP.1</div>
-					<div class="step-text">철거</div>
-				</div>
-					<div class="step-dot"></div>
-				</div>
+        <!--가로선 부분-->
+        <div class="timeline-line"></div>
 
-			<div class="timeline-step has-bottom">
-				<div class="step-dot"></div>
-				<div class="step-bottom">
-					<div class="step-number">STEP.2</div>
-					<div class="step-text">운반</div>
-					</div>
-				</div>
+			<!--step-->
+			<div class="timeline-steps">
 
-			<div class="timeline-step has-top">
-				<div class="step-top">
-					<div class="step-number">STEP.3</div>
-					<div class="step-text">파쇄</div>
-				</div>
-					<div class="step-dot"></div>
-				</div>
+                <!-- 시작점 -->
+                <div class="timeline-step top start">
+                    <div class="step-info">
+                        <span class="step-text">순환 골재 처리 공정</span>
+                    </div>
+                    <div class="vertical-line"></div>
+                    <div class="step-dot"></div>
+                </div>
 
-			<div class="timeline-step highlight has-bottom">
-				<div class="step-dot"></div>
-				<div class="step-bottom">
-					<div class="step-number">STEP.4</div>
-					<div class="step-text">분리 선별</div>
-				</div>
-			</div>
+				<!--step1-->
+                <div class="timeline-step top">
+                        <div class="step-info">
+                            <span class="step-number">STEP.1</span>
+                            <span class="step-text">철거</span>
+                        </div>
 
-			<div class="timeline-step has-top">
-				<div class="step-top">
-					<div class="step-number">STEP.5</div>
-					<div class="step-text">순환 골재 생산</div>
-				</div>
-					<div class="step-dot"></div>
-				</div>
+                        <div class="vertical-line"></div>
+                    <div class="step-dot"></div>
+                </div>
 
-			<div class="timeline-step has-bottom">
-				<div class="step-dot"></div>
-				<div class="step-bottom">
-					<div class="step-text">순환 골재 사용</div>
-				</div>
-			</div>
-		</div>
-	</div>
+			<!--step2-->
+            <div class="timeline-step bottom">
+                <div class="step-dot"></div>
+                    <div class="vertical-line"></div>
+                    <div class="step-info">
+                        <span class="step-number">STEP.2</span>
+                        <span class="step-text">운반</span>
+                    </div>
+                </div>
 
-	<div class="procedure-subtitle">분리 선별이 중요한 이유</div>
+				<!--step3-->
+                <div class="timeline-step top">
+                        <div class="step-info">
+                            <span class="step-number">STEP.3</span>
+                            <span class="step-text">파쇄</span>
+                        </div>
+                        <div class="vertical-line"></div>
+                    <div class="step-dot"></div>
+                </div>
+
+			<!--step4-->
+            <div class="timeline-step down highlight">
+                <div class="step-dot"></div>
+                    <div class="vertical-line"></div>
+                    <div class="step-info">
+                        <span class="step-number">STEP.4</span>
+                        <span class="step-text">분리 선별</span>
+                    </div>
+                </div>
+
+			<!--step5-->
+            <div class="timeline-step top">
+                    <div class="step-info">
+                        <span class="step-number">STEP.5</span>
+                        <span class="step-text">순환 골재 생산</span>
+                    </div>
+                    <div class="vertical-line"></div>
+                <div class="step-dot"></div>
+            </div>
+
+
+                <!--타임라인 step6-->
+                <div class="timeline-step bottom">
+                    <div class="step-dot"></div>
+                        <div class="vertical-line"></div>
+                        <div class="step-info">
+                            <span class="step-text">순환 골재 사용</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </section>
+
+<!--과정 섹션 JS-->
+<script>
+	const timelineSection = document.querySelector('.procedure-section');
+	const timelineLine = document.querySelector('.timeline-line');
+	const timelineSteps = document.querySelectorAll('.timeline-step');
+
+	const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+
+			if (entry.isIntersecting) {
+                if (timelineLine) {
+                    timelineLine.classList.add('animate');
+                }
+
+            timelineSteps.forEach((step, index) => {
+                    setTimeout(() => {
+                        const verticalLine = step.querySelector('.vertical-line');
+                        if (verticalLine) {
+                            verticalLine.classList.add('animate');
+                        }
+
+                        setTimeout(() => {
+                            const dot = step.querySelector('.step-dot');
+                            if (dot) {
+                                dot.classList.add('animate');
+                            }
+                        }, 200);
+                    }, 1500 + (index * 200));
+                });
+
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    if (timelineSection) {
+        observer.observe(timelineSection);
+    }
+</script>
 <!--과정 섹션 끝-->
+
+
 
 <!--솔루션 섹션-->
 <section id="solution" class="solution-section">
-	<div class="section-header">
-		<span class="section-label">SOLUTION</span>
+	<div class="solution-header">
+		<span class="solution-label">SOLUTION</span>
 		<h2 class="solution-title">우리의 솔루션</h2>
 	</div>
 
 	<div class="solution-cards">
 		<div class="solution-card">
+            <img src="/images/solution card1.svg" alt="R-CNN 객체 검출" class="card-image">
+
 			<div class="card-content">
+                <span class="card-label">Deep Learning</span>
 				<h3 class="card-title">R-CNN 객체 검출</h3>
-			</div>
 
 			<p class="card-description">
-				순환 골재 이미지에서 플라스틱, 비닐, 유리 등 <br>
-				다양한 불순물을 픽셀 단위까지 정밀하게 분리합니다.
+				순환 골재 이미지에서 <br>
+                플라스틱, 비닐, 유리 등 <br>
+				다양한 불순물을 <br>
+                픽셀 단위까지 정밀하게 분리합니다.
 			</p>
+
+            <ul class="card-features">
+                <li>
+                    <img src="/images/solution.png" alt="icon">
+                    <span>순환 골재 이미지에서 플라스틱, 비닐, 유리 등 <br>
+                    다양한 불순물을 픽셀 단위까지 정밀하게 분리</span>
+                </li>
+
+                <li>
+                    <img src="/images/solution.png" alt="icon">
+                    <span>고정밀 객체 검출로 미세 불순물까지 식별</span>
+
+                </li>
+                <li>
+                    <img src="/images/solution.png" alt="icon">
+                    <span>실시간 분석 및 자동 분류 시스템</span>
+                </li>
+            </ul>
 		</div>
+        </div>
 
 		<div class="solution-card">
+            <img src="/images/solution card2.svg" alt="OpenCV 분석" class="card-image">
 			<div class="card-content">
+                <span class="card-label">Computer Vision</span>
 				<h3 class="card-title">OpenCV 분석</h3>
-			</div>
 
 			<p class="card-description">
-				영상의 색상, 밝기, 경계 등 기초적인 영상 처리 기법을 <br>
-				활용하여 불순물 영역을 빠르게 검출합니다.
+				영상의 색상, 밝기, 경계 등 <br>
+                기초적인 영상 처리 기법을 활용하여 <br>
+                불순물 영역을 빠르게 검출합니다.
 			</p>
+
+            <ul class="card-features">
+                <li>
+                    <img src="/images/solution.png" alt="icon">
+                    <span>영상의 색상, 밝기, 경계 등 <br>
+                    기초적인 영상 처리 기법 활용</span>
+                </li>
+                <li>
+                    <img src="/images/solution.png" alt="icon">
+                    <span>빠른 불순물 영역 검출</span>
+                </li>
+                <li>
+                    <img src="/images/solution.png" alt="icon">
+                    <span>실시간 이미지 전처리 및 품질 향상</span>
+                </li>
+            </ul>
 		</div>
+        </div>
 
 		<div class="solution-card">
+            <img src="/images/solution card3.svg" alt="PCA 분석" class="card-image">
 			<div class="card-content">
+                <span class="card-label">Data Analysis</span>
 				<h3 class="card-title">PCA 분석</h3>
-			</div>
 
 		<p class="card-description">
 			이미지의 색상 및 질감 정보를 축소하여<br>
 			핵심 특징을 추출합니다. <br>
-			추출된 주성분을 기반으로 클러스터링을 수행하여<br>
-			불순물을 그룹화하고,<br>
-			배경과 대비되는 영역을 시각적으로 강조합니다.<br>
+			추출된 주성분을 기반으로 클러스터링을 <br>
+            수행하여 불순물을 그룹화하고,<br>
+			배경과 대비되는 영역을 <br>
+            시각적으로 강조합니다.
 		</p>
+        <ul class="card-features">
+            <li>
+                <img src="/images/solution.png" alt="icon">
+                <span>이미지의 색상 및 질감 정보를 축소하여 <br>
+                핵심 특징을 추출</span>
+            </li>
+            <li>
+                <img src="/images/solution.png" alt="icon">
+                <span>클러스터링 기반 불순물 그룹화</span>
+            </li>
+            <li>
+                <img src="/images/solution.png" alt="icon">
+                <span>배경 대비 영역 시각적 강조</span>
+            </li>
+        </ul>
 		</div>
 	</div>
+    </div>
 
 		<div class="button-section">
 			<button class="btn-analyze" onclick="location.href='/analyze'"> 품질 검사 </button>
