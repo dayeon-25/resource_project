@@ -21,7 +21,22 @@ public class AnalysisResult {
     private double vinyl;
     private double wood;
 
+    private int count;
     private boolean suitable;
 
-    private int count;
+    @Lob
+    @Column(name = "rcnn_result")
+    private byte[] rcnnResult;
+
+    @Lob
+    @Column(name = "opencv_pro")
+    private byte[] opencvPro;
+
+    @Lob
+    @Column(name = "opencv_result")
+    private byte[] opencvResult;
+
+    @Lob
+    @Column(name = "pca")
+    private byte[] pca;
 }

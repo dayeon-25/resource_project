@@ -12,18 +12,20 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AnalysisResponse {
     private int status;
-    @JsonProperty("orig_img_id")
-    private Long origImgId;
+    @JsonProperty("orig_img")
+    private String origImg;
 
-    @JsonProperty("analysis_result")
-    private Long analysisResult;
+    private double plastic;
+    private double vinyl;
+    private double wood;
+    private int count;
 
     @JsonProperty("rcnn_result")
-    private Long rcnnResult;
+    private String rcnnResult;
     @JsonProperty("opencv_pro")
-    private Long opencvPro;
+    private String opencvPro;
     @JsonProperty("opencv_result")
-    private Long opencvResult;
+    private String opencvResult;
     @JsonProperty("pca")
-    private Long pca;
+    private String pca;
 }

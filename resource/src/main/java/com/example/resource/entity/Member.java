@@ -38,6 +38,6 @@ public class Member {
     @Builder.Default
     private String role = "ROLE_USER";
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<OrigImage> origImages;
 }

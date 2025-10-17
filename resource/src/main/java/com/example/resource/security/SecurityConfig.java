@@ -27,7 +27,13 @@ public class SecurityConfig {
                         .permitAll()
 
                 )
-                .logout((logout)->logout.logoutUrl("/logout"))
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .permitAll()
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/error","/css/**", "/webjars/**","/images/**","/data/**").permitAll()
                         .requestMatchers("/", "/about").permitAll()

@@ -5,35 +5,57 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 
 public class MemberDetails implements UserDetails {
-    private final String username;
-    private final String password;
-    private final Collection<? extends GrantedAuthority> authorities;
+
+    private final Member member;
 
     public MemberDetails(Member member) {
-        this.username = member.getUsername();
-        this.password = member.getPassword();
-        this.authorities = Arrays.stream(member.getRole().split(","))
-                .map(role->new SimpleGrantedAuthority(role))
-                .toList();
+        this.member = member;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+    public Long getId() {
+        return member.getId();
     }
 
-    @Override
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return member.getName();
     }
 
     @Override
     public String getUsername() {
-        return this.username;
+        return member.getUsername();
+    }
+
+    @Override
+    public String getPassword() {
+        return member.getPassword();
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public LocalDate getBirthday(){
+        return member.getBirthday();
+    }
+
+    public LocalDate getJoinDate(){
+        return member.getJoinDate();
+    }
+
+    public String getUserType(){
+        return member.getUserType();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.stream(member.getRole().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .toList();
     }
 
     @Override
