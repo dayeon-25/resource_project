@@ -23,6 +23,7 @@ public class OrigImage {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Lob
     @Column(name="image_data", columnDefinition="MEDIUMBLOB")
     private byte[] imageData;
 

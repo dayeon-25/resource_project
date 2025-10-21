@@ -1,4 +1,4 @@
-package com.example.resource.config;
+package com.example.resource.advice;
 
 
 import org.springframework.security.core.Authentication;

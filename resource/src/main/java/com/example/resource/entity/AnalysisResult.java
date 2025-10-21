@@ -25,18 +25,18 @@ public class AnalysisResult {
     private boolean suitable;
 
     @Lob
-    @Column(name = "rcnn_result")
+    @Column(name = "rcnn_result",  columnDefinition = "MEDIUMBLOB")
     private byte[] rcnnResult;
 
     @Lob
-    @Column(name = "opencv_pro")
+    @Column(name = "opencv_pro",  columnDefinition = "MEDIUMBLOB")
     private byte[] opencvPro;
 
     @Lob
-    @Column(name = "opencv_result")
+    @Column(name = "opencv_result",  columnDefinition = "MEDIUMBLOB")
     private byte[] opencvResult;
 
     @Lob
-    @Column(name = "pca")
+    @Column(name = "pca",  columnDefinition = "MEDIUMBLOB")
     private byte[] pca;
 }

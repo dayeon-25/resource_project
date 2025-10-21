@@ -8,6 +8,9 @@ import com.example.resource.entity.RaUsage;
 import com.example.resource.repository.AnalysisResultRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URLConnection;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
@@ -45,22 +48,34 @@ public class MapperService {
         String suitable = (result.isSuitable()) ? "적합" : "부적합";
 
         return ResultDTO.builder()
-                .origImage(Base64.getEncoder().encodeToString(origImage.getImageData()))
-                .analysisDate(analysisDate)
+                .origImage(toDataUri(origImage.getImageData()))                .analysisDate(analysisDate)
                 .plastic(result.getPlastic())
                 .vinyl(result.getVinyl())
                 .wood(result.getWood())
-                .total(result.getWood()+ result.getPlastic() + result.getVinyl())
+                .total(roundTo2Decimals(result.getWood()+ result.getPlastic() + result.getVinyl()))
                 .suitable(suitable)
                 .avgPlastic(analysisResultRepository.getPlasticAvg())
                 .avgVinyl(analysisResultRepository.getVinylAvg())
                 .avgWood(analysisResultRepository.getWoodAvg())
-                .rcnnResult(Base64.getEncoder().encodeToString(result.getRcnnResult()))
-                .opencvPro(Base64.getEncoder().encodeToString(result.getOpencvPro()))
-                .opencvResult(Base64.getEncoder().encodeToString(result.getOpencvResult()))
-                .pca(Base64.getEncoder().encodeToString(result.getPca()))
+                .rcnnResult(toDataUri(result.getRcnnResult()))
+                .opencvPro(toDataUri(result.getOpencvPro()))
+                .opencvResult(toDataUri(result.getOpencvResult()))
+                .pca(toDataUri(result.getPca()))
                 .build();
     }
 
+    private String toDataUri(byte[] imageBytes) {
+        String mimeType = "image/jpg";
+        try {
+            String guessed = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageBytes));
+            if (guessed != null) mimeType = guessed;
+        } catch (IOException e) {
+            // MIME 타입 추정 실패시 기본값 유지
+        }
+        String base64 = Base64.getEncoder().encodeToString(imageBytes);
+        return "data:" + mimeType + ";base64," + base64;
+    }
+
+    public double roundTo2Decimals(double value) { return Math.round(value * 100) / 100.0; }
 
 }

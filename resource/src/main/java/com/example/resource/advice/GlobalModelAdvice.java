@@ -1,4 +1,4 @@
-package com.example.resource.config;
+package com.example.resource.advice;
 
 import com.example.resource.dto.MemberDTO;
 import com.example.resource.security.MemberDetails;
