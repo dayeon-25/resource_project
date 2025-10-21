@@ -207,7 +207,7 @@ input[type="password"] {
                     <a href="/mypage" class="nav-link">MY</a>
                 </li>
                 <li class="nav-item">
-                    <a href="/login" class="nav-link nav-link-login">LOG OUT</a>
+                    <a href="/login" class="nav-link nav-link-login">LOG IN</a>
                 </li>
             </ul>
         </nav>
@@ -218,7 +218,7 @@ input[type="password"] {
 <div class="login-wrapper">
 	<h2 class="login-title">로그인</h2>
     <div class="login-container">
-        <form method="post" action="/login">
+        <form method="post" action="/doLogin">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}">
 
             <div class="form-group">

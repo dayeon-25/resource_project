@@ -24,7 +24,12 @@
 					<a href="/mypage" class="nav-link">MY</a>
 				</li>
 				<li class="nav-item">
-					<a href="/login" class="nav-link nav-link-login">LOG IN</a>
+                    {{#authenticated}}
+                        <a href="/logout" class="nav-link nav-link-login">LOG OUT</a>
+                    {{/authenticated}}
+                    {{^authenticated}}
+                        <a href="/login" class="nav-link nav-link-login">LOG IN</a>
+                    {{/authenticated}}
 				</li>
 			</ul>
 		</nav>
