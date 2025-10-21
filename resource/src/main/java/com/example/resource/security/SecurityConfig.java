@@ -30,13 +30,6 @@ public class SecurityConfig {
                         .permitAll()
 
                 )
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/")
-//                        .invalidateHttpSession(true)
-//                        .clearAuthentication(true)
-//                        .permitAll()
-//                )
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // GET 허용
                         .logoutSuccessUrl("/")

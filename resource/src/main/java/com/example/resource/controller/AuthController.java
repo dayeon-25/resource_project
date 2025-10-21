@@ -27,9 +27,9 @@ public class AuthController {
     public String loginPage(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            String message = (String) session.getAttribute("errorMessage");
-            if (message != null) {
-                model.addAttribute("message", message);
+            String errorMsg = (String) session.getAttribute("errorMessage");
+            if (errorMsg != null) {
+                model.addAttribute("errorMessage", errorMsg);
                 session.removeAttribute("errorMessage");
             }
         }
@@ -53,7 +53,7 @@ public class AuthController {
                          RedirectAttributes redirectAttributes,
                          HttpServletRequest request){
         if (bindingResult.hasErrors()) {
-            model.addAttribute("message", "모든 항목을 입력해주세요.");
+            model.addAttribute("errorMessage", "모든 항목을 입력해주세요.");
             model.addAttribute("signupRequest", signupRequest);
             return "member/signup";
         }
@@ -61,11 +61,11 @@ public class AuthController {
         try {
             memberService.register(signupRequest);
 
-            redirectAttributes.addFlashAttribute("message", "회원가입이 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("successMessage", "회원가입이 완료되었습니다.");
             return "redirect:/login";
 
         } catch (SignupException e) {
-            model.addAttribute("message", e.getMessage());
+            model.addAttribute("errorMessage", e.getMessage());
             return "member/signup";
         }
     }
