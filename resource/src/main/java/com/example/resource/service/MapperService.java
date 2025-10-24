@@ -45,11 +45,7 @@ public class MapperService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
         String analysisDate = origImage.getAnalysisDate().format(formatter);
-
         String suitable = (result.isSuitable()) ? "적합" : "부적합";
-
-        double total = result.getWood() + result.getPlastic() + result.getVinyl();
-        total=Math.round(total*100)/100.0;
 
         return ResultDTO.builder()
                 .id(result.getId())
@@ -58,12 +54,12 @@ public class MapperService {
                 .plastic(result.getPlastic())
                 .vinyl(result.getVinyl())
                 .wood(result.getWood())
-                .total(total)
+                .total(roundTo2Decimals(result.getWood() + result.getPlastic() + result.getVinyl()))
                 .count(result.getCount())
                 .suitable(suitable)
-                .avgPlastic(analysisResultRepository.getPlasticAvg())
-                .avgVinyl(analysisResultRepository.getVinylAvg())
-                .avgWood(analysisResultRepository.getWoodAvg())
+                .avgPlastic(roundTo2Decimals(analysisResultRepository.getPlasticAvg()))
+                .avgVinyl(roundTo2Decimals(analysisResultRepository.getVinylAvg()))
+                .avgWood(roundTo2Decimals(analysisResultRepository.getWoodAvg()))
                 .rcnnResult(toDataUri(result.getRcnnResult()))
                 .opencvPro(toDataUri(result.getOpencvPro()))
                 .opencvResult(toDataUri(result.getOpencvResult()))
@@ -71,7 +67,9 @@ public class MapperService {
                 .build();
     }
 
-    private String toDataUri(byte[] imageBytes) {
+    public String toDataUri(byte[] imageBytes) {
+        if (imageBytes == null || imageBytes.length == 0) return "";
+
         String mimeType = "image/jpg";
         try {
             String guessed = URLConnection.guessContentTypeFromStream(new ByteArrayInputStream(imageBytes));

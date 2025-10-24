@@ -386,7 +386,7 @@
     <div class="result_container">
         <div class="result_left">
             <h4>선택한 이미지</h4>
-            <img src="data:image/jpeg;base64,{{result.origImage}}" alt="원본 이미지">
+            <img src="{{result.origImage}}" alt="원본 이미지">
             <div class="result_recap">
                 <div id="recap_number">
                     <h3>총 불순물 개수</h3>
@@ -409,7 +409,7 @@
 
         <div class="result_right">
             <h4>이미지 분석 결과</h4>
-            <img src="data:image/jpeg;base64,{{result.rcnnResult}}" alt="결과 이미지">
+            <img src="{{result.rcnnResult}}" alt="결과 이미지">
             <div class="ratio_container">
                 <div class="ratio_box">
                     <p><span class="color_mark" style="background:#3b4d08;"></span>폐비닐({{result.vinyl}}%)</p>
@@ -470,14 +470,14 @@
                 <hr class="modal-line" style="margin:0.5rem 0 1rem 0;">
                 <div class="modal-grid">
                     <div class="modal-grid-item">
-                        <img src="data:image/jpeg;base64,{{result.origImage}}" alt="원본 이미지" class="modal-item-img">
+                        <img src="{{result.origImage}}" alt="원본 이미지" class="modal-item-img">
                         <p class="modal-item-label">&lt;원본 이미지&gt;</p>
                     </div>
                     <div class="modal-grid-item">
                         <div class="modal-item-img"></div>
                     </div>
                     <div class="modal-grid-item">
-                        <img src="data:image/jpeg;base64,{{result.rcnnResult}}" alt="결과 이미지" class="modal-item-img">
+                        <img src="{{result.rcnnResult}}" alt="결과 이미지" class="modal-item-img">
                         <p class="modal-item-label">&lt;결과 이미지&gt;</p>
                     </div>
                 </div>
@@ -490,15 +490,15 @@
                 <hr class="modal-line" style="margin:0.5rem 0 1rem 0;">
                 <div class="modal-grid">
                     <div class="modal-grid-item">
-                        <img src="data:image/jpeg;base64,{{result.origImage}}" alt="원본 이미지" class="modal-item-img">
+                        <img src="{{result.origImage}}" alt="원본 이미지" class="modal-item-img">
                         <p class="modal-item-label">&lt;원본 이미지&gt;</p>
                     </div>
                     <div class="modal-grid-item">
-                        <img src="data:image/jpeg;base64,{{result.opencvPro}}" alt="과정 이미지" class="modal-item-img">
+                        <img src="{{result.opencvPro}}" alt="과정 이미지" class="modal-item-img">
                         <p class="modal-item-label">&lt;과정 이미지&gt;</p>
                     </div>
                     <div class="modal-grid-item">
-                        <img src="data:image/jpeg;base64,{{result.opencvResult}}" alt="결과 이미지" class="modal-item-img">
+                        <img src="{{result.opencvResult}}" alt="결과 이미지" class="modal-item-img">
                         <p class="modal-item-label">&lt;결과 이미지&gt;</p>
                     </div>
                 </div>
@@ -512,7 +512,7 @@
                             <p style="margin-left:0.3rem;">색상 기반 불순물 검출 과정</p>
                         </div>
                         <hr class="modal-line" style="margin:0.5rem 0 1rem 0;">
-                        <img src="data:image/jpeg;base64,{{result.pca}}" alt="결과 이미지" class="modal-item-img">
+                        <img src="{{result.pca}}" alt="결과 이미지" class="modal-item-img">
                     </div>
                          <div class="bottom-grid-item">
 

@@ -7,7 +7,6 @@ import com.example.resource.entity.OrigImage;
 import com.example.resource.repository.AnalysisResultRepository;
 import com.example.resource.repository.OrigImageRepository;
 import com.example.resource.service.MapperService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,8 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.time.format.DateTimeFormatter;
-import java.util.Base64;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -41,9 +39,7 @@ public class ResultController {
         ResultDTO resultdto = mapperService.toResultDTO(analysisResult, origImage);
         model.addAttribute("result", resultdto);
 
-
         return "result";
     }
 
 }
-
