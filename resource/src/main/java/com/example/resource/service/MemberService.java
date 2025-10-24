@@ -58,6 +58,7 @@ public class MemberService {
         checkIfSameMember(id, targetId);
         Member member = getMemberOrThrow(targetId);
         member.setPassword(passwordEncoder.encode(newPassword));
+
     }
 
     @Transactional
@@ -65,6 +66,8 @@ public class MemberService {
         checkIfSameMember(id, targetId);
         Member member = getMemberOrThrow(targetId);
         member.setBirthday(birthday);
+        memberRepository.flush();
+
     }
 
     @Transactional

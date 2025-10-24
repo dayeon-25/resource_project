@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>My page</title>
+
 	<link rel="stylesheet" href="/css/mypage.css">
     <link rel="stylesheet" href="/css/common.css">
 
@@ -13,275 +14,544 @@
 <!--사용자 정보 -->
 <div class="container">
     <div class="user-section">
-		<h1 class="greeting" id="greeting">로딩 중</h1>
+		<h1 class="greeting" id="greeting">{{memberDTO.name}}님, 안녕하세요</h1>
 
-	<div class="user-info-wrapper">
-        <div class="user-info-grid" id="userInfoGrid">
-            <!--        더미        -->
-        </div>
+        <div class="user-info-wrapper">
+            <div class="user-info-grid">
+                <div class="info-item">
+                    <div class="info-label">총 분석 이력</div>
+                    <div class="info-value" id="totalAnalysisCount">0건</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">최근 분석일</div>
+                    <div class="info-value" id="lastAnalysisDate">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">가입일</div>
+                    <div class="info-value" id="joinDateDisplay">-</div>
+                </div>
+            </div>
 
-            <button class="account-settings-btn" onclick="openAccountSettings()">
+            <button class="account-settings-btn" onclick="openPasswordModal()">
                 계정 설정
             </button>
         </div>
-	</div>
+    </div>
+
+    <!-- 계정 설정 비밀번호 확인 모달창  -->
+    <div id="passwordModal" class="modal">
+        <div class=" password-modal-content">
+            <div class="modal-header">
+                <h2>비밀번호 확인</h2>
+                <span class="close" onclick="closePasswordModal()">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <p class="modal-description">계정 설정을 위해 비밀번호를 입력해주세요.</p>
+                <form id="passwordCheckForm" onsubmit="checkPassword(event)">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                    <div class="input-group">
+                        <input type="password" id="passwordCheck" name="password" placeholder="비밀번호를 입력해주세요" class="input-field" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn-primary">확인</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-    <!--분석 이력 카드 !수정 필요 ! -->
-	<div class="analysis-section">
-		<div class="cards-wrapper">
-			<div class="cards-container" id="cardsContainer">
-				<!-- JS -->
-			</div>
-		</div>
-	</div>
+    <!-- 계정 설정 버튼 모달창 부분 -->
+    <div id="accountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>계정 설정</h2>
+                <span class="close" onclick="closeAccountSettings()">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                <div class="info-section">
+                    <h3>회원 정보</h3>
+                    <div class="info-row">
+                        <label>아이디</label>
+                        <span>{{memberDTO.username}}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>이름</label>
+                        <span>{{memberDTO.name}}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>회원 유형</label>
+                        <span id="modalUserType"></span>
+                    </div>
+                    <div class="info-row">
+                        <label>생년월일</label>
+                        <span>{{memberDTO.birthday}}</span>
+                    </div>
+                    <div class="info-row">
+                        <label>가입일</label>
+                        <span id="modalJoinDate"></span>
+                    </div>
+                </div>
+
+                <!-- 생년월일 수정 -->
+                <div class="edit-section">
+                    <h3>생년월일 수정</h3>
+                    <form id="birthdayForm" onsubmit="changeBirthday(event)">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                        <div class="input-group">
+                            <input type="date" id="birthdayInput" name="birthday" class="input-field" value="{{memberDTO.birthday}}">
+                        </div>
+                        <button type="submit" class="btn-primary">생년월일 수정</button>
+                    </form>
+                </div>
+
+                <!-- 비밀번호 변경 -->
+                <div class="edit-section">
+                    <h3>비밀번호 변경</h3>
+                    <form id="passwordForm" onsubmit="changePassword(event)">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                        <div class="input-group">
+                            <input type="password" id="currentPassword" placeholder="현재 비밀번호" class="input-field" required autocomplete="current-password">
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="newPassword" placeholder="새 비밀번호" class="input-field" required autocomplete="new-password">
+                        </div>
+                        <div class="input-group">
+                            <input type="password" id="confirmPassword" placeholder="새 비밀번호 확인" class="input-field" required autocomplete="new-password">
+                        </div>
+                        <button type="submit" class="btn-primary">비밀번호 변경</button>
+                    </form>
+                </div>
+
+                <!-- 회원 탈퇴 -->
+                <div class="cancel-section">
+                    <p class="warning-text">탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.</p>
+                    <a class="cancel-link" onclick="confirmCancelAccount()">회원 탈퇴</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+    <!--분석 이력 카드  -->
+    <div class="analysis-section">
+        <button class="scroll-btn scroll-btn-left" onclick="scrollCards(-1)">
+            <span>&lt;</span>
+        </button>
+
+        <div class="cards-wrapper">
+            <div class="cards-container" id="cardsContainer">
+                <!--JS로 사용자 분석이력 카드 생성하기-->
+            </div>
+        </div>
+
+            <button class="scroll-btn scroll-btn-right" onclick="scrollCards(1)">
+                <span>&gt;</span>
+            </button>
+    </div>
+
 <script>
-//더미 데이터
+//1. 데이터 세팅하기
+// 서버에서 사용자 정보 전달받기 (from memberDTO)
 
-    const MOCK_USER_DATA = {
-        name: "세라",
-        totalAnalysisCount: 4,
-        lastAnalyzedDate: "2025.10.04",
-        joinDate: "2024.01.01"
-    };
+const memberDTO = {
+    id: {{memberDTO.id}},
+    name: '{{memberDTO.name}}',
+    username: '{{memberDTO.username}}',
+    birthday: '{{memberDTO.birthday}}',
+    joinDate: '{{memberDTO.joinDate}}',
+    userType: '{{memberDTO.userType}}'
+};
 
-    const MOCK_ANALYSIS_HISTORY = [
-            {
-                id: 1,
-                thumbnailUrl: null,
-                impurityRate: 3.3,
-                isSuitable: false,
-                analyzedDate: "2025.10.04",
-                analyzedTime: "13:00"
-            },
-            {
-                id: 2,
-                thumbnailUrl: null,
-                impurityRate: 2.1,
-                isSuitable: true,
-                analyzedDate: "2025.10.03",
-                analyzedTime: "15:30"
-            },
-            {
-                id: 3,
-                thumbnailUrl: null,
-                impurityRate: 4.7,
-                isSuitable: false,
-                analyzedDate: "2025.10.02",
-                analyzedTime: "09:15"
-            },
-            {
-                id: 4,
-                thumbnailUrl: null,
-                impurityRate: 1.8,
-                isSuitable: true,
-                analyzedDate: "2025.10.01",
-                analyzedTime: "10:45"
-            }
-    ];
+// 분석 결과 리스트
+const resultsList = [
+{{#resultsList}}
+    {
+    id: {{id}},
+    origImage: '{{origImage}}',
+    analysisDate: '{{analysisDate}}',
+    total: {{total}},
+    suitable: '{{suitable}}'
+},
+{{/resultsList}}
+];
 
-const USE_MOCK_DATA = true;
+const csrfToken = '{{_csrf.token}}';
+const csrfHeader = '{{_csrf.headerName}}';
 
-document.addEventListener('DOMContentLoaded', async () => {
-	console.log('페이지 로드 완료');
+//2. 페이지 진입시 초기화하기
+document.addEventListener('DOMContentLoaded', function() {
+    initializeUserInfo(); //사용자 정보 초기화
+    renderAnalysisCards(); //분석 카드
+    updateScrollButtons();
 
-	console.log(`데이터 모드: ${USE_MOCK_DATA ? 'MOCK DATA' : 'REAL API'}`);
-
-	await Promise.all([
-		loadUserInfo(),
-		loadAnalysisHistory()
-	]);
+   const container = document.getElementById('cardsContainer');
+    if (container) {
+        container.addEventListener('scroll', updateScrollButtons);
+    }
 });
 
-function delay(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
+function initializeUserInfo() {
+    const userTypeText = memberDTO.userType === 'COMPANY' ? '기업' : '개인';
+    const modalUserType = document.getElementById('modalUserType');
 
-// 사용자 정보 가져오기
-async function loadUserInfo() {
-	try {
-		let userData;
+    if (modalUserType) {
+    modalUserType.textContent = userTypeText;
+    }
 
-		if (USE_MOCK_DATA) {
-			console.log('더미 데이터 로드중');
-			await delay(300);
-			userData = MOCK_USER_DATA;
-		} else {
-			console.log('API 호출: /api/member/me');
-			const response = await fetch('/api/member/me', {
-				credentials: 'include'
-			});
+    //가입일
+    const joinDateFormatted = formatDate(memberDTO.joinDate);
+    const joinDateDisplay = document.getElementById('joinDateDisplay');
+    const modalJoinDate = document.getElementById('modalJoinDate');
 
-			if (!response.ok) {
-				throw new Error('사용자 정보를 불러올 수 없습니다.');
-			}
+    if (joinDateDisplay) {
+        joinDateDisplay.textContent = joinDateFormatted;
+    }
 
-			userData = await response.json();
-		}
-
-		console.log('사용자 데이터:', userData);
-		displayUserInfo(userData);
-
-	} catch (error) {
-        console.error('사용자 정보 로딩 실패:', error);
-        const greetingEl = document.getElementById('greeting');
-        if (greetingEl) {
-            greetingEl.textContent = '사용자 정보를 불러올 수 없습니다.';
+    if (modalJoinDate) {
+        modalJoinDate.textContent = joinDateFormatted;
         }
+
+    //총 분석 이력 개수
+    const totalCount = document.getElementById('totalAnalysisCount');
+    if (totalCount) {
+        totalCount.textContent = resultsList.length + '건';
+    }
+
+    //최근 분석일(리스트에서 첫 번째 항목 불러오기)
+    const lastAnalysisDate = document.getElementById('lastAnalysisDate');
+    if (lastAnalysisDate && resultsList.length > 0) {
+        lastAnalysisDate.textContent = resultsList[0].analysisDate;
     }
 }
 
-
-// 분석 이력 가져오기
-async function loadAnalysisHistory() {
-	try {
-		let analysisData;
-
-		if (USE_MOCK_DATA) {
-			console.log('더미 데이터 분석 이력 로드중');
-			await delay(500);
-
-			analysisData = MOCK_ANALYSIS_HISTORY;
-		} else {
-			console.log('API 호출: /api/member/analysis-history');
-			const response = await fetch('/api/member/analysis-history', {
-				credentials: 'include'
-			});
-
-			if (!response.ok) {
-				throw new Error('분석 이력을 불러올 수 없습니다.');
-			}
-			const pageData = await response.json();
-			analysisData = pageData.content;
-		}
-
-		console.log('분석 이력:', analysisData);
-		displayAnalysisCards(analysisData);
-
-	} catch (error) {
-        console.error('분석 이력 로딩 실패:', error);
-        const container = document.getElementById('cardsContainer');
-        if (container) {
-            container.innerHTML = `
-                <div class="empty-state">
-                    <p>분석 이력을 불러올 수 없습니다.</p>
-                </div>
-            `;
-        }
-    }
-}
-
-// 사용자 정보 화면에 나타내기
-function displayUserInfo(userData) {
-    const greetingEl = document.getElementById('greeting');
-    if (greetingEl) {
-        greetingEl.textContent = `${userData.name}님, 안녕하세요`;
-    }
-
-    const userInfoGrid = document.getElementById('userInfoGrid');
-    if (userInfoGrid) {
-        userInfoGrid.innerHTML = `
-            <div class="info-item">
-                <div class="info-label">총 분석 이력</div>
-                <div class="info-value bold">${userData.totalAnalysisCount}건</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">최근 분석일</div>
-                <div class="info-value medium">${userData.lastAnalyzedDate || '-'}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">가입일</div>
-                <div class="info-value medium">${formatDate(userData.joinDate)}</div>
-            </div>
-        `;
-    }
-}
-
-// 분석 이력 카드 나타내기
-function displayAnalysisCards(analyses) {
+//분석 이력 카드 불러오기 (디자인 변경하기)
+function renderAnalysisCards() {
     const container = document.getElementById('cardsContainer');
 
     if (!container) {
-        console.error('cardsContainer 요소를 찾을 수 없습니다.');
+        console.error('cardsContainer를 찾을 수 없습니다');
         return;
     }
 
-    if (!analyses || analyses.length === 0) {
+    //분석 이력이 없는 경우
+    if (!resultsList || resultsList.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
                 <p>아직 분석 이력이 없습니다.</p>
             </div>
         `;
-        return;
     }
 
-    container.innerHTML = analyses.map(analysis => `
-        <div class="analysis-card" onclick="showDetail(${analysis.id})">
-            ${analysis.thumbnailUrl ?
-                `<img src="${analysis.thumbnailUrl}" alt="분석 이미지" class="card-image">` :
-                ''
+    //카드 생성(이미지, 분석일, 불순물 비율, 적합/부적합 배지 필요)
+    container.innerHTML = resultsList.map(result => `
+
+    <div class="analysis-card-wrapper">
+        <a href="/result/${result.id}" class="card-detail-link">상세 분석 보기 &gt;</a>
+
+        <div class="analysis-card" onclick="goToDetail(${result.id})">
+            ${result.origImage ?
+                `<img src="${result.origImage}" alt="분석 이미지" class="card-image">` :
+                '<div class="card-image-placeholder"></div>'
             }
 
-            <div class="card-badge ${analysis.isSuitable ? 'badge-suitable' : 'badge-unsuitable'}">
-                ${analysis.isSuitable ? '적합' : '부적합'}
+            <div class="card-badge ${result.suitable === '적합' ? 'badge-suitable' : 'badge-unsuitable'}">
+                ${result.suitable}
             </div>
 
             <div class="card-content">
                 <div class="card-datetime">
-                    <span>${analysis.analyzedDate}</span>
-                    <span>${analysis.analyzedTime}</span>
+                    <span>${result.analysisDate}</span>
                 </div>
+
                 <div class="card-bottom">
                     <div class="card-info">
                         <h3>불순물 비율</h3>
-                        <div class="card-rate">${analysis.impurityRate}%</div>
+                        <div class="card-rate">${result.total}%</div>
                     </div>
-                    <a href="/analysis/${analysis.id}" class="card-detail-btn" onclick="event.stopPropagation();">
-                        상세 분석 보기 &gt;
-                    </a>
                 </div>
             </div>
         </div>
-    `).join('');
+    </div>
+`).join('');
 }
 
-// 날짜
+//상세 분석 모달창으로 이동 (분석 결과 페이지 가져오기)
+function goToDetail(id) {
+    window.location.href = `/result/${id}`;
+}
+
+//분석 날짜 불러오기
 function formatDate(dateString) {
     if (!dateString) return '-';
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `'${year}.${month}.${day}'`;
-}
 
-// 카드 스크롤하기
+    return `${year}-${month}-${day}`;
+    }
+
+//카드 스크롤 기능
 function scrollCards(direction) {
     const container = document.getElementById('cardsContainer');
-    if (container) {
-        const scrollAmount = 600;
-        container.scrollBy({
-            left: direction * scrollAmount,
-            behavior: 'smooth'
+    const cardWidth = 450; //카드 크기
+    const gap = 60;
+    const scrollAmount = (cardWidth + gap) * 3;
+
+    container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+
+// 가로 스크롤 버튼 표시하기
+function updateScrollButtons() {
+    const container = document.getElementById('cardsContainer');
+    const leftBtn = document.querySelector('.scroll-btn-left');
+    const rightBtn = document.querySelector('.scroll-btn-right');
+
+    if (!container || !leftBtn || !rightBtn) return;
+
+    if (resultsList.length <= 3) {
+        leftBtn.style.display = 'none';
+        rightBtn.style.display = 'none';
+        return;
+    } else {
+        leftBtn.style.display = 'flex';
+        rightBtn.style.display = 'flex';
+    }
+
+    // 스크롤 위치
+    const scrollLeft = container.scrollLeft;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+
+    leftBtn.style.opacity = scrollLeft > 0 ? '1' : '0';
+    leftBtn.style.pointerEvents = scrollLeft > 0 ? 'auto' : 'none';
+
+    rightBtn.style.opacity = scrollLeft < maxScroll - 1 ? '1' : '0';
+    rightBtn.style.pointerEvents = scrollLeft < maxScroll - 1 ? 'auto' : 'none';
+}
+
+//=====================================================================
+//모달 JS
+// 계정 설정 버튼 누르면 비밀번호 확인 모달 나와야 함
+function openPasswordModal() {
+    document.getElementById('passwordModal').style.display = 'block';
+    document.getElementById('passwordCheck').value = '';
+    document.getElementById('passwordCheck').focus();
+}
+
+//비밀번호 확인 모달 닫기
+function closePasswordModal() {
+    document.getElementById('passwordModal').style.display = 'none';
+    document.getElementById('passwordCheck').value = '';
+}
+
+//비밀번호 확인
+async function checkPassword(event) {
+    event.preventDefault();
+
+    const password = document.getElementById('passwordCheck').value;
+
+    if (!password) {
+        alert('비밀번호를 입력해주세요.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/member/check/${memberDTO.id}?password=${encodeURIComponent(password)}`, {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+            },
+            credentials: 'include'
         });
+
+        const result = await response.json();
+
+        if (result.success) {
+            closePasswordModal();
+            openAccountSettings();
+        } else {
+            alert('비밀번호가 일치하지 않습니다.');
+        }
+    } catch (error) {
+        console.error('비밀번호 확인 실패', error);
+        alert('비밀번호 확인 중 오류가 발생했습니다.');
     }
 }
 
-// 상세 분석 보기 버튼
-function showDetail(id) {
-    console.log('상세보기:', id);
-    window.location.href = `/analysis/${id}`;
-}
-
-// 계정 설정
+//계정 설정 모달창 열기
 function openAccountSettings() {
-    console.log('계정 설정 열기');
-    window.location.href = '/account-settings';
+    document.getElementById('accountModal').style.display = 'block';
 }
-</script>
 
+//계정 설정 모달창 닫기
+function closeAccountSettings() {
+    document.getElementById('accountModal').style.display = 'none';
+    document.getElementById('currentPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+}
+
+//===============================================================
+//회원 정보 수정하기
+//생년월일 수정
+async function changeBirthday(event) {
+    event.preventDefault();
+
+    const birthday = document.getElementById('birthdayInput').value;
+
+    if (!birthday) {
+        alert('생년월일을 선택해주세요');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/member/change/bd/${memberDTO.id}?birthday=${encodeURIComponent(birthday)}`, {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+            },
+            credentials: 'include'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            memberDTO.birthday = birthday;
+
+            document.querySelectorAll('.info-section .info-row').forEach(row => {
+                const label = row.querySelector('label');
+                if (label && label.textContent.trim() === '생년월일') {
+                    const span = row.querySelector('span');
+                    if (span && !span.id) {
+                        span.textContent = birthday;
+                    }
+                }
+            });
+
+            alert(result.message || '생년월일이 수정되었습니다.');
+
+        } else {
+            alert(result.message || '생년월일 수정에 실패했습니다.');
+        }
+    } catch (error) {
+        console.error('생년월일 수정 실패:', error);
+        alert('생년월일 수정 중 오류가 발생했습니다.');
+    }
+}
+
+//비밀번호 수정
+async function changePassword(event) {
+    event.preventDefault();
+
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+        alert('모든 칸을 입력해주세요.');
+        return;
+    }
+    if (newPassword !== confirmPassword) {
+        alert('새 비밀번호가 일치하지 않습니다.');
+        return;
+    }
+
+	// 현재 비번 확인
+    try {
+        const checkResponse = await fetch(`/member/check/${memberDTO.id}?password=${encodeURIComponent(currentPassword)}`, {
+        method: 'POST',
+        headers: {
+            [csrfHeader]: csrfToken
+    },
+        credentials: 'include'
+        });
+
+     const checkResult = await checkResponse.json();
+
+    if (!checkResult.success) {
+        alert('현재 비밀번호가 일치하지 않습니다.');
+        return;
+    }
+
+	//비번 변경
+    const changeResponse = await fetch(`/member/change/pw/${memberDTO.id}?password=${encodeURIComponent(newPassword)}`, {
+		method: 'POST',
+		headers: {
+			[csrfHeader]: csrfToken
+		},
+		credentials: 'include'
+	});
+
+    const changeResult = await changeResponse.json();
+
+    if (changeResult.success) {
+		alert(changeResult.message);
+		document.getElementById('currentPassword').value = '';
+		document.getElementById('newPassword').value = '';
+		document.getElementById('confirmPassword').value = '';
+    } else {
+
+        alert(changeResult.message || '비밀번호 수정에 실패했습니다.');
+        }
+    } catch (error) {
+        console.error('비밀번호 수정 실패', error);
+        alert('비밀번호 수정 중 오류가 발생했습니다.');
+    }
+}
+
+
+//회원 탈퇴 기능
+function confirmCancelAccount() {
+
+    const confirmed = confirm('정말로 회원 탈퇴하시겠습니까?\n모든 데이터가 삭제되며 복구할 수 없습니다.');
+
+    if (confirmed) {
+        cancelAccount();
+    }
+}
+// 회원 탈퇴 확인
+async function cancelAccount() {
+    try {
+        const response = await fetch(`/member/cancel/${memberDTO.id}`, {
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+            },
+            credentials: 'include'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert(result.message);
+            window.location.href = '/logout';
+        } else {
+            alert(result.message || '회원 탈퇴에 실패했습니다.');
+        }
+    } catch (error) {
+        console.error('회원 탈퇴 실패', error);
+        alert('회원 탈퇴 중 오류가 발생했습니다.');
+    }
+}
+
+//eventListener(모달 닫는 방법 고민해보기)
+	window.onclick = function(event) {
+    const passwordModal = document.getElementById('passwordModal');
+    const accountModal = document.getElementById('accountModal');
+
+    if (event.target === passwordModal) {
+        closePasswordModal();
+    }
+    if (event.target === accountModal) {
+        closeAccountSettings();
+    }
+}
+
+</script>
 </body>
 </html>
 

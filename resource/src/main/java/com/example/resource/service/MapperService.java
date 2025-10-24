@@ -52,6 +52,7 @@ public class MapperService {
         total=Math.round(total*100)/100.0;
 
         return ResultDTO.builder()
+                .id(result.getId())
                 .origImage(toDataUri(origImage.getImageData()))
                 .analysisDate(analysisDate)
                 .plastic(result.getPlastic())

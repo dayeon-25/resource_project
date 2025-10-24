@@ -1,8 +1,6 @@
 package com.example.resource.restcontroller;
 
-import com.example.resource.entity.Member;
 import com.example.resource.repository.MemberRepository;
-import com.example.resource.service.AnalysisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

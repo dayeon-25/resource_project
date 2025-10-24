@@ -39,7 +39,7 @@ public class MemberController {
                                           @AuthenticationPrincipal MemberDetails memberDetails,
                                           @RequestParam LocalDate birthday) {
         memberService.updateBirthDay(id, memberDetails.getId(), birthday);
-        return new AccountActionResponse(true, "생일이 수정되었습니다.");
+        return new AccountActionResponse(true, "생년월일이 수정되었습니다.");
     }
 
     @PostMapping("/cancel/{id}")

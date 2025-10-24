@@ -22,12 +22,15 @@ public class MypageController {
 
     @GetMapping("/mypage")
     public String mypage(Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
-        Member member = memberDetails.getMember();
-        List<ResultDTO> resultsList = myPageService.getResultList(member);
-        model.addAttribute("resultsList", resultsList);
-        model.addAttribute("isMypage", true);
+            Member member = memberDetails.getMember();
 
-        return "mypage";
+            List<ResultDTO> resultsList = myPageService.getResultList(member);
+
+            model.addAttribute("memberDTO", member);
+            model.addAttribute("resultsList", resultsList);
+            model.addAttribute("isMypage", true);
+
+            return "mypage";
+
     }
-
 }

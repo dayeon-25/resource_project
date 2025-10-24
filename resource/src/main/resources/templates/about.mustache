@@ -53,25 +53,27 @@
 <!--'탄소 중립은' JS-->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-const observerOptions = {
-root: null,
-rootMargin: '0px 0px -100px 0px',
-threshold: 0.15
+	const observerOptions = {
+		root: null,
+		rootMargin: '0px 0px -100px 0px',
+		threshold: 0.15
 };
 
 const observer = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-entry.target.classList.add('visible');
-observer.unobserve(entry.target);
-}
-});
+	entries.forEach(entry => {
+		if (entry.isIntersecting) {
+			entry.target.classList.add('visible');
+
+			observer.unobserve(entry.target);
+		}
+	});
 }, observerOptions);
 
 const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade-in-element');
-fadeElements.forEach(element => {
-observer.observe(element);
-});
+	fadeElements.forEach(element => {
+
+	observer.observe(element);
+	});
 });
 </script>
 
@@ -197,7 +199,6 @@ observer.observe(element);
         <div class="aggregate-image image4">
             <img src="/images/aggregate4.png" alt="순환골재 4">
         </div>
-
     </div>
      </div>
     </div>
@@ -206,261 +207,81 @@ observer.observe(element);
 
 <!--순환 골재는 JS-->
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const section = document.querySelector('.aggregate-section');
-    const textLines = document.querySelectorAll('.texts p');
-    const images = document.querySelectorAll('.aggregate-image');
-    const viewportHeight = window.innerHeight;
+	document.addEventListener("DOMContentLoaded", () => {
+		const section = document.querySelector('.aggregate-section');
+		const textLines = document.querySelectorAll('.texts p');
+		const images = document.querySelectorAll('.aggregate-image');
+		const viewportHeight = window.innerHeight;
 
-    function animateOnScroll() {
-        const scrollY = window.scrollY;
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
+		// 초기 상태
+		images.forEach(img => {
+			img.style.visibility = 'hidden';
+			img.style.transform = 'translateY(50px)';
+			img.style.transition = 'transform 0.7s cubic-bezier(.22,.9,.27,1), opacity 0.7s ease-out';
+			img.style.opacity = 0;
+		});
 
-        const progress = Math.min(Math.max((scrollY - sectionTop) / (sectionHeight - viewportHeight), 0), 1);
+		textLines.forEach(line => {
+			line.style.transition = 'opacity 0.5s ease, transform 0.6s ease-out';
+		});
 
-        // 텍스트 페이드인
-        textLines.forEach((line, i) => {
-            const start = 0.08 + i * 0.06;
-            const end = start + 0.3;
-            const textProgress = Math.max(0, Math.min(1, (progress - start) / (end - start)));
-            line.style.opacity = textProgress;
-            line.style.transform = `translateY(${30 - 30 * textProgress}px)`;
-            });
+		function animateOnScroll() {
+			const scrollY = window.scrollY;
+			const sectionTop = section.offsetTop;
+			const sectionHeight = section.offsetHeight;
 
-		const textDoneProgress = 0.08 + (textLines.length - 1) * 0.06 + 0.3;
+			let progress = (scrollY - sectionTop + viewportHeight) / sectionHeight;
+			progress = Math.min(Math.max(progress, 0), 1);
 
-		// 첫 번째 이미지
-		const firstImageStart = textDoneProgress;
-        const firstImageEnd = textDoneProgress + 0.15;
-        const firstImageProgress = Math.max(0, Math.min(1, (progress - firstImageStart) / (firstImageEnd - firstImageStart)));
+			// 1. 텍스트 순차 등장
+			textLines.forEach((line, i) => {
+				const start = 0.05 + i * 0.08;
+				const end = start + 0.25;
+				let p = (progress - start) / (end - start);
+				p = Math.min(Math.max(p, 0), 1);
+				line.style.opacity = p;
+				line.style.transform = `translateY(${30 * (1 - p)}px)`;
+			});
 
-		if (progress >= firstImageStart) {
-            images[0].style.opacity = firstImageProgress;
-            const translateY = 50 * (1 - firstImageProgress);
-            images[0].style.transform = `translateY(${translateY}px)`;
-        } else {
-            images[0].style.opacity = 0;
-            images[0].style.transform = `translateY(50px)`;
-        }
+			const textDone = 0.05 + (textLines.length - 1) * 0.08 + 0.25;
 
-		// 2,3 이미지
-		[1, 2].forEach((i) => {
-            const start = firstImageEnd + 0.08 + (i - 1) * 0.12;
-            const end = start + 0.15;
-            const moveProgress = Math.max(0, Math.min(1, (progress - start) / (end - start)));
+			// 2. 이미지 등장 (텍스트 완료 후 시작)
+			const imageOffsets = [textDone + 0.05, textDone + 0.15, textDone + 0.25, textDone + 0.35];
+			images.forEach((img, i) => {
+				if (progress >= imageOffsets[i]) {
+					img.style.visibility = 'visible';
+					img.style.opacity = 1;
+					img.style.transform = 'translateY(0px)';
+					img.style.zIndex = 10 + i;
+				} else {
+					img.style.opacity = 0;
+					img.style.visibility = 'hidden';
+					img.style.transform = 'translateY(50px)';
+				}
+			});
+		}
 
-            if (progress >= start) {
-                images[i].style.opacity = moveProgress;
-                images[i].style.transform = `translateY(${viewportHeight * (1 - moveProgress)}px)`;
-            } else {
-                images[i].style.opacity = 0;
-                images[i].style.transform = `translateY(${viewportHeight}px)`;
-            }
-        });
-
-		// 마지막 이미지
-		const lastIndex = 3;
-		 const secondImageEnd = firstImageEnd + 0.08 + (1 - 1) * 0.12 + 0.15;
-        const lastAppearStart = thirdImageEnd + 0.1;
-        const lastAppearEnd = lastAppearStart + 0.12;
-        const lastGrowStart = lastAppearEnd;
-        const lastGrowEnd = 0.99;
-
-        let appearProgress = Math.max(0, Math.min(1, (progress - lastAppearStart) / (lastAppearEnd - lastAppearStart)));
-        let translateYValue = viewportHeight * (1 - appearProgress);
-
-        if (progress >= lastAppearStart) {
-            images[lastIndex].style.opacity = appearProgress;
-
-            if (progress >= lastAppearEnd) {
-                images[lastIndex].style.transform = `translateY(0px)`;
-            } else {
-                images[lastIndex].style.transform = `translateY(${translateYValue}px)`;
-            }
-
-        // 확대 효과 (grow)
-        if (progress >= lastGrowStart && progress <= lastGrowEnd) {
-            const growProgress = Math.max(0, Math.min(1, (progress - lastGrowStart) / (lastGrowEnd - lastGrowStart)));
-            const size = 100 + growProgress * 150;
-            images[lastIndex].style.width = `${size}%`;
-            images[lastIndex].style.height = `${size}%`;
-        } else if (progress > lastGrowEnd) {
-            images[lastIndex].style.width = '250%';
-            images[lastIndex].style.height = '250%';
-        } else {
-            images[lastIndex].style.width = '100%';
-            images[lastIndex].style.height = '100%';
-        }
-    } else {
-        images[lastIndex].style.opacity = 0;
-        images[lastIndex].style.transform = `translateY(${viewportHeight}px)`;
-        images[lastIndex].style.width = '100%';
-        images[lastIndex].style.height = '100%';
-    }
-}
-
-    window.addEventListener('scroll', animateOnScroll);
-    window.addEventListener('resize', animateOnScroll);
-    animateOnScroll();
-});
+		window.addEventListener('scroll', animateOnScroll);
+		window.addEventListener('resize', animateOnScroll);
+		animateOnScroll();
+	});
 </script>
+
 <!--순환 골재는 섹션 끝-->
 
+<!--사용 용도 섹션 시작-->
 <!--사용 용도 섹션1-->
 <div class="usage-section1-wrapper">
-    <section id="usage" class="usage-section usage-section1" data-theme="dark">
+    <section id="usage1" class="usage-section usage-section1" data-theme="dark">
         <div class="usage-intro">
             <h2 class="usage-intro-text">WASTE TO RESOURCE</h2>
         </div>
     </section>
 </div>
 
-<!--사용 용도 섹션 JS 합치기-->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-
-	// 섹션1 애니메이션 부분
-	const usageWrapper = document.querySelector('.usage-section1-wrapper');
-	const usageText = document.querySelector('.usage-intro-text');
-
-	const USAGE_CONFIG = {
-		fadeIn: {
-			startProgress: 0.05,
-			endProgress: 0.25,
-			scaleFrom: 0.8,
-			scaleTo: 1
-		},
-
-		hold: {
-			startProgress: 0.25,
-			endProgress: 0.7
-		},
-
-		fadeOut: {
-			startProgress: 0.7,
-			endProgress: 0.85,
-			moveDistance: -400
-		}
-	};
-
-	function calculateProgress(current, start, end) {
-		return Math.max(0, Math.min(1, (current - start) / (end - start)));
-	}
-
-	function animateUsageSection1() {
-
-       const usageHeader = document.querySelector('.usage-header');
-       const firstUsageCard = document.querySelector('.usage-item:first-child');
-
-       const wrapperRect = usageWrapper.getBoundingClientRect();
-       const wrapperHeight = usageWrapper.offsetHeight;
-       const viewportHeight = window.innerHeight;
-       const scrollStart = wrapperRect.top;
-       const scrollRange = wrapperHeight - viewportHeight;
-       const progress = Math.max(0, Math.min(1, -scrollStart / scrollRange));
-
-		// 섹션1 텍스트 애니메이션 효과
-        if (progress >= USAGE_CONFIG.fadeIn.startProgress && progress <= USAGE_CONFIG.fadeIn.endProgress) {
-            const fadeInProgress = calculateProgress(progress, USAGE_CONFIG.fadeIn.startProgress, USAGE_CONFIG.fadeIn.endProgress);
-            const scale = USAGE_CONFIG.fadeIn.scaleFrom + (USAGE_CONFIG.fadeIn.scaleTo - USAGE_CONFIG.fadeIn.scaleFrom) * fadeInProgress;
-            usageText.style.opacity = fadeInProgress;
-            usageText.style.transform = `scale(${scale})`;
-       }
-        else if (progress > USAGE_CONFIG.hold.startProgress && progress <= USAGE_CONFIG.hold.endProgress) {
-          usageText.style.opacity = 1;
-          usageText.style.transform = `scale(1)`;
-        }
-        else if (progress > USAGE_CONFIG.fadeOut.startProgress && progress <= USAGE_CONFIG.fadeOut.endProgress) {
-          const fadeOutProgress = calculateProgress(progress, USAGE_CONFIG.fadeOut.startProgress, USAGE_CONFIG.fadeOut.endProgress);
-          const moveY = USAGE_CONFIG.fadeOut.moveDistance * fadeOutProgress;
-          const opacity = 1 - fadeOutProgress;
-          usageText.style.opacity = opacity;
-          usageText.style.transform = `translateY(${moveY}px) scale(1)`;
-        }
-        else if (progress < USAGE_CONFIG.fadeIn.startProgress) {
-          usageText.style.opacity = 0;
-          usageText.style.transform = `scale(${USAGE_CONFIG.fadeIn.scaleFrom})`;
-        }
-        else if (progress > USAGE_CONFIG.fadeOut.endProgress) {
-          usageText.style.opacity = 0;
-          usageText.style.transform = `translateY(${USAGE_CONFIG.fadeOut.moveDistance}px)`;
-        }
-
-		// 섹션2 헤더 애니메이션 부분 (페이드인 효과)
-		const headerStart = 0.65;
-		const headerEnd = 0.80;
-		const headerProgress = calculateProgress(progress, headerStart, headerEnd);
-
-		if (usageHeader) {
-			if (headerProgress > 0) {
-				const translateY = 150 * (1 - headerProgress);
-				usageHeader.style.opacity = headerProgress;
-				usageHeader.style.transform = `translateY(${translateY}px)`;
-			} else {
-				usageHeader.style.opacity = 0;
-				usageHeader.style.transform = `translateY(150px)`;
-			}
-		}
-
-		// 첫 번째 카드 애니메이션 (페이드 인 효과)
-		const cardStart = 0.65;
-		const cardEnd = 0.90;
-		const cardProgress = calculateProgress(progress, cardStart, cardEnd);
-
-		if (firstUsageCard) {
-			if (cardProgress > 0) {
-				const translateY = 250 * (1 - cardProgress);
-				firstUsageCard.style.opacity = cardProgress;
-				firstUsageCard.style.transform = `translateY(${translateY}px)`;
-			} else {
-				firstUsageCard.style.opacity = 0;
-				firstUsageCard.style.transform = `translateY(250px)`;
-			}
-		}
-	}
-
-	let ticking = false;
-	window.addEventListener('scroll', () => {
-		if (!ticking) {
-			window.requestAnimationFrame(() => {
-				animateUsageSection1();
-				ticking = false;
-			});
-			ticking = true;
-		}
-	});
-
-	animateUsageSection1();
-
-
-    //섹션2 나머지 이미지 카드 애니메이션 추가 부분
-    const usageItems = document.querySelectorAll('.usage-item:not(:first-child)');
-    const observerOptions = {
-        root: null,
-        threshold: 0.2,
-        rootMargin: '0px 0px -150px 0px'
-    };
-
-    const itemObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-                itemObserver.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    usageItems.forEach(item => {
-        itemObserver.observe(item);
-    });
-    });
-
-</script>
-
+<!--사용 용도 섹션1 끝-->
 <!--사용 용도 섹션2-->
-<section id="usage" class="usage-section usage-section2" data-theme="dark">
+<section id="usage2" class="usage-section usage-section2" data-theme="dark">
     <div class="usage-content">
     <div class="usage-header">
         <span class="usage-label">탄소저감</span>
@@ -485,7 +306,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			</div>
 	</div>
 
-
     <div class="usage-item">
 		<div class="usage-card">
 			<div class="usage-image">
@@ -498,7 +318,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			</p>
 		</div>
 	</div>
-
 
         <div class="usage-item">
 			<div class="usage-card">
@@ -528,6 +347,126 @@ document.addEventListener("DOMContentLoaded", () => {
 	</div>
 </section>
 <!--사용 용도 섹션 끝-->
+
+<!--사용 용도 JS 합친 버전-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        //섹션1
+        const usageWrapper = document.querySelector('.usage-section1-wrapper');
+        const usageText = document.querySelector('.usage-intro-text');
+        const USAGE_CONFIG = {
+            fadeIn: { startProgress: 0.05, endProgress: 0.25, scaleFrom: 0.8, scaleTo: 1 },
+            hold: { startProgress: 0.25, endProgress: 0.7 },
+            fadeOut: { startProgress: 0.7, endProgress: 0.95, moveDistance: -300 }
+        };
+
+        function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+        function calculateProgress(current, start, end) {
+            if (end === start) return 0;
+            return clamp01((current - start) / (end - start));
+        }
+        function getWrapperProgress() {
+            const rect = usageWrapper.getBoundingClientRect();
+            const wrapperHeight = usageWrapper.offsetHeight;
+            const viewportHeight = window.innerHeight;
+            const scrollStart = rect.top;
+            const scrollRange = wrapperHeight - viewportHeight;
+            return clamp01(-scrollStart / (scrollRange || 1));
+        }
+
+        function animateSection1() {
+            const progress = getWrapperProgress();
+            if (progress >= USAGE_CONFIG.fadeIn.startProgress && progress <= USAGE_CONFIG.fadeIn.endProgress) {
+                const p = calculateProgress(progress, USAGE_CONFIG.fadeIn.startProgress, USAGE_CONFIG.fadeIn.endProgress);
+                const scale = USAGE_CONFIG.fadeIn.scaleFrom + (USAGE_CONFIG.fadeIn.scaleTo - USAGE_CONFIG.fadeIn.scaleFrom) * p;
+                usageText.style.opacity = p;
+                usageText.style.transform = `scale(${scale}) translateY(0)`;
+
+            } else if (progress > USAGE_CONFIG.hold.startProgress && progress <= USAGE_CONFIG.hold.endProgress) {
+                usageText.style.opacity = 1;
+                usageText.style.transform = `scale(1) translateY(0)`;
+
+            } else if (progress > USAGE_CONFIG.fadeOut.startProgress) {
+                const p = calculateProgress(progress, USAGE_CONFIG.fadeOut.startProgress, USAGE_CONFIG.fadeOut.endProgress);
+                const textTranslateY = (USAGE_CONFIG.fadeOut.moveDistance * 0.2) * p;
+                usageText.style.opacity = 1;
+                usageText.style.transform = `translateY(${-Math.abs(textTranslateY)}px) scale(1)`;
+
+            } else {
+                usageText.style.opacity = 0;
+                usageText.style.transform = `scale(${USAGE_CONFIG.fadeIn.scaleFrom})`;
+            }
+        }
+
+        //섹션2
+        const usage2 = document.querySelector('.usage-section2');
+        const usageHeader = usage2.querySelector('.usage-header');
+        const usageItems = Array.from(usage2.querySelectorAll('.usage-item'));
+        let currentScale = 1;
+        let currentTranslateY = 0;
+
+        function animateSection2() {
+            const scrollTop = window.scrollY;
+            const vh = window.innerHeight;
+            const sectionTop = usage2.offsetTop;
+            const sectionHeight = usage2.offsetHeight;
+            const sectionBottom = sectionTop + sectionHeight;
+
+            // 섹션2 축소
+            const shrinkStart = sectionBottom - vh * 0.8;
+            const shrinkEnd = sectionBottom;
+            const shrinkProgress = clamp01((scrollTop - shrinkStart) / (shrinkEnd - shrinkStart));
+
+            const targetScale = 1 - 0.15 * shrinkProgress;
+            const targetTranslateY = -vh * 0.15 * shrinkProgress;
+            currentScale += (targetScale - currentScale) * 0.05;
+
+            currentTranslateY += (targetTranslateY - currentTranslateY) * 0.05;
+            usage2.style.transform = `translateY(${currentTranslateY}px) scale(${currentScale})`;
+            usage2.style.transformOrigin = 'top center';
+
+            // 헤더 fade-in
+            const headerProgress = clamp01((scrollTop - sectionTop + vh * 0.3) / (vh * 0.3));
+            usageHeader.style.opacity = headerProgress;
+            usageHeader.style.transform = `translateY(${150 * (1 - headerProgress)}px)`;
+
+            // 카드 fade-in
+            usageItems.forEach(item => {
+                const rectItem = item.getBoundingClientRect();
+                const cardProgress = clamp01(1 - (rectItem.top - vh * 0.1) / (vh * 0.5));
+                const translateY = 80 * (1 - cardProgress);
+                item.style.opacity = cardProgress;
+                item.style.transform = `translateY(${translateY}px)`;
+            });
+
+            requestAnimationFrame(animateSection2);
+        }
+
+        let ticking1 = false;
+        let ticking2 = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking1) {
+                window.requestAnimationFrame(() => { animateSection1(); ticking1 = false; });
+                ticking1 = true;
+            }
+            if (!ticking2) {
+                window.requestAnimationFrame(() => { animateSection2(); ticking2 = false; });
+                ticking2 = true;
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            animateSection1();
+            animateSection2();
+        });
+
+        animateSection1();
+        animateSection2();
+
+    });
+</script>
+
 
 <!--통계 섹션-->
 <section id="stats" class="stats-section" data-theme="light">
@@ -765,131 +704,231 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 
-
-<!--시뮬레이션 섹션-->
-<section id="simulation" class="simulation-section" data-theme="light">
-	<div class="section-header">
-		<span class="section-label">SIMULATION</span>
-		<h2 class="simulation-title">순환골재의 사용 효과</h2>
+<!--시뮬레이션 섹션1-->
+<section id="simulation1" class="simulation-section simulation-section1" data-theme="light">
+	<div class="simulation-header">
+		<span class="simulation-label">SIMULATION</span>
+		<h2 class="simulation-title">직접 확인하는<br>순환골재 효과</h2>
 	</div>
 
-	<div class="simulation-content">
-		<p class="simulation-description">
-			슬라이더를 움직여 순환골재 사용 비율에 따른 <strong>탄소 저감량</strong>과 <strong>비용 절감 효과</strong>를 실시간으로 확인하세요
-		</p>
-		<p class="simulation-text">
-			기준: 건물 면적이 1000m^3 건물 기준 (골재 1,600톤)
-		</p>
-
-		<!-- 슬라이더 부분 -->
-		<div class="simulation-slider">
-			<div class="slider-wrapper">
-				<input type="range" id="recycleSlider" min="0" max="100" value="40">
-				<div class="slider-tooltip" id="sliderTooltip">40%</div>
-			</div>
-			<div class="slider-marks">
-				<span style="left: 0%">0</span>
-				<span style="left: 10%">10</span>
-				<span style="left: 20%">20</span>
-				<span style="left: 30%">30</span>
-				<span style="left: 40%">40</span>
-				<span style="left: 50%">50</span>
-				<span style="left: 60%">60</span>
-				<span style="left: 70%">70</span>
-				<span style="left: 80%">80</span>
-				<span style="left: 90%">90</span>
-				<span style="left: 100%">100</span>
-			</div>
-		</div>
-
-
-	<!--숫자 카운터 결과 부분-->
-		<div class="simulation-results">
-			<div class="result-card">
-				<h3 class="result-title">탄소 저감 효과</h3>
-				<div class="result-value">
-					<span class="result-label">저감된 탄소배출량 :</span>
-					<span class="result-number" id="carbonValue">825.6</span>
-					<span class="result-unit">kgCO2</span>
-				</div>
-			</div>
-
-			<div class="result-card">
-				<h3 class="result-title">비용 절감 효과</h3>
-				<div class="result-value">
-					<span class="result-label">절감된 비용량 :</span>
-					<span class="result-number" id="costValue">366</span>
-					<span class="result-unit">만원</span>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="intro-content">
+        <p class="simulation-description">
+            슬라이더를 움직여 순환골재 사용 비율에 따른 <strong>탄소 저감량</strong>과 <strong>비용 절감 효과</strong>를 실시간으로 확인하세요
+        </p>
+    </div>
 </section>
+
+
+<!-- 시뮬레이션 섹션2  -->
+<section id="simulation2" class="simulation-section simulation-section2" data-theme="light">
+
+    <div class="slider-content">
+        <span class="slider-label">효과를 확인하세요</span>
+        <p class="slider-description">
+            슬라이더를 직접 움직여 순환골재 사용 비율에 따른 <strong>탄소 저감량</strong>과 <strong>비용 절감 효과</strong>를 실시간으로 확인하세요
+        </p>
+    </div>
+
+
+    <!-- 슬라이더 부분 -->
+    <div class="simulation-slider">
+        <div class="slider-main">
+            <div class="slider-sides-container">
+                <div class="slider-side left">
+                    <span class="side-label">순환골재 사용량</span>
+                    <span class="side-percentage" id="recycledPercent">40<span class="percent-symbol">%</span></span>
+                </div>
+
+                <div class="slider-side right">
+                    <span class="side-label">천연골재 사용량</span>
+                    <span class="side-percentage" id="naturalPercent">60<span class="percent-symbol">%</span></span>
+                </div>
+            </div>
+
+            <div class="slider-wrapper">
+                <input type="range" id="recycleSlider" min="0" max="100" value="40" step="10">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 숫자 카운터 결과 부분 -->
+    <div class="simulation-results">
+        <div class="result-card">
+            <h3 class="result-title">탄소 저감 효과</h3>
+            <div class="result-value">
+                <span class="result-label">저감된 탄소배출량</span>
+                <span class="result-number" id="carbonValue">825.6</span>
+                <span class="result-unit">kgCO₂</span>
+            </div>
+        </div>
+
+        <div class="result-card">
+            <h3 class="result-title">비용 절감 효과</h3>
+            <div class="result-value">
+                <span class="result-label">절감된 비용량</span>
+                <span class="result-number" id="costValue">366</span>
+                <span class="result-unit">만원</span>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!--시뮬레이션 섹션 끝-->
 <!--시뮬레이션 JS-->
 <script>
+    // 슬라이더
+    const slider = document.getElementById('recycleSlider');
+    const carbonValue = document.getElementById('carbonValue');
+    const costValue = document.getElementById('costValue');
+    const recycledPercent = document.getElementById('recycledPercent');
+    const naturalPercent = document.getElementById('naturalPercent');
 
-	const TOTAL_AGGREGATE = 1600; //총 골재 사용량
-	const CO2_REDUCTION_PER_TON = 1.29; //CO^2 절감
-	const COST_REDUCTION_PER_TON = 5719; //비용 절감
+    /**
+     * 계산 로직:
+     * - 총 골재 사용량: 1,600톤 (1,000㎡ × 6층 건물 기준)
+     * - CO₂ 절감: 1.29kg/톤 (천연골재 4.29kg/톤 - 순환골재 3.00kg/톤)
+     * - 비용 절감: 5,719원/톤 (천연골재 8,125원/톤 - 순환골재 2,406원/톤)
+     */
 
-	const slider = document.getElementById('recycleSlider');
-	const sliderTooltip = document.getElementById('sliderTooltip');
-	const carbonValue = document.getElementById('carbonValue');
-	const costValue = document.getElementById('costValue');
+    const TOTAL_AGGREGATE = 1600; // 톤
+    const CO2_REDUCTION_PER_TON = 1.29; // kg CO₂/톤
+    const COST_REDUCTION_PER_TON = 5719; // 원/톤
 
-	// 카운트업 애니메이션
-	function countUp(element, targetValue, decimals = 0) {
-		const startValue = parseFloat(element.textContent) || 0;
-		const duration = 600;
-		const startTime = Date.now();
+    function updateValues(value) {
+        // 순환골재 vs 천연골재 퍼센트
+        recycledPercent.innerHTML = value + '<span class="percent-symbol">%</span>';
+        naturalPercent.innerHTML = (100 - value) + '<span class="percent-symbol">%</span>';
 
-		function animate() {
-			const currentTime = Date.now();
-			const progress = Math.min((currentTime - startTime) / duration, 1);
-			const currentValue = startValue + (targetValue - startValue) * progress;
+        // 슬라이더 진행바 색상 업데이트
+        slider.style.setProperty('--slider-progress', value + '%');
 
-			element.textContent = decimals > 0
-				? currentValue.toFixed(decimals)
-				: Math.round(currentValue);
+        // 실제 순환골재 사용량 (톤)
+        const recycledAmount = TOTAL_AGGREGATE * (value / 100);
 
-			if (progress < 1) {
-				requestAnimationFrame(animate);
-			}
-		}
+        // CO₂ 저감량 계산 (kg)
+        const co2Reduction = recycledAmount * CO2_REDUCTION_PER_TON;
 
-		animate();
-	}
+        // 비용 절감액 계산
+        const costReduction = (recycledAmount * COST_REDUCTION_PER_TON) / 10000;
 
-	// 슬라이더 업데이트
-	function updateSimulation() {
-		let percent = slider.value;
+        // 숫자 애니메이션
+        animateValue(carbonValue, parseFloat(carbonValue.textContent), co2Reduction, 300);
+        animateValue(costValue, parseFloat(costValue.textContent), costReduction, 300);
+    }
 
-		// 퍼센트 10씩 움직이게 하기
-		percent = Math.round(percent / 10) * 10;
-    	slider.value = percent;
+    // 숫자 애니메이션 부분
+    function animateValue(element, start, end, duration) {
+        const startTime = performance.now();
+        const isInteger = Math.abs(end - Math.round(end)) < 0.01;
 
-    	// 퍼센트 표시
-		sliderTooltip.textContent = percent + '%';
-		sliderTooltip.style.left = percent + '%';
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
 
-		// 슬라이더 배경색
-		slider.style.background = `linear-gradient(to right, #43564A 0%, #43564A ${percent}%, #E5E5E5 ${percent}%, #E5E5E5 100%)`;
+            const easeProgress = 1 - Math.pow(1 - progress, 3);
+            const current = start + (end - start) * easeProgress;
 
-		// 계산
-		const recycledAmount = TOTAL_AGGREGATE * (percent / 100);
-		const carbonReduction = recycledAmount * CO2_REDUCTION_PER_TON;
-		const costReduction = (recycledAmount * COST_REDUCTION_PER_TON) / 10000;
+            element.textContent = isInteger ?
+                Math.round(current).toLocaleString() :
+                current.toFixed(1);
 
-		// 카운트업 애니메이션
-		countUp(carbonValue, carbonReduction, 1);
-		countUp(costValue, costReduction, 0);
-	}
-	slider.addEventListener('input', updateSimulation);
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+        requestAnimationFrame(update);
+    }
 
-	updateSimulation();
+    slider.addEventListener('input', function() {
+        updateValues(this.value);
+    });
+
+    updateValues(40);
+
+    /* 섹션1 순차 애니메이션 */
+    const section1 = document.getElementById('simulation1');
+    const section2 = document.getElementById('simulation2');
+    const simulationLabel = section1.querySelector('.simulation-label');
+    const simulationTitle = section1.querySelector('.simulation-title');
+    const simulationDescription = section1.querySelector('.simulation-description');
+
+    // 초기 상태: 모든 요소 숨김
+    section1.style.opacity = '0';
+    simulationLabel.style.opacity = '0';
+    simulationLabel.style.transform = 'translateY(20px)';
+    simulationTitle.style.opacity = '0';
+    simulationTitle.style.transform = 'translateY(30px)';
+    simulationDescription.style.opacity = '0';
+    simulationDescription.style.transform = 'translateY(20px)';
+
+    // Intersection Observer로 섹션1 감지
+    const section1Observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                //섹션 배경 페이드인
+                section1.style.transition = 'opacity 0.5s ease';
+                section1.style.opacity = '1';
+
+                //라벨 등장
+                setTimeout(() => {
+                    simulationLabel.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    simulationLabel.style.opacity = '1';
+                    simulationLabel.style.transform = 'translateY(0)';
+                }, 300);
+
+                // 타이틀 등장
+                setTimeout(() => {
+                    simulationTitle.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    simulationTitle.style.opacity = '1';
+                    simulationTitle.style.transform = 'translateY(0)';
+                }, 700);
+
+                //설명
+                setTimeout(() => {
+                    simulationDescription.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                    simulationDescription.style.opacity = '1';
+                    simulationDescription.style.transform = 'translateY(0)';
+                }, 1300);
+
+                section1Observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.2,
+        rootMargin: '0px'
+    });
+
+    section1Observer.observe(section1);
+
+    window.addEventListener('load', () => {
+        const rect = section1.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+
+            section1.style.transition = 'opacity 0.5s ease';
+            section1.style.opacity = '1';
+
+            setTimeout(() => {
+                simulationLabel.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                simulationLabel.style.opacity = '1';
+                simulationLabel.style.transform = 'translateY(0)';
+            }, 300);
+
+            setTimeout(() => {
+                simulationTitle.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                simulationTitle.style.opacity = '1';
+                simulationTitle.style.transform = 'translateY(0)';
+            }, 700);
+
+            setTimeout(() => {
+                simulationDescription.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+                simulationDescription.style.opacity = '1';
+                simulationDescription.style.transform = 'translateY(0)';
+            }, 1300);
+        }
+    });
 </script>
-
 
 <!--한계 섹션-->
 <section id="limitation" class="limitation-section" data-theme="light">
@@ -1194,139 +1233,91 @@ document.addEventListener("DOMContentLoaded", () => {
 		}, 1100);
    }
 });
-
-
 </script>
-
 
 <!--과정 섹션-->
 <section id="procedure" class="procedure-section" data-theme="light">
-
 	<div class="procedure-header">
-		<span class="section-label">PROCEDURE</span>
-		<h2 class="section-title">품질 신뢰 회복의 핵심, 분리 선별 과정</h2>
+		<span class="procedure-label">PROCEDURE</span>
+		<h2 class="procedure-title">품질 신뢰 회복의 핵심, <br>분리 선별 과정</h2>
 	</div>
 
 	<div class="timeline-wrapper">
-
         <!--가로선 부분-->
         <div class="timeline-line"></div>
 
-			<!--step-->
-			<div class="timeline-steps">
-
-                <!-- 시작점 -->
-                <div class="timeline-step top start">
-                    <div class="step-info">
-                        <span class="step-text">순환 골재 처리 공정</span>
-                    </div>
-                    <div class="vertical-line"></div>
-                    <div class="step-dot"></div>
-                </div>
-
-				<!--step1-->
-                <div class="timeline-step top">
-                        <div class="step-info">
-                            <span class="step-number">STEP.1</span>
-                            <span class="step-text">철거</span>
-                        </div>
-
-                        <div class="vertical-line"></div>
-                    <div class="step-dot"></div>
-                </div>
-
-			<!--step2-->
-            <div class="timeline-step bottom">
-                <div class="step-dot"></div>
-                    <div class="vertical-line"></div>
-                    <div class="step-info">
-                        <span class="step-number">STEP.2</span>
-                        <span class="step-text">운반</span>
-                    </div>
-                </div>
-
-				<!--step3-->
-                <div class="timeline-step top">
-                        <div class="step-info">
-                            <span class="step-number">STEP.3</span>
-                            <span class="step-text">파쇄</span>
-                        </div>
-                        <div class="vertical-line"></div>
-                    <div class="step-dot"></div>
-                </div>
-
-			<!--step4-->
-            <div class="timeline-step down highlight">
-                <div class="step-dot"></div>
-                    <div class="vertical-line"></div>
-                    <div class="step-info">
-                        <span class="step-number">STEP.4</span>
-                        <span class="step-text">분리 선별</span>
-                    </div>
-                </div>
-
-			<!--step5-->
-            <div class="timeline-step top">
-                    <div class="step-info">
-                        <span class="step-number">STEP.5</span>
-                        <span class="step-text">순환 골재 생산</span>
-                    </div>
-                    <div class="vertical-line"></div>
-                <div class="step-dot"></div>
+        <!-- 스텝1: 시작점 -->
+        <div class="timeline-step start" style="left: 50px;">
+            <div class="step-dot"></div>
+            <div class="vertical-line"></div>
+            <div class="step-info">
+                <span class="step-text">순환 골재 처리 공정</span>
             </div>
+        </div>
 
-
-                <!--타임라인 step6-->
-                <div class="timeline-step bottom">
-                    <div class="step-dot"></div>
-                        <div class="vertical-line"></div>
-                        <div class="step-info">
-                            <span class="step-text">순환 골재 사용</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- 스텝2 -->
+        <div class="timeline-step" style="left: 250px;">
+            <div class="step-dot"></div>
+            <div class="vertical-line"></div>
+            <div class="step-info">
+                <span class="step-number">STEP.1</span>
+                <span class="step-text">철거</span>
             </div>
+        </div>
+
+        <!-- 스텝3 -->
+        <div class="timeline-step" style="left: 450px;">
+            <div class="step-dot"></div>
+            <div class="vertical-line"></div>
+            <div class="step-info">
+                <span class="step-number">STEP.2</span>
+                <span class="step-text">운반</span>
+            </div>
+        </div>
+
+        <!-- 스텝4 -->
+        <div class="timeline-step" style="left: 650px;">
+            <div class="step-dot"></div>
+            <div class="vertical-line"></div>
+            <div class="step-info">
+                <span class="step-number">STEP.3</span>
+                <span class="step-text">파쇄</span>
+            </div>
+        </div>
+
+        <!-- 스텝5: highlight -->
+        <div class="timeline-step highlight" style="left: 850px;">
+            <div class="step-dot"></div>
+            <div class="vertical-line"></div>
+            <div class="step-info">
+                <span class="step-number">STEP.4</span>
+                <span class="step-text">분리 선별</span>
+            </div>
+        </div>
+
+        <!-- 스텝6 -->
+        <div class="timeline-step" style="left: 1050px;">
+            <div class="step-dot"></div>
+            <div class="vertical-line"></div>
+            <div class="step-info">
+                <span class="step-number">STEP.5</span>
+                <span class="step-text">순환 골재 생산</span>
+            </div>
+        </div>
+
+        <!-- 스텝7 -->
+        <div class="timeline-step" style="left: 1250px;">
+            <div class="step-dot"></div>
+            <div class="vertical-line"></div>
+            <div class="step-info">
+                <span class="step-text">순환 골재 사용</span>
+            </div>
+        </div>
+
+    </div>
 </section>
 
 <!--과정 섹션 JS-->
-<script>
-	const timelineSection = document.querySelector('.procedure-section');
-	const timelineLine = document.querySelector('.timeline-line');
-	const timelineSteps = document.querySelectorAll('.timeline-step');
-
-	const observer = new IntersectionObserver((entries) => {
-		entries.forEach(entry => {
-
-			if (entry.isIntersecting) {
-                if (timelineLine) {
-                    timelineLine.classList.add('animate');
-                }
-
-            timelineSteps.forEach((step, index) => {
-                    setTimeout(() => {
-                        const verticalLine = step.querySelector('.vertical-line');
-                        if (verticalLine) {
-                            verticalLine.classList.add('animate');
-                        }
-
-                        setTimeout(() => {
-                            const dot = step.querySelector('.step-dot');
-                            if (dot) {
-                                dot.classList.add('animate');
-                            }
-                        }, 200);
-                    }, 1500 + (index * 200));
-                });
-
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-
-    if (timelineSection) {
-        observer.observe(timelineSection);
-    }
-</script>
 <!--과정 섹션 끝-->
 <!--솔루션 섹션-->
 <section id="solution" class="solution-section" data-theme="light">

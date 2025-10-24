@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResultDTO {
+    private Long id;
     private String analysisDate;
     private String origImage;
     private String rcnnResult;
