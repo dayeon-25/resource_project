@@ -1,5 +1,6 @@
 package com.example.resource.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,4 +15,10 @@ public class HomepageController {
 
         return "home";
     }
+
+//    @GetMapping("/")
+//    public String home() {
+//        return "home";
+//    }
+
 }

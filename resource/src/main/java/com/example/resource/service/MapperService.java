@@ -45,14 +45,20 @@ public class MapperService {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
         String analysisDate = origImage.getAnalysisDate().format(formatter);
+
         String suitable = (result.isSuitable()) ? "적합" : "부적합";
 
+        double total = result.getWood() + result.getPlastic() + result.getVinyl();
+        total=Math.round(total*100)/100.0;
+
         return ResultDTO.builder()
-                .origImage(toDataUri(origImage.getImageData()))                .analysisDate(analysisDate)
+                .origImage(toDataUri(origImage.getImageData()))
+                .analysisDate(analysisDate)
                 .plastic(result.getPlastic())
                 .vinyl(result.getVinyl())
                 .wood(result.getWood())
-                .total(roundTo2Decimals(result.getWood()+ result.getPlastic() + result.getVinyl()))
+                .total(total)
+                .count(result.getCount())
                 .suitable(suitable)
                 .avgPlastic(analysisResultRepository.getPlasticAvg())
                 .avgVinyl(analysisResultRepository.getVinylAvg())

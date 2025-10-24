@@ -21,5 +21,6 @@ public class ResultDTO {
     private double avgVinyl;
     private double avgWood;
     private double total;
+    private int count;
     private String suitable;
 }

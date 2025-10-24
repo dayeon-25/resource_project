@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="534cc6ca-2be1-4e1a-b655-8b62eb5f208b" name="Changes" comment="" />
+    <list default="true" id="534cc6ca-2be1-4e1a-b655-8b62eb5f208b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/restcontroller/AnalysisApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/controller/HomepageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/controller/HomepageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/controller/ResultController.java" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/controller/ResultController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/dto/ResultDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/dto/ResultDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/entity/AnalysisResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/entity/AnalysisResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/restcontroller/ImageRestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/service/MapperService.java" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/java/com/example/resource/service/MapperService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/resources/templates/analyze.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/resources/templates/analyze.mustache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/resources/templates/analyze2.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/resources/templates/analyze2.mustache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/src/main/resources/templates/result.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/resource/src/main/resources/templates/result.mustache" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,25 +57,25 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ResourceApplication.executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.resource [:com.example.resource.ResourceApplication.main()].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/301-12/Documents/GitHub/resource_project/resource/src/main/java/com/example/resource/dto",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.fileTypes"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ResourceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.resource [:com.example.resource.ResourceApplication.main()].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/301-12/Documents/GitHub/resource_project/resource/src/main/java/com/example/resource/dto&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\301-12\Documents\GitHub\resource_project\resource\src\main\java\com\example\resource\dto" />
@@ -71,6 +84,26 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\301-12\Documents\GitHub\resource_project\resource\src\main\resources\templates" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ResourceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.example.resource.ResourceApplication" />
+      <module name="resource_main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.resource.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ResourceApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
