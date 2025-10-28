@@ -259,9 +259,11 @@
 
         analyzeReady.style.display = 'none';
         reselectFileBtn.style.display = 'none';
-
-
         uploadContainer.classList.add('analyzing');
+
+        analyzeContainer.style.display = 'flex';
+        analyzeContainer.style.opacity = '1';
+        runProgress(0);
 
 
         const formData = new FormData();
@@ -280,13 +282,6 @@
 
 
             console.log("업로드 완료, 원본이미지 ID:",data.id);
-
-
-            analyzeContainer.style.display = 'flex';
-            analyzeContainer.style.opacity = '1';
-
-
-            runProgress(0);
         } catch (err){
             console.error(err);
             alert('이미지 업로드 실패! 서버 확인 필요');

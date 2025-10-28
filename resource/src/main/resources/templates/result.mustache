@@ -59,7 +59,7 @@
         <div class="result_right">
             <h4>이미지 분석 결과</h4>
             <img src="{{result.rcnnResult}}" alt="결과 이미지">
-            <button id="view_transaction_button">이미지 처리 과정 자세히 보기</button>
+            <button id="view_morphin_button">이미지 처리 과정 자세히 보기</button>
             <div class="ratio_container">
                 <div class="ratio_box">
                     <p><span class="color_mark" style="background:#3b4d08;"></span>폐비닐({{result.vinyl}}%)</p>
@@ -371,6 +371,17 @@
             modal.style.display="none";
         }
     });
+
+    const viewMorphingBtn = document.getElementById('view_morphin_button');
+    const resultPageUrl = window.location.pathname;
+
+    viewMorphingBtn.addEventListener('click', () => {
+    const origImageId = resultPageUrl.split('/').pop();
+    window.location.href = `/result/${origImageId}/morphing`;
+    });
+
+
+
 
 
 
