@@ -1,3 +1,16 @@
+/* ============================================
+   ✨ MyPage CSS - 정리 및 최적화 버전
+   ============================================ */
+
+/* ============================================
+   🎨 기본 스타일
+   ============================================ */
+
+body.mypage {
+    background-color: #F1F2EF;
+    min-height: 100vh;
+    padding-top: var(--header-height);
+}
 
 body.mypage .header {
     border-bottom: 0.3px solid #43554A;
@@ -8,19 +21,17 @@ body.mypage .nav-link {
     color: #43554A;
 }
 
-body.mypage {
-    background-color: #F1F2EF;
-    min-height: 100vh;
-    padding-top: var(--header-height);
-}
-
 .container {
     max-width: 1920px;
     margin: 0 auto;
     padding: 0 189px;
 }
 
-/* 사용자 정보 */
+
+/* ============================================
+   👤 사용자 정보 섹션
+   ============================================ */
+
 .user-section {
     padding-top: 50px;
     margin-bottom: 50px;
@@ -77,14 +88,6 @@ body.mypage {
     text-align: center;
 }
 
-.info-value.bold {
-    font-weight: 700;
-}
-
-.info-value.medium {
-    font-weight: 500;
-}
-
 .account-settings-btn {
     background-color: #43564A;
     color: #FFFFFF;
@@ -93,8 +96,6 @@ body.mypage {
     padding: 8px 14px;
     font-size: 16px;
     font-weight: 400;
-    line-height: 1.25em;
-    letter-spacing: 0.00625em;
     cursor: pointer;
     transition: opacity 0.3s;
 }
@@ -103,7 +104,69 @@ body.mypage {
     opacity: 0.9;
 }
 
-/* 분석 이력 섹션 */
+
+/* ============================================
+   🔄 탭 네비게이션
+   ============================================ */
+
+.top-tab-navigation {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #E5E7EB;
+    margin: 0 -189px 40px;
+    padding: 0 189px 0;
+    background: transparent;
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #6B7280;
+    font-size: 16px;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: #374151;
+    background-color: rgba(67, 86, 74, 0.05);
+}
+
+.tab-btn.active {
+    color: #43564A;
+    border-bottom-color: #43564A;
+    font-weight: 600;
+}
+
+.tab-icon {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s;
+}
+
+.tab-btn:hover .tab-icon {
+    transform: scale(1.1);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+
+/* ============================================
+   📊 분석 이력 섹션
+   ============================================ */
+
 .analysis-section {
     padding: 20px 0 0;
     position: relative;
@@ -113,7 +176,6 @@ body.mypage {
     justify-content: center;
 }
 
-/* 카드 래퍼 */
 .section-header {
     display: none;
 }
@@ -131,7 +193,6 @@ body.mypage {
     opacity: 1;
 }
 
-
 .cards-container {
     display: flex;
     gap: 60px;
@@ -139,14 +200,17 @@ body.mypage {
     scroll-behavior: smooth;
     padding: 40px 0;
     max-width: calc((360px * 3) + (60px * 2));
-
 }
 
 .cards-container::-webkit-scrollbar {
     display: none;
 }
 
-/* 분석 카드 */
+
+/* ============================================
+   🃏 분석 카드
+   ============================================ */
+
 .analysis-card {
     background: #FFFFFF;
     border-radius: 20px;
@@ -158,9 +222,11 @@ body.mypage {
     display: flex;
     flex-direction: column;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .analysis-card:hover {
+    transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -171,7 +237,6 @@ body.mypage {
     overflow: hidden;
     position: relative;
     background: #E5E7EB;
-    display: inline-block;
 }
 
 .card-image {
@@ -179,100 +244,72 @@ body.mypage {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    display: block
+    display: block;
 }
 
-.card-badge {
+.badge {
     position: absolute;
     top: 16px;
     right: 16px;
-    padding: 3px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.43em;
-    letter-spacing: 0.007142857em;
-    text-align: center;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
     color: #FFFFFF;
     z-index: 2;
 }
 
-.badge-suitable {
+.badge.suitable {
     background-color: #43564A;
 }
 
-.badge-unsuitable {
+.badge.unsuitable {
     background-color: #BE563D;
 }
 
-.analysis-card-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.analysis-card-wrapper .card-detail-link {
-    position: absolute;
-    top: -33px;
-    right: 12px;
-    font-size: 16px;
-    color: #6B7280;
-    font-weight: 400;
-    text-decoration: none;
-    z-index: 10;
-}
-
-.card-content {
-    padding: 16px;
-    background: transparent;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.card-datetime {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 8px;
-    font-size: 17px;
-    font-weight: 300;
-    line-height: 1.21em;
-    letter-spacing: 0.1em;
-    color:  #374151;;
-}
-
-.card-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .card-info {
-    display: flex;
-    align-items: center;
-    gap: 140px;
+    padding: 20px;
+    background: transparent;
 }
 
-.card-info h3 {
-    font-size: 18px;
+.card-date {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 12px;
     font-weight: 500;
-    line-height: 1.21em;
-    letter-spacing: 0.1em;
-    color:  #374151;;
-    margin: 0;
 }
 
-.card-rate {
-    font-size: 28px;
+.card-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #9CA3AF;
+    font-weight: 400;
+}
+
+.stat-value {
+    font-size: 20px;
+    color: #1F2937;
     font-weight: 700;
-    line-height: 1.21em;
-    letter-spacing: 0.1em;
-    color: #BE563D;
 }
 
-/* 스크롤 버튼 */
+
+/* ============================================
+   ◀▶ 스크롤 버튼
+   ============================================ */
+
 .scroll-btn {
     position: static;
-    top: 50%;
-    transform: translateY(-50%);
     background-color: #FFFFFF;
     color: #444444;
     border: none;
@@ -288,6 +325,7 @@ body.mypage {
     opacity: 0;
     pointer-events: none;
     flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .scroll-btn:hover {
@@ -300,412 +338,46 @@ body.mypage {
 }
 
 
+/* ============================================
+   📈 통계 대시보드
+   ============================================ */
 
-/* 빈 상태 */
-.empty-state {
-    width: 100%;
-    text-align: center;
-    padding: 80px 20px;
-    color: #999;
-}
-
-.empty-state p {
-    font-size: 18px;
-    font-weight: 400;
-}
-
-/* 모달 스타일 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.modal-content,
-.password-modal-content {
-    background-color: #FFFFFF;
-    margin: 5% auto;
-    padding: 40px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #E5E7EB;
-}
-
-.modal-header h2 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #43564A;
-    margin: 0;
-}
-
-.close {
-    color: #999;
-    font-size: 32px;
-    font-weight: 300;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.close:hover,
-.close:focus {
-    opacity: 0.9;
-}
-
-.modal-body {
-    padding: 20px 0;
-}
-
-.modal-description {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 20px;
-}
-
-/* 회원 정보 섹션 */
-.info-section {
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #E5E7EB;
-}
-
-.info-section h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #43564A;
-    margin-bottom: 20px;
-}
-
-.info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    font-size: 16px;
-}
-
-.info-row label {
-    font-weight: 500;
-    color: #666;
-}
-
-.info-row span {
-    color: #000;
-}
-
-/* 수정 섹션 */
-.edit-section {
-    margin-bottom: 30px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid #E5E7EB;
-}
-
-.edit-section h3 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #43564A;
-    margin-bottom: 20px;
-}
-
-.input-group {
-    margin-bottom: 15px;
-}
-
-.input-field {
-    width: 100%;
-    padding: 12px 16px;
-    border: 1px solid #D1D5DB;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
-
-.input-field:focus {
-    outline: none;
-    border-color: #43564A;
-}
-
-/* 버튼 스타일 */
-.btn-primary1 {
-    display: inline-block;
-    padding: 6px 14px;
-    background-color: #43564A;
-    color: #FFFFFF;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 500;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    max-width: 200px;
-    cursor: pointer;
-    border: none;
-}
-
-
-.btn-primary1:hover {
-    background-color: #2A3A30;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(67, 86, 74, 0.3);
-}
-
-.btn-primary1:active {
-    background-color: #1F6B3F;
-}
-
-.empty-message {
-    text-align: center;
-}
-
-.empty-message h3 {
-    font-size: 16px;
-    font-weight: 400;
-    color: #999;
-    margin: 0 0 20px 0;
-}
-
-.empty-message p {
-    font-size: 16px;
-    color: #6B7280;
-    margin: 0 0 20px 0;
-}
-
-/* 회원 탈퇴 섹션 */
-.cancel-section {
-    margin-top: 30px;
-}
-
-.cancel-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    text-align: center;
-}
-
-.cancel-link {
-    font-size: 13px;
-    color: #999;
-    text-decoration: underline;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.cancel-link:hover {
-    color: #666;
-}
-
-.warning-text {
-    font-size: 14px;
-    color: #999;
-    margin-bottom: 10px;
-}
-
-
-/*----------------------------------------------*/
-/* 반응형 디자인 */
-@media (max-width: 1400px) {
-    .container {
-        padding: 0 100px;
-    }
-
-    .analysis-section {
-        padding: 20px 100px 100px;
-    }
-}
-
-@media (max-width: 1024px) {
-    .container {
-        padding: 0 40px;
-    }
-
-    .analysis-section {
-        padding: 20px 40px 100px;
-    }
-
-    .greeting {
-        font-size: 40px;
-    }
-
-    .user-info-grid {
-        gap: 60px;
-    }
-
-    .analysis-card {
-        min-width: 320px;
-        width: 320px;
-    }
-}
-
-@media (max-width: 768px) {
-    .container {
-        padding: 0 20px;
-    }
-
-    .analysis-section {
-        padding: 20px 20px 60px;
-    }
-
-    .greeting {
-        font-size: 32px;
-    }
-
-    .user-info-wrapper {
-        flex-direction: column;
-        gap: 30px;
-        padding: 30px 20px;
-    }
-
-    .user-info-grid {
-        flex-direction: column;
-        gap: 30px;
-        width: 100%;
-    }
-
-    .account-settings-btn {
-        width: 100%;
-    }
-
-    .cards-wrapper {
-        padding: 0 30px;
-    }
-
-    .analysis-card {
-        min-width: 320px;
-        width: 320px;
-    }
-
-    .card-info h3 {
-        font-size: 20px;
-    }
-
-    .card-rate {
-        font-size: 26px;
-    }
-
-    .modal-content,
-    .password-modal-content {
-        width: 95%;
-        padding: 30px 20px;
-        margin: 10% auto;
-    }
-}
-
-/*마이페이지 탭 전환 추가*/
-/* 상단 가로 탭 네비게이션  */
-.top-tab-navigation {
-    display: flex;
-    background: #FFFFFF;
-    border-bottom: 2px solid #E5E7EB;
-    position: sticky;
-    top: var(--header-height);
-    z-index: 100;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    margin: 0 -189px; /* container padding 상쇄 */
-    padding: 0 189px;
-}
-
-.tab-btn {
-    flex: 1;
-    max-width: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 18px 24px;
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    color: #6B7280;
-    transition: all 0.3s ease;
-    position: relative;
-    bottom: -2px;
-}
-
-.tab-btn:hover {
-    color: #43564A;
-    background-color: #F9FAFB;
-}
-
-.tab-btn.active {
-    color: #43564A;
-    border-bottom-color: #43564A;
-    font-weight: 600;
-}
-
-.tab-icon {
-    width: 22px;
-    height: 22px;
-    transition: transform 0.3s ease;
-}
-
-.tab-btn.active .tab-icon {
-    transform: scale(1.1);
-}
-
-/*  탭 컨텐츠 */
-.tab-content {
-    display: none;
-    animation: fadeInUp 0.4s ease;
-    min-height: 60vh;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 대시보드 헤더*/
 .dashboard-header {
     background: linear-gradient(135deg, #43564A 0%, #5A6F60 100%);
-    color: #FFFFFF;
-    padding: 40px 60px 30px;
-    border-radius: 0 0 20px 20px;
+    padding: 40px 189px 30px;
     margin: 0 -189px 40px;
-}
-
-.user-greeting {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.user-greeting .greeting {
-    font-size: 36px;
-    font-weight: 600;
-    margin: 0;
-    color: #FFFFFF;
+    border-radius: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .quick-stats {
     display: flex;
-    gap: 40px;
+    justify-content: center;
     align-items: center;
+    gap: 50px;
+}
+
+.quick-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.quick-stat-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 400;
+}
+
+.quick-stat-value {
+    font-size: 28px;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.quick-stat-value.suitable {
+    color: #A7F3D0;
 }
 
 .quick-stat-divider {
@@ -714,31 +386,9 @@ body.mypage {
     background: rgba(255, 255, 255, 0.3);
 }
 
-.quick-stat-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.quick-stat-label {
-    font-size: 13px;
-    opacity: 0.85;
-    font-weight: 400;
-}
-
-.quick-stat-value {
-    font-size: 26px;
-    font-weight: 700;
-}
-
-.quick-stat-value.suitable {
-    color: #86EFAC;
-}
-
-/*  통계 카드 */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     margin-bottom: 40px;
 }
@@ -748,15 +398,21 @@ body.mypage {
     border-radius: 16px;
     padding: 28px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .stat-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 14px;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -766,23 +422,23 @@ body.mypage {
 .stat-icon svg {
     width: 28px;
     height: 28px;
-    color: #FFFFFF;
+    fill: #FFFFFF;
 }
 
 .stat-icon.suitable {
-    background: #43564A;
+    background: linear-gradient(135deg, #43564A 0%, #5A6F60 100%);
 }
 
 .stat-icon.unsuitable {
-    background: #BE563D;
+    background: linear-gradient(135deg, #BE563D 0%, #D66B51 100%);
 }
 
 .stat-icon.average {
-    background: #3B82F6;
+    background: linear-gradient(135deg, #5C80BC 0%, #7199D4 100%);
 }
 
 .stat-icon.objects {
-    background: #8B5CF6;
+    background: linear-gradient(135deg, #E4B363 0%, #F0C77B 100%);
 }
 
 .stat-info {
@@ -791,7 +447,7 @@ body.mypage {
 
 .stat-label {
     font-size: 14px;
-    color: #000;
+    color: #6B7280;
     margin-bottom: 8px;
     font-weight: 400;
 }
@@ -816,7 +472,11 @@ body.mypage {
     margin-top: 4px;
 }
 
-/* 차트 */
+
+/* ============================================
+   📊 차트 섹션
+   ============================================ */
+
 .charts-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -955,112 +615,192 @@ body.mypage {
     font-weight: 500;
 }
 
-/*  최근 분석 요약  */
-.recent-analysis-summary {
-    margin-bottom: 60px;
+
+/* ============================================
+   🔐 계정 설정 모달 (modalDetail과 분리)
+   ============================================ */
+
+.account-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
 }
 
-.recent-analysis-summary .section-header {
+.password-modal-content,
+.account-modal .modal-content {
+    background: #FFFFFF;
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.account-modal .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: 16px;
 }
 
-.recent-analysis-summary .section-header h3 {
-    font-size: 22px;
-    font-weight: 600;
-    color: #1F2937;
+.account-modal .modal-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #43564A;
     margin: 0;
 }
 
-.view-all-link {
-    font-size: 15px;
-    color: #43564A;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.view-all-link:hover {
-    color: #2A3A30;
-    text-decoration: underline;
-}
-
-.recent-list {
-    background: #FFFFFF;
-    border-radius: 16px;
-    padding: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-.recent-item {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 16px;
-    border-radius: 12px;
+.account-modal .close {
+    color: #999;
+    font-size: 32px;
+    font-weight: 300;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color 0.3s;
 }
 
-.recent-item:hover {
-    background-color: #F9FAFB;
+.account-modal .close:hover {
+    color: #43564A;
 }
 
-.recent-thumbnail {
-    width: 70px;
-    height: 70px;
-    border-radius: 10px;
-    object-fit: cover;
-    flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.modal-body {
+    padding: 20px 0;
 }
 
-.recent-info {
-    flex: 1;
+.modal-description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
 }
 
-.recent-date {
-    font-size: 13px;
-    color: #6B7280;
-    margin-bottom: 8px;
+/* 회원 정보 섹션 */
+.info-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.info-section h3,
+.action-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #43564A;
+    margin-bottom: 20px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    font-size: 16px;
+}
+
+.info-row label {
+    font-weight: 500;
+    color: #666;
+}
+
+.info-row span {
+    color: #000;
+}
+
+/* 비밀번호 변경 섹션 */
+.action-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.action-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #D1D5DB;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #43564A;
+}
+
+.btn-primary {
+    width: 100%;
+    background-color: #43564A;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #2A3A30;
+}
+
+.btn-danger {
+    width: 100%;
+    background-color: #BE563D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #A03A27;
+}
+
+.warning-text {
+    font-size: 14px;
+    color: #BE563D;
+    margin-bottom: 15px;
     font-weight: 500;
 }
 
-.recent-stats {
-    display: flex;
-    align-items: center;
-    gap: 14px;
+
+/* ============================================
+   📭 빈 상태 메시지
+   ============================================ */
+
+.empty-state,
+.empty-message {
+    width: 100%;
+    text-align: center;
+    padding: 80px 20px;
+    color: #999;
+    font-size: 16px;
 }
 
-.badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.recent-total {
-    font-size: 15px;
-    color: #1F2937;
-    font-weight: 600;
-}
-
-.recent-arrow {
-    font-size: 22px;
-    color: #D1D5DB;
-    flex-shrink: 0;
-    transition: all 0.3s ease;
-}
-
-.recent-item:hover .recent-arrow {
-    color: #43564A;
-    transform: translateX(4px);
-}
-
-/* 빈 대시보드  */
 .empty-dashboard {
     display: flex;
     flex-direction: column;
@@ -1071,21 +811,16 @@ body.mypage {
 }
 
 .empty-dashboard h3 {
-    font-size: 16px;
-    font-weight: 400;
-    color: #999;
-    margin: 0 0 20px 0;
-}
-
-.empty-dashboard p {
-    font-size: 16px;
+    font-size: 20px;
+    font-weight: 500;
     color: #6B7280;
-    margin: 0 0 28px 0;
+    margin: 0 0 20px 0;
 }
 
 .empty-dashboard .btn-primary {
     display: inline-block;
-    padding: 6px 14px;
+    width: auto;
+    padding: 12px 24px;
     background-color: #43564A;
     color: #FFFFFF;
     text-decoration: none;
@@ -1093,7 +828,6 @@ body.mypage {
     font-weight: 500;
     font-size: 16px;
     transition: all 0.3s ease;
-    max-width: 200px;
 }
 
 .empty-dashboard .btn-primary:hover {
@@ -1103,51 +837,33 @@ body.mypage {
 }
 
 
-/*분석 이력 탭 헤더 */
-.history-title {
-    font-size: 32px;
-    font-weight: 600;
-    color: #1F2937;
-    margin: 0;
-}
-
-.history-info {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.history-card {
-		cursor: pointer;
-		transition: transform 0.2s, box-shadow 0.2s;
-	}
-
-.history-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-.total-count {
-    font-size: 16px;
-    color: #6B7280;
-    font-weight: 500;
-}
-
+/* ============================================
+   📱 반응형 디자인
+   ============================================ */
 
 @media (max-width: 1400px) {
+    .container {
+        padding: 0 100px;
+    }
+
     .top-tab-navigation {
-        margin: 0 -100px;
+        margin: 0 -100px 40px;
         padding: 0 100px;
     }
 
     .dashboard-header {
         margin: 0 -100px 40px;
+        padding: 40px 100px 30px;
     }
 }
 
 @media (max-width: 1024px) {
+    .container {
+        padding: 0 40px;
+    }
+
     .top-tab-navigation {
-        margin: 0 -40px;
+        margin: 0 -40px 40px;
         padding: 0 40px;
     }
 
@@ -1164,81 +880,98 @@ body.mypage {
         gap: 20px;
     }
 
-    .user-greeting .greeting {
-        font-size: 28px;
+    .greeting {
+        font-size: 32px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-
 @media (max-width: 768px) {
-.top-tab-navigation {
-    margin: 0 -20px;
-    padding: 0 20px;
+    .container {
+        padding: 0 20px;
+    }
+
+    .top-tab-navigation {
+        margin: 0 -20px 30px;
+        padding: 0 20px;
+    }
+
+    .tab-btn {
+        padding: 14px 16px;
+        font-size: 14px;
+    }
+
+    .tab-btn span {
+        display: none;
+    }
+
+    .tab-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .dashboard-header {
+        margin: 0 -20px 30px;
+        padding: 30px 20px 20px;
+    }
+
+    .greeting {
+        font-size: 24px;
+    }
+
+    .user-info-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px 20px;
+    }
+
+    .user-info-grid {
+        gap: 30px;
+        width: 100%;
+    }
+
+    .quick-stats {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .quick-stat-divider {
+        display: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .cards-container {
+        gap: 20px;
+        max-width: calc(100vw - 40px);
+    }
+
+    .analysis-card {
+        width: 280px;
+    }
+
+    .scroll-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .password-modal-content,
+    .account-modal .modal-content {
+        padding: 24px;
+        width: 95%;
+    }
 }
-
-.tab-btn {
-    padding: 14px 16px;
-    font-size: 14px;
-}
-
-.tab-btn span {
-    display: none;
-}
-
-.tab-icon {
-    width: 20px;
-    height: 20px;
-}
-
-.dashboard-header {
-    margin: 0 -20px 30px;
-    padding: 30px 20px 20px;
-}
-
-.user-greeting {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-}
-
-.user-greeting .greeting {
-    font-size: 24px;
-}
-
-.quick-stats {
-    flex-wrap: wrap;
-    gap: 16px;
-}
-
-.quick-stat-divider {
-    display: none;
-}
-
-.stats-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-}
-
-.stat-card {
-    padding: 20px;
-}
-
-.stat-value {
-    font-size: 28px;
-}
-
-.history-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding-top: 30px;
-}
-
-.history-title {
-    font-size: 24px;
-}
-}
-
-
-
-
