@@ -54,7 +54,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/error","/css/**", "/webjars/**","/images/**","/data/**","/test").permitAll()
+                        .requestMatchers("/error","/css/**", "/webjars/**","/images/**","/data/**","/morphing").permitAll()
                         .requestMatchers("/", "/about").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/signup").permitAll()
