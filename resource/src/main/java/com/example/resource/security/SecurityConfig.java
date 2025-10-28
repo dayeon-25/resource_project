@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/error","/css/**", "/webjars/**","/images/**","/data/**","/test").permitAll()
                         .requestMatchers("/", "/about").permitAll()
-                        .requestMatchers("/api/pred").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/signup").permitAll()
                         .anyRequest().authenticated());
         return http.build();
@@ -76,7 +76,8 @@ public class SecurityConfig {
                     // WebSocket 요청은 저장하지 않음
                     String uri = request.getRequestURI();
                     return !uri.startsWith("/ws") &&
-                           !uri.startsWith("/login");
+                           !uri.startsWith("/login") &&
+                           !uri.startsWith("/.well-known");
                 }
             });
             return requestCache;
