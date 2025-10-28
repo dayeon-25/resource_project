@@ -54,6 +54,8 @@ public class AnalysisResultService {
                 .build();
 
         Long id = origImageRepository.save(origImage).getId();
+        log.info("저장된 OrigImage ID: {}", id);
+
 
         AnalysisResult result = AnalysisResult.builder()
                 .origImgId(id)
@@ -62,10 +64,10 @@ public class AnalysisResultService {
                 .vinyl(response.getVinyl())
                 .suitable((response.getPlastic() + response.getVinyl() + response.getWood()) < 1.0)
                 .count(response.getCount())
-                .rcnnResult(Base64.getDecoder().decode(response.getRcnnResult()))
-                .opencvPro(Base64.getDecoder().decode(response.getOpencvPro()))
-                .opencvResult(Base64.getDecoder().decode(response.getOpencvResult()))
-                .pca(Base64.getDecoder().decode(response.getPca()))
+                .rcnnResult(response.getRcnnResult() != null ? Base64.getDecoder().decode(response.getRcnnResult()) : new byte[0])
+                .opencvPro(response.getOpencvPro() != null ? Base64.getDecoder().decode(response.getOpencvPro()) : new byte[0])
+                .opencvResult(response.getOpencvResult() != null ? Base64.getDecoder().decode(response.getOpencvResult()) : new byte[0])
+                .pca(response.getPca() != null ? Base64.getDecoder().decode(response.getPca()) : new byte[0])
                 .build();
 
         analysisResultRepository.save(result);
