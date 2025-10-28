@@ -54,10 +54,11 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/error","/css/**", "/webjars/**","/images/**","/data/**","/test").permitAll()
+                        .requestMatchers("/error","/css/**", "/js/**", "/webjars/**","/images/**","/data/**","/test").permitAll()
                         .requestMatchers("/", "/about").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/signup").permitAll()
+                        .requestMatchers("/results").authenticated()
                         .anyRequest().authenticated());
         return http.build();
     }

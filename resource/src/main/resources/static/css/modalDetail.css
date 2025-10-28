@@ -1,5 +1,7 @@
+/* 분석 상세 모달 전용 스타일*/
+
 /* 모달 배경 */
-.analysis-modal {
+.modal {
     display: none;
     position: fixed;
     z-index: 2000;
@@ -7,253 +9,293 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
+    background-color: rgba(0,0,0,0.5);
 }
 
-/* 모달 컨테이너 */
-.analysis-modal-container {
+/* 모달 박스 */
+.modal-container {
+    position: relative;
     background: white;
     color: black;
     margin: 1% auto;
-    padding: 3rem;
-    width: 60%;
-    min-height: 90vh;
+    padding: 2rem 7rem;
+    width: 72%;
+    height: 95vh;
     overflow-y: auto;
     overflow-x: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-/* 닫기 버튼 */
-.analysis-modal-close {
-    margin: -2rem -1.5rem;
-    float: right;
-    font-size: 1.5rem;
+/* 모달 닫기 버튼 */
+.modal-close{
+    position: absolute;
+    top: 0;
+    right: 0.5rem;
     cursor: pointer;
-    color: #333;
-    transition: color 0.2s;
-}
-
-.analysis-modal-close:hover {
-    color: #000;
-}
-
-/* 구분선 */
-.modal-line {
-    border: 0;
-    border-top: 0.1rem solid #8b8b8b;
-}
-
-/* 메인 컨테이너 */
-.modal-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-/* 상단 섹션 */
-.modal-top {
-    display: grid;
-    grid-template-columns: 5.5fr 4.5fr;
-    width: 96%;
-    margin: 0 auto;
-    column-gap: 7rem;
-}
-
-.modal-top-left {
-    display: flex;
-    flex-direction: column;
-}
-
-.modal-top-right {
-    display: flex;
-    flex-direction: column;
-}
-
-/* 다운로드 버튼 */
-#downloadReportButton {
     font-size: 1rem;
-    color: white;
-    background: black;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 1rem;
-    vertical-align: middle;
-    border: none;
-    transition: background 0.2s;
 }
 
-#downloadReportButton:hover {
-    background: #333;
+/* 모달 구분선 */
+.modal-line{
+    border: 0.1rem solid #8b8b8b;
 }
 
-/* 종합 결과 타이틀 */
-.modal-total-result {
-    margin-top: 1rem;
+/* 분석 컨테이너 */
+.analysis-container{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
 }
 
-.modal-total-result-title {
+/* 분석 일자 */
+.analysis-date {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+/* 모달 제목 */
+.modal-title{
+    font-weight: 500;
+    font-size: 3.2rem;
+    margin-bottom: -0.6rem;
+}
+
+/* 상단 영역 (제목 + 종합 결과 + 원본 이미지) */
+.analysis-content1{
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    position: relative;
-    width: 100%;
+    gap: 7rem;
 }
 
-.modal-total-result-title p:last-child {
-    margin-left: auto;
-    font-size: 0.8rem;
-}
-
-/* 도넛 차트 컨테이너 */
-.modal-donut-container {
-    width: 80%;
-    height: 300px;
-    margin: 1rem auto;
-}
-
-/* 중간 섹션 */
-.modal-middle {
-    margin: 2rem 0 1rem 0;
-    width: 96%;
-}
-
-.modal-middle-title {
+.content1-left{
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    width: auto;
+    flex: 0 0 auto;
+}
+
+.analysis-result-title{
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.analysis-result-title span,
+.analysis-title span{
+    font-size: 0.6rem;
+    margin-left: 0.2rem;
+    font-weight: normal;
+}
+
+.analysis-result-title p{
+    font-size: 0.7rem;
+}
+
+.content1-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1 1 0;
+    border: 0.1rem solid black;
+    border-radius: 10px;
+    padding: 1rem 3rem;
     gap: 0.5rem;
 }
 
-.modal-middle-title h2 {
-    margin: 0;
-}
-
-.modal-middle-title p {
-    margin: 0;
-    color: #666;
-    font-size: 0.9rem;
-}
-
-/* 이미지 그리드 */
-.modal-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
-    margin-top: 1rem;
-}
-
-.modal-grid-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.modal-item-img {
+/* 모달 이미지 */
+.modal-img{
     width: 100%;
-    height: 200px;
+    height: auto;
+    background: none;
     object-fit: contain;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
 }
 
-.modal-item-label {
-    margin-top: 0.5rem;
+.content1-right > img{
+    margin-bottom: 1rem;
+}
+
+/* 중간 영역 (R-CNN, OpenCV, PCA 분석)*/
+.analysis-content2{
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.analysis-box{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    border: 0.1rem solid black;
+    border-radius: 10px;
+    padding: 0.2rem 1rem;
+}
+
+.analysis-box hr{
+    margin-bottom: 0.8rem;
+}
+
+/* 분석 설명 텍스트 */
+.analysis-description {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #333;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    margin: 0.5rem 0 1rem 0;
+}
+
+.analysis-description strong {
+    color: #222;
+    font-weight: 600;
+}
+
+.analysis-description .highlight {
+    color: #d35400;
+    font-weight: 500;
+}
+
+/* 통계 분석 (차트 영역) */
+.analysis-content3 {
+    margin-top: 2rem;
+}
+
+.analysis-chart-container{
+    display: flex;
+    justify-content: space-between;
+    gap: 5rem;
+}
+
+.chart-box{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 10px;
+    gap: 1rem;
+}
+
+.chart-size{
+    width: 100%;
+    height: 250px;
+}
+
+
+/* 종합 결과 색상 클래스 */
+.modal_recap_text {
     font-weight: bold;
-    font-size: 0.9rem;
+}
+
+/* 적합/부적합 구분 색상 */
+.suitable-text {
+    color: #2f9055;
+}
+
+.unsuitable-text {
+    color: #b52b09;
+}
+
+/* 불순물 비율 바 (필요시) */
+.modal_ratio_box {
+    display: flex;
+    width: 100%;
+    background: #f0f0f0;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    height: 2.5rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal_ratio_box.vinyl .modal_ratio_value {
+    background-color: #3b4d08;
+}
+
+.modal_ratio_box.plastic .modal_ratio_value {
+    background-color: #303e51;
+}
+
+.modal_ratio_box.wood .modal_ratio_value {
+    background-color: #be563d;
+}
+
+.modal_ratio_value {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+    color: white;
+    font-weight: bold;
+    transition: width 0.3s ease;
+}
+
+.modal_ratio_percent {
+    position: absolute;
+    right: 0.5rem;
+    font-weight: bold;
     color: #333;
 }
 
-/* 하단 섹션 */
-.modal-bottom {
-    margin: 2rem 0 1rem 0;
-    width: 96%;
+/* 권장사항 영역 */
+.modal-recommendation {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid #4a90e2;
 }
 
-.bottom-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    text-align: left;
+.modal-recommendation h3 {
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
 }
 
-.bottom-grid-item {
-    display: flex;
-    flex-direction: column;
+.modal-recommendation p {
+    line-height: 1.6;
+    color: #333;
 }
 
-.bottom-grid-title {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 1rem;
-}
-
-.bottom-grid-title h2 {
-    margin: 0;
-}
-
-.bottom-grid-item h4 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
-/* 바 차트 컨테이너 */
-.modal-bar-container {
-    width: 100%;
-    height: 300px;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 1200px) {
-    .analysis-modal-container {
-        width: 80%;
-        padding: 2rem;
+/* 반응형 디자인*/
+@media screen and (max-width: 1200px) {
+    .modal-container {
+        width: 85%;
+        padding: 2rem 3rem;
     }
 
-    .modal-top {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+    .analysis-content1 {
+        gap: 3rem;
     }
 
-    .modal-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-    }
-
-    .bottom-grid {
-        grid-template-columns: 1fr;
+    .analysis-chart-container {
         gap: 2rem;
     }
 }
 
-@media (max-width: 768px) {
-    .analysis-modal-container {
+@media screen and (max-width: 768px) {
+    .modal-container {
         width: 95%;
-        padding: 1.5rem;
-        margin: 2% auto;
+        padding: 1.5rem 1.5rem;
+        height: 98vh;
     }
 
-    .modal-grid {
-        grid-template-columns: 1fr;
+    .modal-title {
+        font-size: 2rem;
+    }
+
+    .analysis-content1,
+    .analysis-content2,
+    .analysis-chart-container {
+        flex-direction: column;
         gap: 1.5rem;
     }
 
-    .modal-item-img {
-        height: 150px;
-    }
-
-    .modal-donut-container,
-    .modal-bar-container {
-        height: 250px;
-    }
-
-    #downloadReportButton {
-        display: block;
-        margin: 1rem 0 0 0;
-        width: 100%;
+    .content1-right {
+        padding: 1rem;
     }
 }
