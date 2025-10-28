@@ -9,10 +9,37 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/topojson.v3.min.js"></script>
 
-
 </head>
 <body>
 {{> layout/header}}
+{{> layout/nav.anchor}}
+
+<!--인트로 섹션-->
+<section id="intro" class="intro-section" data-theme="light">
+	<div class="intro-text-wrapper">
+		<h1 class="intro-text primary">WASTE TO RESOURCE</h1>
+		<p class="intro-sub">쓰레기에서 자원으로</p>
+	</div>
+	<h1 class="logo-text">Re:source</h1>
+</section>
+
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+  const intro = document.querySelector(".intro-section");
+  const nextSection = intro.nextElementSibling;
+
+  window.addEventListener("wheel", (e) => {
+    if (e.deltaY > 0) {
+      intro.classList.add("animate");
+      setTimeout(() => {
+        nextSection.scrollIntoView({ behavior: "smooth" });
+      }, 200);
+    }
+  }, { once: true });
+});
+</script>
+
+
 
 <!--'탄소 중립은' 섹션-->
 <section id="carbon-neutrality" class="carbon-neutrality-section" data-theme="light">
@@ -25,7 +52,7 @@
 
 		<div class="section-content">
 			<div class="content-text fade-in-element">
-				인간의 활동으로 배출되는 이산화탄소를 흡수하거나 제거하여 <br>
+				인간의 활동으로 배출되는 이산화탄소를 흡수하거나 제거해, <br>
 				실질적인 배출량을 <strong>‘0’</strong>으로 만드는 <br>
 				지속가능한 기후 대응 전략입니다.
 			</div>
@@ -59,12 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		threshold: 0.15
 };
 
-const observer = new IntersectionObserver((entries) => {
+const carbonObserver = new IntersectionObserver((entries) => {
 	entries.forEach(entry => {
 		if (entry.isIntersecting) {
 			entry.target.classList.add('visible');
 
-			observer.unobserve(entry.target);
+			carbonObserver.unobserve(entry.target);
 		}
 	});
 }, observerOptions);
@@ -72,14 +99,14 @@ const observer = new IntersectionObserver((entries) => {
 const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade-in-element');
 	fadeElements.forEach(element => {
 
-	observer.observe(element);
+	carbonObserver.observe(element);
 	});
 });
 </script>
 
 <!--건설로 실현하는 탄소 중립 섹션-->
 <section id="construction" class="construction-section" data-theme="light">
-    <span class="construction-label">ABOUT CARBON NEUTRALITY</span>
+    <span class="construction-label">COSTRUCTION</span>
 
         <div class="construction-header">
             <h2 class="construction-title">건설로 실현하는 탄소 중립</h2>
@@ -128,6 +155,7 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 	</div>
 </section>
 <!--건설로 실현하는 탄소 중립 섹션 끝-->
+
 <!--건설 탄중 JS-->
 <script>
 	document.addEventListener('DOMContentLoaded', () => {
@@ -137,21 +165,21 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 			threshold: 0.15
 		};
 
-		const observer = new IntersectionObserver((entries) => {
+		const constructionObserver = new IntersectionObserver((entries) => {
 			entries.forEach(entry => {
 				if (entry.isIntersecting) {
 					entry.target.classList.add('visible');
-					observer.unobserve(entry.target);
+					constructionObserver.unobserve(entry.target);
 				}
 			});
 		}, observerOptions);
 
-		const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade-in-element');
+		const fadeElements = document.querySelectorAll('.construction-section .fade-in-element');
 		fadeElements.forEach(element => {
-			observer.observe(element);
+			constructionObserver.observe(element);
 		});
 
-		const cardObserver = new IntersectionObserver((entries) => {
+		const constructionCardObserver = new IntersectionObserver((entries) => {
 			entries.forEach(entry => {
 				if (entry.isIntersecting) {
 					entry.target.classList.add('visible');
@@ -163,7 +191,7 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 
 		const constructionCards = document.querySelectorAll('.construction-card');
 		constructionCards.forEach(card => {
-			cardObserver.observe(card);
+			constructionCardObserver.observe(card);
 		});
 	});
 </script>
@@ -196,9 +224,6 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
             <img src="/images/aggregate3.png" alt="순환골재 3">
         </div>
 
-        <div class="aggregate-image image4">
-            <img src="/images/aggregate4.png" alt="순환골재 4">
-        </div>
     </div>
      </div>
     </div>
@@ -207,82 +232,86 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 
 <!--순환 골재는 JS-->
 <script>
-	document.addEventListener("DOMContentLoaded", () => {
-		const section = document.querySelector('.aggregate-section');
-		const textLines = document.querySelectorAll('.texts p');
-		const images = document.querySelectorAll('.aggregate-image');
-		const viewportHeight = window.innerHeight;
+    document.addEventListener("DOMContentLoaded", () => {
+       const section = document.querySelector('.aggregate-section');
+       const textLines = document.querySelectorAll('.texts p');
+       const images = document.querySelectorAll('.aggregate-image');
+       const viewportHeight = window.innerHeight;
 
-		// 초기 상태
-		images.forEach(img => {
-			img.style.visibility = 'hidden';
-			img.style.transform = 'translateY(50px)';
-			img.style.transition = 'transform 0.7s cubic-bezier(.22,.9,.27,1), opacity 0.7s ease-out';
-			img.style.opacity = 0;
-		});
+       // 초기 상태
+       images.forEach(img => {
+          img.style.visibility = 'hidden';
+          img.style.transform = 'translateY(40px)';
+          img.style.transition = 'transform 0.6s cubic-bezier(.22,.9,.27,1), opacity 0.6s ease-out';
+          img.style.opacity = 0;
+       });
 
-		textLines.forEach(line => {
-			line.style.transition = 'opacity 0.5s ease, transform 0.6s ease-out';
-		});
+       textLines.forEach(line => {
+          line.style.transition = 'opacity 0.4s ease, transform 0.5s ease-out';
+       });
 
-		function animateOnScroll() {
-			const scrollY = window.scrollY;
-			const sectionTop = section.offsetTop;
-			const sectionHeight = section.offsetHeight;
+       function animateOnScroll() {
+          const scrollY = window.scrollY;
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
 
-			let progress = (scrollY - sectionTop + viewportHeight) / sectionHeight;
-			progress = Math.min(Math.max(progress, 0), 1);
+          let progress = (scrollY - sectionTop + viewportHeight) / sectionHeight;
+          progress = Math.min(Math.max(progress, 0), 1);
 
-			// 1. 텍스트 순차 등장
-			textLines.forEach((line, i) => {
-				const start = 0.05 + i * 0.08;
-				const end = start + 0.25;
-				let p = (progress - start) / (end - start);
-				p = Math.min(Math.max(p, 0), 1);
-				line.style.opacity = p;
-				line.style.transform = `translateY(${30 * (1 - p)}px)`;
-			});
+          // 1. 텍스트 등장
+          textLines.forEach((line, i) => {
+             const start = 0.25 + i * 0.05;
+             const end = start + 0.15;
+             let p = (progress - start) / (end - start);
+             p = Math.min(Math.max(p, 0), 1);
+             line.style.opacity = p;
+             line.style.transform = `translateY(${20 * (1 - p)}px)`;
+          });
 
-			const textDone = 0.05 + (textLines.length - 1) * 0.08 + 0.25;
+          const textDone = 0.25 + (textLines.length - 1) * 0.05 + 0.15;
 
-			// 2. 이미지 등장 (텍스트 완료 후 시작)
-			const imageOffsets = [textDone + 0.05, textDone + 0.15, textDone + 0.25, textDone + 0.35];
-			images.forEach((img, i) => {
-				if (progress >= imageOffsets[i]) {
-					img.style.visibility = 'visible';
-					img.style.opacity = 1;
-					img.style.transform = 'translateY(0px)';
-					img.style.zIndex = 10 + i;
-				} else {
-					img.style.opacity = 0;
-					img.style.visibility = 'hidden';
-					img.style.transform = 'translateY(50px)';
-				}
-			});
-		}
+          // 2. 이미지 등장 (3개만)
+          const imageOffsets = [
+             textDone + 0.08,
+             textDone + 0.16,
+             textDone + 0.24
+          ];
 
-		window.addEventListener('scroll', animateOnScroll);
-		window.addEventListener('resize', animateOnScroll);
-		animateOnScroll();
-	});
+          images.forEach((img, i) => {
+             if (progress >= imageOffsets[i]) {
+                img.style.visibility = 'visible';
+                img.style.opacity = 1;
+                img.style.transform = 'translateY(0px)';
+                img.style.zIndex = 10 + i;
+             } else {
+                img.style.opacity = 0;
+                img.style.visibility = 'hidden';
+                img.style.transform = 'translateY(40px)';
+             }
+          });
+       }
+
+       window.addEventListener('scroll', animateOnScroll);
+       window.addEventListener('resize', animateOnScroll);
+       animateOnScroll();
+    });
 </script>
 
 <!--순환 골재는 섹션 끝-->
 
 <!--사용 용도 섹션 시작-->
 <!--사용 용도 섹션1-->
-<div class="usage-section1-wrapper">
     <section id="usage1" class="usage-section usage-section1" data-theme="dark">
         <div class="usage-intro">
             <h2 class="usage-intro-text">WASTE TO RESOURCE</h2>
         </div>
     </section>
-</div>
 
 <!--사용 용도 섹션1 끝-->
 <!--사용 용도 섹션2-->
 <section id="usage2" class="usage-section usage-section2" data-theme="dark">
-    <div class="usage-content">
+
+	<div class="usage-content">
     <div class="usage-header">
         <span class="usage-label">탄소저감</span>
         <h2 class="usage-title">
@@ -350,285 +379,454 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 
 <!--사용 용도 JS 합친 버전-->
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+	document.addEventListener('DOMContentLoaded', () => {
 
-        //섹션1
-        const usageWrapper = document.querySelector('.usage-section1-wrapper');
-        const usageText = document.querySelector('.usage-intro-text');
-        const USAGE_CONFIG = {
-            fadeIn: { startProgress: 0.05, endProgress: 0.25, scaleFrom: 0.8, scaleTo: 1 },
-            hold: { startProgress: 0.25, endProgress: 0.7 },
-            fadeOut: { startProgress: 0.7, endProgress: 0.95, moveDistance: -300 }
-        };
+	   // 섹션1
+	   const usageSection1 = document.querySelector('.usage-section1');
+	   const usageText = document.querySelector('.usage-intro-text');
+	   let section1Appeared = false;
 
-        function clamp01(v) { return Math.max(0, Math.min(1, v)); }
-        function calculateProgress(current, start, end) {
-            if (end === start) return 0;
-            return clamp01((current - start) / (end - start));
-        }
-        function getWrapperProgress() {
-            const rect = usageWrapper.getBoundingClientRect();
-            const wrapperHeight = usageWrapper.offsetHeight;
-            const viewportHeight = window.innerHeight;
-            const scrollStart = rect.top;
-            const scrollRange = wrapperHeight - viewportHeight;
-            return clamp01(-scrollStart / (scrollRange || 1));
-        }
+	   function animateSection1() {
+		  const rect = usageSection1.getBoundingClientRect();
+		  const vh = window.innerHeight;
 
-        function animateSection1() {
-            const progress = getWrapperProgress();
-            if (progress >= USAGE_CONFIG.fadeIn.startProgress && progress <= USAGE_CONFIG.fadeIn.endProgress) {
-                const p = calculateProgress(progress, USAGE_CONFIG.fadeIn.startProgress, USAGE_CONFIG.fadeIn.endProgress);
-                const scale = USAGE_CONFIG.fadeIn.scaleFrom + (USAGE_CONFIG.fadeIn.scaleTo - USAGE_CONFIG.fadeIn.scaleFrom) * p;
-                usageText.style.opacity = p;
-                usageText.style.transform = `scale(${scale}) translateY(0)`;
+		  // 섹션1이 화면에 들어오면 등장
+		  if (rect.top < vh * 0.7 && !section1Appeared) {
+			 usageSection1.classList.add('visible');
+			 usageText.classList.add('visible');
+			 section1Appeared = true;
+		  }
 
-            } else if (progress > USAGE_CONFIG.hold.startProgress && progress <= USAGE_CONFIG.hold.endProgress) {
-                usageText.style.opacity = 1;
-                usageText.style.transform = `scale(1) translateY(0)`;
+		  // 섹션1이 화면 위로 올라가면 페이드아웃
+		  if (rect.bottom < vh * 0.3 && section1Appeared) {
+			 usageText.classList.add('fade-out');
+		  }
+	   }
 
-            } else if (progress > USAGE_CONFIG.fadeOut.startProgress) {
-                const p = calculateProgress(progress, USAGE_CONFIG.fadeOut.startProgress, USAGE_CONFIG.fadeOut.endProgress);
-                const textTranslateY = (USAGE_CONFIG.fadeOut.moveDistance * 0.2) * p;
-                usageText.style.opacity = 1;
-                usageText.style.transform = `translateY(${-Math.abs(textTranslateY)}px) scale(1)`;
+	   // 섹션2
+	   const usageHeader = document.querySelector('.usage-header');
+	   const usageItems = document.querySelectorAll('.usage-item');
 
-            } else {
-                usageText.style.opacity = 0;
-                usageText.style.transform = `scale(${USAGE_CONFIG.fadeIn.scaleFrom})`;
-            }
-        }
+	   function animateSection2() {
+		  const vh = window.innerHeight;
 
-        //섹션2
-        const usage2 = document.querySelector('.usage-section2');
-        const usageHeader = usage2.querySelector('.usage-header');
-        const usageItems = Array.from(usage2.querySelectorAll('.usage-item'));
-        let currentScale = 1;
-        let currentTranslateY = 0;
+		  // 헤더 페이드인
+		  const headerRect = usageHeader.getBoundingClientRect();
+		  if (headerRect.top < vh * 0.8 && headerRect.top > 0) {
+			 usageHeader.style.opacity = '1';
+			 usageHeader.style.transform = 'translateY(0)';
+		  }
 
-        function animateSection2() {
-            const scrollTop = window.scrollY;
-            const vh = window.innerHeight;
-            const sectionTop = usage2.offsetTop;
-            const sectionHeight = usage2.offsetHeight;
-            const sectionBottom = sectionTop + sectionHeight;
+		  // 각 카드 페이드인
+		  usageItems.forEach((item) => {
+			 const rect = item.getBoundingClientRect();
+			 if (rect.top < vh * 0.75 && rect.top > 0) {
+				item.style.opacity = '1';
+				item.style.transform = 'translateY(0)';
+			 }
+		  });
+	   }
 
-            // 섹션2 축소
-            const shrinkStart = sectionBottom - vh * 0.8;
-            const shrinkEnd = sectionBottom;
-            const shrinkProgress = clamp01((scrollTop - shrinkStart) / (shrinkEnd - shrinkStart));
+	   // 스크롤 이벤트
+	   window.addEventListener('scroll', () => {
+		  requestAnimationFrame(() => {
+			 animateSection1();
+			 animateSection2();
+		  });
+	   });
 
-            const targetScale = 1 - 0.15 * shrinkProgress;
-            const targetTranslateY = -vh * 0.15 * shrinkProgress;
-            currentScale += (targetScale - currentScale) * 0.05;
-
-            currentTranslateY += (targetTranslateY - currentTranslateY) * 0.05;
-            usage2.style.transform = `translateY(${currentTranslateY}px) scale(${currentScale})`;
-            usage2.style.transformOrigin = 'top center';
-
-            // 헤더 fade-in
-            const headerProgress = clamp01((scrollTop - sectionTop + vh * 0.3) / (vh * 0.3));
-            usageHeader.style.opacity = headerProgress;
-            usageHeader.style.transform = `translateY(${150 * (1 - headerProgress)}px)`;
-
-            // 카드 fade-in
-            usageItems.forEach(item => {
-                const rectItem = item.getBoundingClientRect();
-                const cardProgress = clamp01(1 - (rectItem.top - vh * 0.1) / (vh * 0.5));
-                const translateY = 80 * (1 - cardProgress);
-                item.style.opacity = cardProgress;
-                item.style.transform = `translateY(${translateY}px)`;
-            });
-
-            requestAnimationFrame(animateSection2);
-        }
-
-        let ticking1 = false;
-        let ticking2 = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking1) {
-                window.requestAnimationFrame(() => { animateSection1(); ticking1 = false; });
-                ticking1 = true;
-            }
-            if (!ticking2) {
-                window.requestAnimationFrame(() => { animateSection2(); ticking2 = false; });
-                ticking2 = true;
-            }
-        });
-
-        window.addEventListener('resize', () => {
-            animateSection1();
-            animateSection2();
-        });
-
-        animateSection1();
-        animateSection2();
-
-    });
+	   // 초기 실행
+	   animateSection1();
+	   animateSection2();
+	});
 </script>
+
 
 
 <!--통계 섹션-->
 <section id="stats" class="stats-section" data-theme="light">
-    <!-- 왼쪽: 바 + 라인 -->
-    <div class="stats-section-left">
-        <div class="bar-chart-container">
-            <div class="bar-chart-title">
-                <h2>건설폐기물 재활용률</h2>
-                <p>2018-2021년 재활용률(%):(재활용량/발생량)x100</p>
+
+    <div class="stats-header">
+        <span class="stats-label">STATS</span>
+        <h2 class="stats-title">데이터로 보는 순환골재</h2>
+        <p class="stats-subtitle">한 눈에 확인하는 순환골재 생산 및 활용 현황</p>
+    </div>
+
+    <div class="stats-main-content">
+
+    <!--왼쪽 숫자 카운터 섹션-->
+    <div class="stats-left-section">
+
+    <div class="key-metrics">
+        <div class="metric-card">
+            <div class="metric-content">
+                <p class="metric-label">연간 순환골재 생산량</p>
+                <h2 class="metric-value" data-target="5111">0</h2>
+                <span class="metric-unit">만톤</span>
             </div>
-            <div class="bar-chart-size">
+        </div>
+    </div>
+
+    <!-- 왼쪽: 지도 -->
+        <div class="map-section">
+            <div class="korea-map-container">
+            <h2 class="map-title">지역별 순환골재 생산량</h2>
+            <p class="map-description">지도 위에 마우스를 올리면 지역별 생산 비중을 확인하실 수 있습니다.</p>
+
+                <!-- 지도 범례 -->
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #f94144;"></span>
+                        <span>15% 이상</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #f9c74f;"></span>
+                        <span>10-15%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #90be6d;"></span>
+                        <span>5-10%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #577590;"></span>
+                        <span>5% 미만</span>
+                    </div>
+                </div>
+                <svg id="usage-korea-map"></svg>
+
+</div>
+        </div>
+    </div>
+
+    <!-- 오른쪽 차트 섹션 -->
+    <div class="charts-section">
+
+    <!-- 재활용률 바 차트 -->
+        <div class="chart-card bar-chart-card">
+            <div class="chart-header">
+                <h3>건설폐기물 재활용률 추이</h3>
+                <p>2018-2021년 재활용률 (%) = (재활용량/발생량) x 100</p>
+            </div>
+            <div class="chart-body">
                 <canvas id="usage-bar-chart"></canvas>
             </div>
         </div>
 
-        <div class="line-chart-container">
-            <div class="line-chart-title">
-                <h2>건설폐기물 발생량 대비 순환골재 사용량</h2>
+        <!-- 발생량 대비 사용량 라인 차트 -->
+        <div class="chart-card line-chart-card">
+            <div class="chart-header">
+                <h3>건설폐기물 발생량 대비 순환골재 사용량</h3>
                 <p>2020-2023년 추이 (단위:만톤)</p>
             </div>
-            <div class="donut-chart-size">
+            <div class="chart-body">
                 <canvas id="usage-line-chart"></canvas>
             </div>
         </div>
+
+        <!-- 용도별 사용량 도넛 차트 -->
+        <div class="chart-card donut-chart-card">
+                <div class="chart-header">
+                    <h2>용도별 순환골재 사용량</h2>
+                    <p>2020-2021년 평균 (단위:만톤)</p>
+                </div>
+            <div class="chart-body">
+                    <canvas id="usage-donut-chart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- 가운데: 제목 + 지도 -->
-    <div class="stats-section-center">
-        <div class="korea-map-container" style="text-align:center;">
-            <h1 class="section-title">데이터로 보는 순환골재</h1>
-            <p>지도위에 마우스를 올리면 지역별 생산량을 확인하실 수 있습니다.</p>
-            <svg id="usage-korea-map"></svg>
+    <div class="insights-section">
+        <div class="insight-card">
+            <h4>증가 추세</h4>
+            <p>최근 3년간 순환골재 사용량이 꾸준히 증가하며 친환경 건설 자재로 자리매김하고 있습니다.</p>
+        </div>
+        <div class="insight-card">
+            <h4>주요 용도</h4>
+            <p>성토용(38%)과 도로기층용(27%)이 전체 사용량의 65%를 차지하며 가장 높은 활용도를 보입니다.</p>
+        </div>
+        <div class="insight-card">
+            <h4>환경 효과</h4>
+            <p>순환골재 사용으로 천연골재 채취 감소 및 CO₂ 배출 저감 효과를 창출하고 있습니다.</p>
         </div>
     </div>
 
-    <!-- 오른쪽: 도넛 -->
-    <div class="stats-section-right">
-        <div class="total-number-container">
-            <div class="up-total-number">
-                <p>무슨무슨 총량</p>
-                <h1>4,323</h1>
-            </div>
-            <div class="down-total-number">
-                <p>무슨무슨 총량</p>
-                <h1>4,323</h1>
-            </div>
-        </div>
-        <div class="donut-chart-container">
-            <div class="donut-chart-title">
-                <h2>용도별 순환골재 사용량</h2>
-                <p>2020-2021년 평균 (단위:만톤)</p>
-            </div>
-            <div class="donut-chart-size">
-                <canvas id="usage-donut-chart"></canvas>
-            </div>
-        </div>
-    </div>
 </section>
+<div id="tooltip"></div>
 
-
-<div id="tooltip" style="
-    position: absolute;
-    background-color: rgba(0,0,0,0.7);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    pointer-events: none;
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.2s;
-"></div>
 <!--통계 섹션 끝-->
+
 <!--통계 섹션 JS-->
 <script>
-    new Chart(document.getElementById("usage-line-chart").getContext('2d'), {
-       type: 'line',
-       data: {
-           labels: ["2020","2021","2022","2023"],
-           datasets: [
-           {
-               label: "건설 폐기물 발생량",
-               data: [8644,8381,7681,6437],
-                borderColor: '#13a162'
+// 숫자 카운터 애니메이션
+function animateCounter(element, start, end, duration) {
+    const isDecimal = end % 1 !== 0;
+    const range = end - start;
+    const increment = range / (duration / 16);
+    let current = start;
+
+    const timer = setInterval(() => {
+        current += increment;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+            current = end;
+            clearInterval(timer);
+        }
+        element.textContent = isDecimal ? current.toFixed(1) : Math.floor(current).toLocaleString();
+    }, 16);
+}
+
+// 카운터 시작
+const observerOptions = {
+    threshold: 0.3,
+    rootMargin: '0px'
+};
+
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+            const target = parseFloat(entry.target.dataset.target);
+            animateCounter(entry.target, 0, target, 2000);
+            entry.target.classList.add('counted');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.metric-value').forEach(el => {
+    statsObserver.observe(el);
+});
+
+// 라인 차트 - 발생량 대비 사용량
+new Chart(document.getElementById("usage-line-chart").getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: ["2020", "2021", "2022", "2023"],
+        datasets: [
+            {
+                label: "건설폐기물 발생량",
+                data: [8644, 8381, 7681, 6437],
+                borderColor: '#13a162',
+                backgroundColor: 'rgba(19, 161, 98, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 2,
+                pointHoverRadius: 4,
+                pointBackgroundColor: '#13a162',
+                pointBackgroundColor: '#13a162',
+                pointBorderWidth: 2
             },
             {
-                label: "순환 골재 사용량",
-                data: [5024,5217,5333,5111],
-                borderColor: '#d04522'
+                label: "순환골재 사용량",
+                data: [5024, 5217, 5333, 5111],
+                borderColor: '#d04522',
+                backgroundColor: 'rgba(208, 69, 34, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 2,
+                pointHoverRadius: 4,
+                pointBackgroundColor: '#d04522',
+                pointBackgroundColor: '#d04522',
+                pointBorderWidth: 2
             }
-            ]
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                    usePointStyle: true,
+                    padding: 15,
+                    font: {
+                        size: 12,
+                        weight: '500'
+                    }
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 10,
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                displayColors: true,
+                callbacks: {
+                    label: function(context) {
+                        return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + '만톤';
+                    }
+                }
+            }
         },
-        options: {
-            responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
-            maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
-            plugins: {
-                legend: { display: true }, // 범례 표시 여부
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                },
+                ticks: {
+                    callback: function(value) {
+                        return value.toLocaleString();
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                }
             }
         }
-    });
+    }
+});
 
 
-     new Chart(document.getElementById("usage-donut-chart").getContext('2d'), {
-       type: 'doughnut',
-       data: {
-           labels: ["성토용","도로기층용","복토용","콘크리트용","기타"],
-           datasets: [{
-               data: [38,27,21,10,5],
-               backgroundColor: ['#035220','#4b5b70','#be563d','#a46645','#4e4c4c']
-           }]
-       },
-       options: {
-           responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
-           maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
-           plugins: {
-               legend: { display: true }, // 범례 표시 여부
-           }
-       }
-   });
-
-   new Chart(document.getElementById("usage-bar-chart").getContext('2d'), {
-        type: 'bar',
-        data: {
-            labels: ["2018","2019","2020","2021"],
-            datasets: [
-            {
-                label: "건설폐기물 재활용률",
-                data: [50,60,65,60],
-                backgroundColor: '#f1512e'
-            }
-            ]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,       // 차트가 부모 컨테이너 크기에 맞춰 자동으로 크기 조정됨
-            maintainAspectRatio: false, // true면 aspect-ratio 고정, false면 부모 크기에 맞춤
-            plugins: {
-                legend: { display: true }, // 범례 표시 여부
+   // 도넛 차트 - 용도별 사용량
+new Chart(document.getElementById("usage-donut-chart").getContext('2d'), {
+    type: 'pie',
+    data: {
+        labels: ["성토용", "도로기층용", "복토용", "콘크리트용", "기타"],
+        datasets: [{
+            data: [38, 27, 21, 10, 4],
+            backgroundColor: [
+                '#035220',
+                '#4b5b70',
+                '#be563d',
+                '#a46645',
+                '#4e4c4c'
+            ],
+            borderWidth: 3,
+            borderColor: '#fff',
+            hoverOffset: 15
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    usePointStyle: true,
+                    padding: 15,
+                    font: {
+                        size: 13,
+                        weight: '500'
+                    }
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                displayColors: true,
+                callbacks: {
+                    label: function(context) {
+                        const label = context.label || '';
+                        const value = context.parsed || 0;
+                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                        const percentage = ((value / total) * 100).toFixed(1);
+                        return label + ': ' + value + '만톤 (' + percentage + '%)';
+                    }
+                }
             }
         }
-    });
+    }
+});
 
-      const regionColors = {
-        "서울특별시": "#f94144",
-        "부산광역시": "#f3722c",
-        "대구광역시": "#f8961e",
-        "인천광역시": "#f9844a",
-        "광주광역시": "#f9c74f",
-        "대전광역시": "#90be6d",
-        "울산광역시": "#43aa8b",
-        "세종특별자치시": "#4d908e",
-        "경기도": "#577590",
-        "강원도": "#277da1",
-        "충청북도": "#720026",
-        "충청남도": "#d00000",
-        "전라북도": "#ffb703",
-        "전라남도": "#fb8500",
-        "경상북도": "#023047",
-        "경상남도": "#219ebc",
-        "제주특별자치도": "#8ecae6"
+//바차트 - 재활용률
+const ctx = document.getElementById("usage-bar-chart").getContext("2d");
+
+// 그라데이션 색상 생성 함수
+function getGradient(ctx, color) {
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, color.replace('1)', '0.9)'));
+    gradient.addColorStop(0.5, color.replace('1)', '0.7)'));
+    gradient.addColorStop(1, color.replace('1)', '1)'));
+    return gradient;
+}
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["2018", "2019", "2020", "2021"],
+        datasets: [{
+            label: "재활용률 (%)",
+            data: [97.8, 98.0, 98.2, 98.4],
+            backgroundColor: [
+                getGradient(ctx, 'rgba(241, 81, 46, 1)'),
+                getGradient(ctx, 'rgba(241, 81, 46, 1)'),
+                getGradient(ctx, 'rgba(241, 81, 46, 1)'),
+                getGradient(ctx, 'rgba(241, 81, 46, 1)')
+            ],
+            borderColor: '#f1512e',
+            borderWidth: 2,
+            borderRadius: 10,
+            barPercentage: 0.6,
+            categoryPercentage: 0.6,
+            hoverBackgroundColor: 'rgba(241, 81, 46, 0.6)',
+            hoverBorderColor: '#f1512e'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                padding: 12,
+                titleColor: '#fff',
+                bodyColor: '#fff',
+                displayColors: false,
+                callbacks: {
+                    label: function(context) {
+                        return context.parsed.y + '%';
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                grid: { color: 'rgba(0,0,0,0.05)' },
+                ticks: {
+                    callback: function(value) { return value + '%'; }
+                }
+            },
+            x: {
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+//지도
+const regionColors = {
+    "서울특별시": "#f94144",
+    "부산광역시": "#f3722c",
+    "대구광역시": "#f8961e",
+    "인천광역시": "#f9844a",
+    "광주광역시": "#f9c74f",
+    "대전광역시": "#90be6d",
+    "울산광역시": "#43aa8b",
+    "세종특별자치시": "#4d908e",
+    "경기도": "#577590",
+    "강원도": "#277da1",
+    "충청북도": "#720026",
+    "충청남도": "#d00000",
+    "전라북도": "#ffb703",
+    "전라남도": "#fb8500",
+    "경상북도": "#023047",
+    "경상남도": "#219ebc",
+    "제주특별자치도": "#8ecae6"
     };
 
-    const regionData = {
+const regionData = {
     "서울특별시": "10%",
     "부산광역시": "12%",
     "대구광역시": "8%",
@@ -648,60 +846,64 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
     "제주특별자치도": "3%"
 };
 
+const svg = d3.select("#usage-korea-map");
+const tooltip = d3.select("#tooltip");
 
-
-    const svg = d3.select("#usage-korea-map");
-    const tooltip = d3.select("#tooltip");
-
-   fetch('/data/skorea-provinces-2018-topo.json')
+fetch('/data/skorea-provinces-2018-topo.json')
     .then(res => res.json())
-    .then(data =>{
-    const geoData = topojson.feature(data, data.objects.skorea_provinces_2018_geo);
+    .then(data => {
+        const geoData = topojson.feature(data, data.objects.skorea_provinces_2018_geo);
 
-    const projection = d3.geoMercator()
-        .center([128,36])
-        .scale(5500)
-        .translate([250,380]);
+        const projection = d3.geoMercator()
+            .center([128, 36])
+            .scale(5500)
+            .translate([240, 275]);
 
-    const path = d3.geoPath().projection(projection);
+        const path = d3.geoPath().projection(projection);
 
-    svg.selectAll("path")
-        .data(geoData.features)
-        .enter()
-        .append("path")
-        .attr("d", path)
-        .attr("stroke","#333")
-        .attr("fill", "white")
-        .attr("stroke-width",0.5)
-        .on("mouseover", function(event,d){
-            // hover 색 변경
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("fill", d=> regionColors[d.properties.name] || "#ffd700")
-                .attr("transform", "translate(0,-5)"); // 살짝 위로
-            // tooltip 표시
-            if(d.properties && d.properties.name){
-                tooltip.style("opacity", 1)
-                       .html(`${d.properties.name}: ${regionData[d.properties.name] || "-"}`);
-            }
-        })
-        .on("mousemove", function(event){
-            tooltip.style("left", (event.pageX + 10) + "px")
-                   .style("top", (event.pageY + 10) + "px");
-        })
-        .on("mouseout", function(){
-            // 색 원상복귀
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("fill", "white")
-                .attr("transform", "translate(0,0)"); // 원래 위치
-            // tooltip 숨김
-            tooltip.style("opacity", 0);
-        });
+        svg.selectAll("path")
+            .data(geoData.features)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .attr("stroke", "#333")
+            .attr("fill", "#f0f0f0")
+            .attr("stroke-width", 1)
+            .style("cursor", "pointer")
+            .on("mouseover", function(event, d) {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("fill", d => regionColors[d.properties.name] || "#ffd700")
+                    .attr("stroke-width", 2)
+                    .style("filter", "brightness(1.1)");
+
+                if (d.properties && d.properties.name) {
+                    tooltip.style("opacity", 1)
+                        .html(`
+                            <strong>${d.properties.name}</strong><br/>
+                            생산 비중: ${regionData[d.properties.name] || "-"}
+                        `);
+                }
+            })
+            .on("mousemove", function(event) {
+                tooltip.style("left", (event.pageX + 15) + "px")
+                    .style("top", (event.pageY + 15) + "px");
+            })
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("fill", "#f0f0f0")
+                    .attr("stroke-width", 1)
+                    .style("filter", "brightness(1)");
+
+                tooltip.style("opacity", 0);
+            });
+    })
+    .catch(error => {
+        console.error('지도 데이터 로드 실패:', error);
     });
-
 </script>
 
 <!--시뮬레이션 섹션1-->
@@ -758,7 +960,7 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
             <h3 class="result-title">탄소 저감 효과</h3>
             <div class="result-value">
                 <span class="result-label">저감된 탄소배출량</span>
-                <span class="result-number" id="carbonValue">825.6</span>
+                <span class="result-number" id="carbonValue">0</span>
                 <span class="result-unit">kgCO₂</span>
             </div>
         </div>
@@ -767,12 +969,13 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
             <h3 class="result-title">비용 절감 효과</h3>
             <div class="result-value">
                 <span class="result-label">절감된 비용량</span>
-                <span class="result-number" id="costValue">366</span>
+                <span class="result-number" id="costValue">0</span>
                 <span class="result-unit">만원</span>
             </div>
         </div>
     </div>
 </section>
+
 
 <!--시뮬레이션 섹션 끝-->
 <!--시뮬레이션 JS-->
@@ -844,8 +1047,6 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
         updateValues(this.value);
     });
 
-    updateValues(40);
-
     /* 섹션1 순차 애니메이션 */
     const section1 = document.getElementById('simulation1');
     const section2 = document.getElementById('simulation2');
@@ -862,10 +1063,14 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
     simulationDescription.style.opacity = '0';
     simulationDescription.style.transform = 'translateY(20px)';
 
-    // Intersection Observer로 섹션1 감지
+    // 애니메이션 완료 플래그
+    let section1AnimationComplete = false;
+    let section2Animated = false;
+
+    // 섹션1 Intersection Observer
     const section1Observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !section1AnimationComplete) {
                 //섹션 배경 페이드인
                 section1.style.transition = 'opacity 0.5s ease';
                 section1.style.opacity = '1';
@@ -889,6 +1094,7 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
                     simulationDescription.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
                     simulationDescription.style.opacity = '1';
                     simulationDescription.style.transform = 'translateY(0)';
+                    section1AnimationComplete = true;
                 }, 1300);
 
                 section1Observer.unobserve(entry.target);
@@ -902,10 +1108,39 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 
     section1Observer.observe(section1);
 
-    window.addEventListener('load', () => {
-        const rect = section1.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
+    /* 섹션2 카운트업 효과 */
+    const section2Observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !section2Animated) {
+                section2Animated = true;
 
+                // 0에서 현재 슬라이더 값으로 카운트업
+                const currentValue = slider.value;
+                const recycledAmount = TOTAL_AGGREGATE * (currentValue / 100);
+                const co2Reduction = recycledAmount * CO2_REDUCTION_PER_TON;
+                const costReduction = (recycledAmount * COST_REDUCTION_PER_TON) / 10000;
+
+                animateValue(carbonValue, 0, co2Reduction, 1200);
+                animateValue(costValue, 0, costReduction, 1200);
+
+                section2Observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.3,
+        rootMargin: '0px'
+    });
+
+    section2Observer.observe(section2);
+
+    // 페이지 로드 시 처리
+    window.addEventListener('load', () => {
+        const rect1 = section1.getBoundingClientRect();
+        const rect2 = section2.getBoundingClientRect();
+
+        // 섹션1이 화면에 보이면 애니메이션 시작
+        if (rect1.top < window.innerHeight && rect1.bottom > 0 && !section1AnimationComplete) {
             section1.style.transition = 'opacity 0.5s ease';
             section1.style.opacity = '1';
 
@@ -925,140 +1160,350 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
                 simulationDescription.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
                 simulationDescription.style.opacity = '1';
                 simulationDescription.style.transform = 'translateY(0)';
+                section1AnimationComplete = true;
             }, 1300);
+        }
+
+        // 섹션2가 화면에 보이면 카운트업
+        if (rect2.top < window.innerHeight && rect2.bottom > 0 && !section2Animated) {
+            section2Animated = true;
+            const currentValue = slider.value;
+            const recycledAmount = TOTAL_AGGREGATE * (currentValue / 100);
+            const co2Reduction = recycledAmount * CO2_REDUCTION_PER_TON;
+            const costReduction = (recycledAmount * COST_REDUCTION_PER_TON) / 10000;
+
+            animateValue(carbonValue, 0, co2Reduction, 1200);
+            animateValue(costValue, 0, costReduction, 1200);
         }
     });
 </script>
 
 <!--한계 섹션-->
 <section id="limitation" class="limitation-section" data-theme="light">
-	<div class="section-header">
-		<span class="section-label">LIMITATION</span>
-		<h2 class="limitation-title">순환골재 사용량 증가의 한계</h2>
+	<div class="limitation-header">
+		<span class="limitation-label">LIMITATION</span>
+		<h2 class="limitation-title">순환골재 사용량이 더이상 증가하지 않는 이유는?</h2>
+	</div>
 
-		<div class="limitation-texts">
-			<p class="limitation-text1">* 2016년도 의무 사용량 확대(40%)로 인한 사용량 증가</p>
-			<p class="limitation-text2">* 2019년도 ~ 사용량 정체</p>
+	<div class="comparison-container">
+		<div class="comparison-wrapper">
+
+			<!-- 왼쪽: 성장 구간 (2011-2019) -->
+			<div class="before-section">
+				<div class="simulation-chart-container">
+					<canvas id="beforeChart"></canvas>
+				</div>
+				<div class="limitation-section-label before-label">
+					<h3>성장 구간</h3>
+					<p>2016년 의무 사용량 확대(40%)로 인한 사용량 증가</p>
+				</div>
+			</div>
+
+			<!-- 오른쪽: 정체 구간 (2019-2025) -->
+			<div class="after-section">
+				<div class="simulation-chart-container">
+					<canvas id="afterChart"></canvas>
+				</div>
+				<div class="limitation-section-label after-label">
+					<h3>정체 구간</h3>
+					<p> 2019년도 ~ 사용량 정체</p>
+				</div>
+			</div>
+
+			<!-- 슬라이더 -->
+			<div class="slider-line"></div>
+			<div class="slider-handle">
+				<div class="handle-icon">
+					<span>‹</span>
+					<span>›</span>
+				</div>
+			</div>
 		</div>
 	</div>
-
-	<div class="chart-container">
-		<canvas id="limitationChart"></canvas>
-	</div>
-
 	<p class="chart-source">참고 : 한국환경공단_순환골재 폐기물 데이터</p>
 </section>
+
+
 <!--한계 섹션 JS -->
 <script>
-	const years = [2011, 2013, 2015, 2017, 2019, 2021, 2023, 2025];
+	const beforeYears = [2011, 2013, 2015, 2017, 2019];
+	const afterYears = [2019, 2021, 2023, 2025];
 
-	<!--2011~2019까지 실제 데이터, 2023~2025는 예측 데이터 사용-->
-	const usageData = [39663247.87, 37505727.45, 36447265.56, 44784696.06,
-            54073761.09, 52177874.85, 51000000,  50000000];
+	const beforeData = [39663247.87, 37505727.45, 36447265.56, 44784696.06, 54073761.09];
+	const afterData = [54073761.09, 52177874.85, 51000000, 50000000];
 
-	const dataBefore = [39663247.87, 37505727.45, 36447265.56, 44784696.06,
-            54073761.09, null, null, null];
+	// 공통 차트
+	const commonOptions = {
+		responsive: true,
+		maintainAspectRatio: false,
+		animation: {
+			duration: 0
+		},
+		 layout: {
+            padding: {
+                left: 30,
+                right: 30,
+                top: 30,
+                bottom: 30
+            }
+		},
+		plugins: {
+			legend: {
+				display: false
+			},
+			tooltip: {
+				callbacks: {
+					label: function(context) {
+						return '사용량: ' + context.parsed.y.toLocaleString() + '톤';
+					}
+				}
+			}
+		},
+		scales: {
+			x: {
+				border: {
+					display: true,
+					color: '#E0E0E0',
+					width: 1
+				},
+				grid: {
+					display: false
+				},
+				ticks: {
+					color: '#666',
+					font: {
+						size: 16
+					},
+					padding: 20
+				}
+			},
+			y: {
+				border: {
+					display: true,
+					color: '#E0E0E0',
+					width: 1
+				},
+				min: 35000000,
+				max: 55000000,
+				ticks: {
+					stepSize: 5000000,
+					callback: function(value) {
+						return value.toLocaleString();
+					},
+					color: '#666',
+					font: {
+						size: 14
+					},
+					padding: 20
+				},
+				grid: {
+					display: false
+				}
+			}
+		}
+	};
 
-	const dataAfter = [null, null, null, null, 54073761.09, 52177874.85, 51000000,  50000000];
-
-	const limitationCtx = document.getElementById('limitationChart').getContext('2d');
-
-	const limitationChartInstance = new Chart(limitationCtx, {
+	// Before 차트
+	const beforeCtx = document.getElementById('beforeChart').getContext('2d');
+	const beforeChart = new Chart(beforeCtx, {
 		type: 'line',
 		data: {
-			labels: years,
-			datasets: [
-				{
-					label: '사용량(증가)',
-					data: dataBefore,
-					borderColor: '#000000',
-					backgroundColor: 'transparent',
-					borderWidth: 2,
-					pointRadius: 3,
-					pointBackgroundColor: '#fff',
-					pointBorderColor: '#000',
-					pointBorderWidth: 2,
-					tension: 0.1 },
-				{
-					label: '사용량(정체)',
-					data: dataAfter,
-					borderColor: '#BE563D',
-					borderWidth: 4,
-					pointRadius: 3,
-					pointBackgroundColor: '#fff',
-					pointBorderColor: '#BE563D',
-					pointBorderWidth: 2,
-					tension: 0.1 }
-				]
-			},
-			options: {
-				responsive: true,
-				maintainAspectRatio: false,
-				plugins: {
-					legend: {
-						display: false
-					},
-					tooltip: {
-						callbacks: {
-							label: function(context) {
-								return '사용량: ' + context.parsed.y.toLocaleString() + '톤';
-							}
-						}
-					}
-				},
-				scales: {
-					x: {
-						grid: {
-							color: '#E5E5E5'
-						}
-					},
-					y: {
-						min: 35000000,
-                        max: 55000000,
-                        ticks: {
-                            stepSize: 5000000,
-                            callback: function(value) {
-                                return value.toLocaleString();
-                            }
-                        },
-                        grid: {
-                            color: '#E5E5E5'
-                        }
-                    }
-                }
-            }
-        });
-</script>
+			labels: beforeYears,
+			datasets: [{
+				label: '성장 구간',
+				data: beforeData,
+				borderColor: '#43564A',
+				backgroundColor: 'transparent',
+				borderWidth: 4,
+				pointRadius: 4,
+				pointHoverRadius: 6,
+				pointBackgroundColor: '#fff',
+				pointBorderColor: '#43564A',
+				pointBorderWidth: 2,
+				tension: 0
+			}]
+		},
+		options: commonOptions
+	});
 
+	// After 차트 옵션
+	const afterOptions = JSON.parse(JSON.stringify(commonOptions));
+	afterOptions.scales.x.ticks.color = '#a0a0a0';
+	afterOptions.scales.y.ticks.color = '#a0a0a0';
+	afterOptions.scales.x.border.color = '#aaaaaa';
+	afterOptions.scales.y.border.color = '#aaaaaa';
+
+	// After 차트
+	const afterCtx = document.getElementById('afterChart').getContext('2d');
+	const afterChart = new Chart(afterCtx, {
+		type: 'line',
+		data: {
+			labels: afterYears,
+			datasets: [{
+				label: '정체 구간',
+				data: afterData,
+				borderColor: '#BE563D',
+				backgroundColor: 'transparent',
+				borderWidth: 4,
+				pointRadius: 4,
+				pointHoverRadius: 6,
+				pointBackgroundColor: '#fff',
+				pointBorderColor: '#BE563D',
+				pointBorderWidth: 2,
+				tension: 0
+			}]
+		},
+		options: afterOptions
+	});
+
+	// 슬라이더 기능
+	const comparisonWrapper = document.querySelector('.comparison-wrapper');
+	const sliderHandle = document.querySelector('.slider-handle');
+	const sliderLine = document.querySelector('.slider-line');
+	const afterSection = document.querySelector('.after-section');
+	let isDragging = false;
+
+	function updateSliderPosition(clientX) {
+		const rect = comparisonWrapper.getBoundingClientRect();
+		let position = ((clientX - rect.left) / rect.width) * 100;
+		position = Math.max(0, Math.min(100, position));
+
+		sliderHandle.style.left = position + '%';
+		sliderLine.style.left = position + '%';
+		afterSection.style.clipPath = `inset(0 0 0 ${position}%)`;
+	}
+
+	sliderHandle.addEventListener('mousedown', (e) => {
+		isDragging = true;
+		e.preventDefault();
+	});
+
+	document.addEventListener('mousemove', (e) => {
+		if (isDragging) {
+			updateSliderPosition(e.clientX);
+		}
+	});
+
+	document.addEventListener('mouseup', () => {
+		isDragging = false;
+	});
+
+	// 터치 이벤트
+	sliderHandle.addEventListener('touchstart', (e) => {
+		isDragging = true;
+		e.preventDefault();
+	});
+
+	document.addEventListener('touchmove', (e) => {
+		if (isDragging) {
+			updateSliderPosition(e.touches[0].clientX);
+		}
+	});
+
+	document.addEventListener('touchend', () => {
+		isDragging = false;
+	});
+
+	// 페이드인 애니메이션
+	const limitationObserver = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				setTimeout(() => {
+					document.querySelector('.limitation-label').classList.add('show');
+				}, 100);
+
+				setTimeout(() => {
+					document.querySelector('.limitation-title').classList.add('show');
+				}, 300);
+			}
+		});
+	}, {
+		threshold: 0.3
+	});
+
+	limitationObserver.observe(document.querySelector('.limitation-section'));
+
+	//그라데이션 효과
+	window.addEventListener('scroll', () => {
+    const limitationSection = document.querySelector('.limitation-section');
+    const whySection = document.querySelector('.why-section');
+
+    const limitationRect = limitationSection.getBoundingClientRect();
+    const whySectionRect = whySection.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    if (whySectionRect.top <= windowHeight + 600) {
+        limitationSection.classList.add('show-gradient');
+    } else {
+        limitationSection.classList.remove('show-gradient');
+    }
+});
+</script>
 <!--한계 섹션 끝-->
+
+
 <!--문제 섹션-->
 <section id="why" class="why-section" data-theme="dark">
 	<div class="why-header">
-		<span class="section-label">WHY?</span>
-		<h2 class="why-title">순환골재, 왜 확산되지 못하고 있을까?</h2>
-		<p class="why-subtitle">품질 신뢰성 우려로 인한 순환골재 사용 기피</p>
+		<span class="why-label">WHY?</span>
+		<h2 class="why-title">정체 구간의 원인</h2>
 	</div>
 
-	<div class="legend">
-		<div class="legend-item">
-			<div class="legend-color1"></div>
-				<span class="legend-text">전문가 그룹</span>
+	<div class="charts-grid">
+		<!-- 왼쪽: 기존 막대 그래프 -->
+		<div class="chart-card">
+			<h3 class="chart-card-title">순환골재 사용 기피 설문조사</h3>
+
+			<div class="legend">
+				<div class="legend-item">
+					<div class="legend-color1"></div>
+					<span class="legend-text">전문가 그룹</span>
+				</div>
+				<div class="legend-item">
+					<div class="legend-color2"></div>
+					<span class="legend-text">종사자 그룹</span>
+				</div>
+			</div>
+
+			<div class="chart-container-left">
+				<canvas id="whyChart"></canvas>
+			</div>
+
+			<p class="chart-description">
+				<strong>품질 신뢰성(73%)</strong>을 가장 큰 문제로 지적하고 있습니다.
+			</p>
+
+			<p class="chart-source-small">출처: LH 토지주택연구원</p>
 		</div>
-		<div class="legend-item">
-			<div class="legend-color2"></div>
-			<span class="legend-text">종사자 그룹</span>
+
+		<!-- 오른쪽: 새로운 수평 막대 그래프 -->
+		<div class="chart-card">
+			<h3 class="chart-card-title">순환골재 재활용 제품 미사용 이유</h3>
+
+			<div class="chart-container-right">
+				<canvas id="reasonChart"></canvas>
+			</div>
+
+			<p class="chart-description">
+				<strong>품질편차 우려(50.5%)</strong>가 가장 큰 미사용 이유로 나타났습니다.
+			</p>
+
+			<p class="chart-source-small">자료: 중소기업중앙회</p>
 		</div>
 	</div>
 
-	<div class="chart-container">
-		<canvas id="whyChart"></canvas>
+	<!-- 종합 설명 -->
+	<div class="summary-box">
+		<div class="summary-content">
+			<h4>핵심 문제</h4>
+			<p>두 조사 모두 <strong>품질에 대한 신뢰성 부족</strong>이 순환골재 사용 정체의 핵심 원인임을 보여줍니다.</p>
+		</div>
 	</div>
-
-	<p class="chart-source">출처 : LH(한국토지주택공사) 토지주택연구원 ‘순환골재 활성화 정책 제안을 위한 현장 실태조사 및 전문가 설문’</p>
 </section>
 
-<!--문제 섹션 JS -->
+<!--문제 섹션 JS 전체-->
 <script>
+	// 왼쪽 차트 (기존)
 	const whyCtx = document.getElementById('whyChart').getContext('2d');
 
 	const whyChartInstance = new Chart(whyCtx, {
@@ -1077,8 +1522,7 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 					borderWidth: 0,
 					barPercentage: 0.6,
 					categoryPercentage: 0.7,
-					borderRadius: 5,
-					borderSkipped: 'bottom'
+					borderRadius: 5
 				},
 				{
 					label: '종사자 그룹',
@@ -1087,17 +1531,14 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 					borderWidth: 0,
 					barPercentage: 0.6,
 					categoryPercentage: 0.7,
-					borderRadius: 5,
-					borderSkipped: 'bottom'
-					}
+					borderRadius: 5
+				}
 			]
 		},
-
 		options: {
 			responsive: true,
 			maintainAspectRatio: false,
-
-		animation: false,
+			animation: false,
 			plugins: {
 				legend: {
 					display: false
@@ -1110,28 +1551,24 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 					}
 				}
 			},
-
 			scales: {
 				x: {
 					grid: {
 						display: false,
 						drawBorder: true,
-						borderColor: '#ffffff',
-						borderWidth: 3
-
+						borderColor: '#444444',
+						borderWidth: 2
 					},
 					ticks: {
 						color: '#ffffff',
 						font: {
-							size: 24,
+							size: 14,
 							weight: '500'
 						},
 						maxRotation: 0,
-						autoSkipPadding: 20,
-						padding: 30
+						padding: 15
 					}
 				},
-
 				y: {
 					beginAtZero: true,
 					max: 80,
@@ -1144,15 +1581,15 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 					}
 				}
 			},
-
 			layout: {
 				padding: {
 					top: 30,
-					bottom: 20
+					bottom: 10,
+					left: 10,
+					right: 10
 				}
 			}
 		},
-
 		plugins: [{
 			afterDatasetsDraw: function(chart) {
 				const ctx = chart.ctx;
@@ -1160,165 +1597,228 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 					const meta = chart.getDatasetMeta(i);
 					meta.data.forEach(function(bar, index) {
 						const data = dataset.data[index];
-
 						ctx.fillStyle = '#FFFFFF';
-						ctx.font = 'bold 28px Pretendard';
+						ctx.font = 'bold 18px Pretendard';
 						ctx.textAlign = 'center';
 						ctx.textBaseline = 'bottom';
-
-						const x = bar.x;
-						const y = bar.y - 10;
-
-						ctx.fillText(data + '%', x, y);
+						ctx.fillText(data + '%', bar.x, bar.y - 8);
 					});
 				});
 			}
 		}]
 	});
-</script>
-<!--문제 그래프 섹션 끝-->
-<!--문제 그래프 JS-->
-<script>
+
+	// 오른쪽 차트 (새로운 수평 막대)
+	const reasonCtx = document.getElementById('reasonChart').getContext('2d');
+
+	const reasonChartInstance = new Chart(reasonCtx, {
+		type: 'bar',
+		data: {
+			labels: [
+				'순환골재 수급부족',
+				'순환골재품질기준 미달 및\n품질편차 증대',
+				'기증인증(KC, GR, 환경)\n표지 등 기준 충족미달',
+				'설비 없음',
+				'기타'
+			],
+			datasets: [{
+				label: '응답률',
+				data: [39.5, 50.5, 30.9, 3.6, 3.2],
+				backgroundColor: '#BE563D',
+				borderWidth: 0,
+				borderRadius: 4
+			}]
+		},
+		options: {
+			indexAxis: 'y',
+			responsive: true,
+			maintainAspectRatio: false,
+			animation: false,
+			plugins: {
+				legend: {
+					display: false
+				},
+				tooltip: {
+					callbacks: {
+						label: function(context) {
+							return context.parsed.x + '%';
+						}
+					}
+				}
+			},
+			scales: {
+				x: {
+					beginAtZero: true,
+					max: 60,
+					grid: {
+						color: 'rgba(255, 255, 255, 0.05)',
+						drawBorder: false
+					},
+					ticks: {
+						display: false
+					}
+				},
+				y: {
+					grid: {
+						display: false,
+						drawBorder: true,
+						borderColor: '#444444',
+						borderWidth: 2
+					},
+					ticks: {
+						color: '#ffffff',
+						font: {
+							size: 13
+						},
+						padding: 10,
+						crossAlign: 'far'
+					}
+				}
+			},
+			layout: {
+				padding: {
+					top: 10,
+					bottom: 10,
+					left: 10,
+					right: 40
+				}
+			}
+		},
+		plugins: [{
+			afterDatasetsDraw: function(chart) {
+				const ctx = chart.ctx;
+				const meta = chart.getDatasetMeta(0);
+				meta.data.forEach(function(bar, index) {
+					const data = chart.data.datasets[0].data[index];
+					ctx.fillStyle = '#FFFFFF';
+					ctx.font = 'bold 16px Pretendard';
+					ctx.textAlign = 'left';
+					ctx.textBaseline = 'middle';
+					ctx.fillText(data + '%', bar.x + 10, bar.y);
+				});
+			}
+		}]
+	});
+
+	// 간소화된 애니메이션
 	let hasAnimated = false;
 
-	const originalData = [
+	const originalDataLeft = [
 		[17, 73, 8],
 		[44, 33, 22]
 	];
 
+	const originalDataRight = [39.5, 50.5, 30.9, 3.6, 3.2];
+
 	whyChartInstance.data.datasets[0].data = [0, 0, 0];
 	whyChartInstance.data.datasets[1].data = [0, 0, 0];
+	reasonChartInstance.data.datasets[0].data = [0, 0, 0, 0, 0];
 	whyChartInstance.update('none');
+	reasonChartInstance.update('none');
 
-	window.addEventListener('scroll', () => {
-		const whySection = document.querySelector('.why-section');
-		const rect = whySection.getBoundingClientRect();
-		const windowHeight = window.innerHeight;
+	const whyObserver = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting && !hasAnimated) {
+				hasAnimated = true;
 
-		if (rect.top <= windowHeight * 0.3 && rect.bottom >= 0 && !hasAnimated) {
-		   whySection.classList.add('visible');
-		   hasAnimated = true;
+				// 1. 헤더 먼저 등장
+				setTimeout(() => {
+					document.querySelector('.why-header').classList.add('show');
+				}, 100);
 
-			// 첫 번째
-			setTimeout(() => {
-				whyChartInstance.data.datasets[0].data = [17, 0, 0];
-				whyChartInstance.data.datasets[1].data = [44, 0, 0];
-				whyChartInstance.options.animation = {
-					duration: 500,
-					easing: 'easeOutQuart'
-				};
-				whyChartInstance.update();
-			}, 100);
+				// 2. 카드, 설명 박스 함께 등장
+				setTimeout(() => {
+					document.querySelectorAll('.chart-card').forEach(card => {
+						card.classList.add('show');
+					});
+					document.querySelector('.summary-box').classList.add('show');
+				}, 600);
 
-			// 세 번째
-			setTimeout(() => {
-				whyChartInstance.data.datasets[0].data = [17, 0, 8];
-				whyChartInstance.data.datasets[1].data = [44, 0, 22];
-				whyChartInstance.options.animation = {
-					duration: 500,
-					easing: 'easeOutQuart'
-			};
-			whyChartInstance.update();
-		}, 600);
+				// 3. 차트 데이터 애니메이션
+				setTimeout(() => {
+					// 왼쪽 차트
+					whyChartInstance.data.datasets[0].data = originalDataLeft[0];
+					whyChartInstance.data.datasets[1].data = originalDataLeft[1];
+					whyChartInstance.options.animation = { duration: 1000, easing: 'easeOutQuart' };
+					whyChartInstance.update();
 
-			// 두 번째
-			setTimeout(() => {
-				whyChartInstance.data.datasets[0].data = [17, 73, 8];
-				whyChartInstance.data.datasets[1].data = [44, 33, 22];
-				whyChartInstance.options.animation = {
-					duration: 500,
-					easing: 'easeOutQuart'
-			};
-			whyChartInstance.update();
-		}, 1100);
-   }
-});
+					// 오른쪽 차트
+					reasonChartInstance.data.datasets[0].data = originalDataRight;
+					reasonChartInstance.options.animation = { duration: 1000, easing: 'easeOutQuart' };
+					reasonChartInstance.update();
+				}, 900);
+			}
+		});
+	}, {
+		threshold: 0.2
+	});
+
+	whyObserver.observe(document.querySelector('.why-section'));
 </script>
 
 <!--과정 섹션-->
+<!--과정 섹션-->
 <section id="procedure" class="procedure-section" data-theme="light">
-	<div class="procedure-header">
-		<span class="procedure-label">PROCEDURE</span>
-		<h2 class="procedure-title">품질 신뢰 회복의 핵심, <br>분리 선별 과정</h2>
+	<div class="container">
+		<div class="procedure-header">
+			<span class="procedure-label">PROCEDURE</span>
+			<h2 class="procedure-title">품질 신뢰 회복의 핵심, <br>분리 선별 과정</h2>
+		</div>
+
+		<div class="timeline-container">
+			<!-- STEP 1 -->
+			<div class="timeline-item">
+				<div class="step-number">01</div>
+				<div class="step-content">
+					<h3 class="step-title">철거</h3>
+					<p class="step-desc">건축물 해체 및 철거</p>
+				</div>
+			</div>
+
+			<!-- STEP 2 -->
+			<div class="timeline-item">
+				<div class="step-number">02</div>
+				<div class="step-content">
+					<h3 class="step-title">운반</h3>
+					<p class="step-desc">폐기물 수거 및 운반</p>
+				</div>
+			</div>
+
+			<!-- STEP 3 -->
+			<div class="timeline-item">
+				<div class="step-number">03</div>
+				<div class="step-content">
+					<h3 class="step-title">파쇄</h3>
+					<p class="step-desc">1차 파쇄 처리</p>
+				</div>
+			</div>
+
+			<!-- STEP 4 - Highlight -->
+			<div class="timeline-item highlight">
+				<div class="step-number">04</div>
+				<div class="step-content">
+					<h3 class="step-title">분리 선별</h3>
+					<p class="step-desc">고순도 분리 선별 공정</p>
+				</div>
+			</div>
+
+			<!-- STEP 5 -->
+			<div class="timeline-item">
+				<div class="step-number">05</div>
+				<div class="step-content">
+					<h3 class="step-title">순환 골재 생산</h3>
+					<p class="step-desc">최종 제품 생산</p>
+				</div>
+			</div>
+		</div>
 	</div>
-
-	<div class="timeline-wrapper">
-        <!--가로선 부분-->
-        <div class="timeline-line"></div>
-
-        <!-- 스텝1: 시작점 -->
-        <div class="timeline-step start" style="left: 50px;">
-            <div class="step-dot"></div>
-            <div class="vertical-line"></div>
-            <div class="step-info">
-                <span class="step-text">순환 골재 처리 공정</span>
-            </div>
-        </div>
-
-        <!-- 스텝2 -->
-        <div class="timeline-step" style="left: 250px;">
-            <div class="step-dot"></div>
-            <div class="vertical-line"></div>
-            <div class="step-info">
-                <span class="step-number">STEP.1</span>
-                <span class="step-text">철거</span>
-            </div>
-        </div>
-
-        <!-- 스텝3 -->
-        <div class="timeline-step" style="left: 450px;">
-            <div class="step-dot"></div>
-            <div class="vertical-line"></div>
-            <div class="step-info">
-                <span class="step-number">STEP.2</span>
-                <span class="step-text">운반</span>
-            </div>
-        </div>
-
-        <!-- 스텝4 -->
-        <div class="timeline-step" style="left: 650px;">
-            <div class="step-dot"></div>
-            <div class="vertical-line"></div>
-            <div class="step-info">
-                <span class="step-number">STEP.3</span>
-                <span class="step-text">파쇄</span>
-            </div>
-        </div>
-
-        <!-- 스텝5: highlight -->
-        <div class="timeline-step highlight" style="left: 850px;">
-            <div class="step-dot"></div>
-            <div class="vertical-line"></div>
-            <div class="step-info">
-                <span class="step-number">STEP.4</span>
-                <span class="step-text">분리 선별</span>
-            </div>
-        </div>
-
-        <!-- 스텝6 -->
-        <div class="timeline-step" style="left: 1050px;">
-            <div class="step-dot"></div>
-            <div class="vertical-line"></div>
-            <div class="step-info">
-                <span class="step-number">STEP.5</span>
-                <span class="step-text">순환 골재 생산</span>
-            </div>
-        </div>
-
-        <!-- 스텝7 -->
-        <div class="timeline-step" style="left: 1250px;">
-            <div class="step-dot"></div>
-            <div class="vertical-line"></div>
-            <div class="step-info">
-                <span class="step-text">순환 골재 사용</span>
-            </div>
-        </div>
-
-    </div>
 </section>
 
 <!--과정 섹션 JS-->
-<!--과정 섹션 끝-->
+<script>
+</script>
+
+
 <!--솔루션 섹션-->
 <section id="solution" class="solution-section" data-theme="light">
 	<div class="solution-header">
@@ -1336,28 +1836,28 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 
 			<p class="card-description">
 				순환 골재 이미지에서 <br>
-                플라스틱, 비닐, 유리 등 <br>
+                플라스틱, 비닐, 목재 등 <br>
 				다양한 불순물을 <br>
                 정밀하게 분리합니다.
 			</p>
 
-            <ul class="card-features">
-                <li>
-                    <img src="/images/solution.png" alt="icon">
-                    <span>순환 골재 이미지에서 플라스틱, 비닐, 유리 등 <br>
-                    다양한 불순물을 정밀하게 분리</span>
-                </li>
+<!--            <ul class="card-features">-->
+<!--                <li>-->
+<!--                    <img src="/images/solution.png" alt="icon">-->
+<!--                    <span>순환 골재 이미지에서 플라스틱, 비닐, 유리 등 <br>-->
+<!--                    다양한 불순물을 정밀하게 분리</span>-->
+<!--                </li>-->
 
-                <li>
-                    <img src="/images/solution.png" alt="icon">
-                    <span>고정밀 객체 검출로 불순물 식별</span>
+<!--                <li>-->
+<!--                    <img src="/images/solution.png" alt="icon">-->
+<!--                    <span>고정밀 객체 검출로 불순물 식별</span>-->
 
-                </li>
-                <li>
-                    <img src="/images/solution.png" alt="icon">
-                    <span>실시간 분석 시스템</span>
-                </li>
-            </ul>
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <img src="/images/solution.png" alt="icon">-->
+<!--                    <span>실시간 분석 시스템</span>-->
+<!--                </li>-->
+<!--            </ul>-->
 		</div>
         </div>
 
@@ -1373,21 +1873,21 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
                 불순물 영역을 빠르게 검출합니다.
 			</p>
 
-            <ul class="card-features">
-                <li>
-                    <img src="/images/solution.png" alt="icon">
-                    <span>영상의 색상, 밝기, 경계 등 <br>
-                    기초적인 영상 처리 기법 활용</span>
-                </li>
-                <li>
-                    <img src="/images/solution.png" alt="icon">
-                    <span>빠른 불순물 영역 검출</span>
-                </li>
-                <li>
-                    <img src="/images/solution.png" alt="icon">
-                    <span>실시간 이미지 전처리 및 품질 향상</span>
-                </li>
-            </ul>
+<!--            <ul class="card-features">-->
+<!--                <li>-->
+<!--                    <img src="/images/solution.png" alt="icon">-->
+<!--                    <span>영상의 색상, 밝기, 경계 등 <br>-->
+<!--                    기초적인 영상 처리 기법 활용</span>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <img src="/images/solution.png" alt="icon">-->
+<!--                    <span>빠른 불순물 영역 검출</span>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <img src="/images/solution.png" alt="icon">-->
+<!--                    <span>실시간 이미지 전처리 및 품질 향상</span>-->
+<!--                </li>-->
+<!--            </ul>-->
 		</div>
         </div>
 
@@ -1405,21 +1905,21 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 			배경과 대비되는 영역을 <br>
             시각적으로 강조합니다.
 		</p>
-        <ul class="card-features">
-            <li>
-                <img src="/images/solution.png" alt="icon">
-                <span>이미지의 색상 및 질감 정보를 축소하여 <br>
-                핵심 특징을 추출</span>
-            </li>
-            <li>
-                <img src="/images/solution.png" alt="icon">
-                <span>클러스터링 기반 불순물 그룹화</span>
-            </li>
-            <li>
-                <img src="/images/solution.png" alt="icon">
-                <span>배경 대비 영역 시각적 강조</span>
-            </li>
-        </ul>
+<!--        <ul class="card-features">-->
+<!--            <li>-->
+<!--                <img src="/images/solution.png" alt="icon">-->
+<!--                <span>이미지의 색상 및 질감 정보를 축소하여 <br>-->
+<!--                핵심 특징을 추출</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <img src="/images/solution.png" alt="icon">-->
+<!--                <span>클러스터링 기반 불순물 그룹화</span>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <img src="/images/solution.png" alt="icon">-->
+<!--                <span>배경 대비 영역 시각적 강조</span>-->
+<!--            </li>-->
+<!--        </ul>-->
 		</div>
 	</div>
     </div>
@@ -1445,6 +1945,8 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 		});
 	});
 </script>
+
+
 <!-- 헤더 테마 자동 변경 -->
 <script>
     function updateTheme() {

@@ -1,6 +1,6 @@
 /*공통으로 들어가는 것: 헤더, 푸터, 네비게이션, 로고 + 반응형 생각하기 */
 html {
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
     scroll-behavior: smooth;
 }
 
@@ -91,8 +91,8 @@ body {
 
 .nav-link {
     font-family: var(--engFont);
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 600;
     text-decoration: none;
     padding: 30.5px 35px;
     display: flex;
@@ -241,60 +241,3 @@ body {
     height: 24px;
     pointer-events: none;
 }
-
-
-
-/*네비게이션 바*/
-.nav-anchor {
-     position: fixed;
-     left: 40px;
-     top: 50%;
-     transform: translateY(-50%);
-     display: flex;
-     flex-direction: column;
-     gap: 30px;
-     z-index: 999;
-}
-
-.nav-anchor-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.nav-dots {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-}
-
-.nav-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-}
-
-.nav-anchor-item.active .nav-dot:first-child {
-    background: #E1D8CF;
-}
-
-.nav-anchor-text {
-    font-family: 'Geologica', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: #E1D8CF;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
-    text-transform: capitalize;
-    letter-spacing: 0.05em;
-}
-
-.nav-anchor-item:hover .nav-anchor-text,
-.nav-anchor-item.active .nav-anchor-text {
-    opacity: 1;
-}
-

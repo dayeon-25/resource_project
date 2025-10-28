@@ -1,0 +1,259 @@
+/* 모달 배경 */
+.analysis-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+/* 모달 컨테이너 */
+.analysis-modal-container {
+    background: white;
+    color: black;
+    margin: 1% auto;
+    padding: 3rem;
+    width: 60%;
+    min-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+/* 닫기 버튼 */
+.analysis-modal-close {
+    margin: -2rem -1.5rem;
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.analysis-modal-close:hover {
+    color: #000;
+}
+
+/* 구분선 */
+.modal-line {
+    border: 0;
+    border-top: 0.1rem solid #8b8b8b;
+}
+
+/* 메인 컨테이너 */
+.modal-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* 상단 섹션 */
+.modal-top {
+    display: grid;
+    grid-template-columns: 5.5fr 4.5fr;
+    width: 96%;
+    margin: 0 auto;
+    column-gap: 7rem;
+}
+
+.modal-top-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-top-right {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 다운로드 버튼 */
+#downloadReportButton {
+    font-size: 1rem;
+    color: white;
+    background: black;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 1rem;
+    vertical-align: middle;
+    border: none;
+    transition: background 0.2s;
+}
+
+#downloadReportButton:hover {
+    background: #333;
+}
+
+/* 종합 결과 타이틀 */
+.modal-total-result {
+    margin-top: 1rem;
+}
+
+.modal-total-result-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    position: relative;
+    width: 100%;
+}
+
+.modal-total-result-title p:last-child {
+    margin-left: auto;
+    font-size: 0.8rem;
+}
+
+/* 도넛 차트 컨테이너 */
+.modal-donut-container {
+    width: 80%;
+    height: 300px;
+    margin: 1rem auto;
+}
+
+/* 중간 섹션 */
+.modal-middle {
+    margin: 2rem 0 1rem 0;
+    width: 96%;
+}
+
+.modal-middle-title {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.modal-middle-title h2 {
+    margin: 0;
+}
+
+.modal-middle-title p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* 이미지 그리드 */
+.modal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-top: 1rem;
+}
+
+.modal-grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.modal-item-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.modal-item-label {
+    margin-top: 0.5rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* 하단 섹션 */
+.modal-bottom {
+    margin: 2rem 0 1rem 0;
+    width: 96%;
+}
+
+.bottom-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    text-align: left;
+}
+
+.bottom-grid-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.bottom-grid-title {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+
+.bottom-grid-title h2 {
+    margin: 0;
+}
+
+.bottom-grid-item h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* 바 차트 컨테이너 */
+.modal-bar-container {
+    width: 100%;
+    height: 300px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .analysis-modal-container {
+        width: 80%;
+        padding: 2rem;
+    }
+
+    .modal-top {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .modal-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .bottom-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .analysis-modal-container {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 2% auto;
+    }
+
+    .modal-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .modal-item-img {
+        height: 150px;
+    }
+
+    .modal-donut-container,
+    .modal-bar-container {
+        height: 250px;
+    }
+
+    #downloadReportButton {
+        display: block;
+        margin: 1rem 0 0 0;
+        width: 100%;
+    }
+}
