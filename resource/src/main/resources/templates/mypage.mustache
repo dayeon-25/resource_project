@@ -385,13 +385,14 @@ function createAnalysisCards() {
 }
 
     container.innerHTML = resultsList.map(result => `
-        <div class="analysis-card" onclick="openAnalysisModal('${result.id}')" style="cursor: pointer;">
+        <div class="analysis-card" onclick="location.href='/result/${result.id}'" style="cursor: pointer;">
             <div class="card-image-wrapper">
                 <img src="${result.origImage}" alt="분석 이미지" class="card-image">
                 <span class="badge ${result.suitable === '적합' ? 'suitable' : 'unsuitable'}">
                     ${result.suitable}
                 </span>
             </div>
+
             <div class="card-info">
                 <div class="card-date">${result.analysisDate}</div>
                 <div class="card-stats">
@@ -421,16 +422,41 @@ function updateScrollButtons() {
     const container = document.getElementById('cardsContainer');
     const leftBtn = document.querySelector('.scroll-btn-left');
     const rightBtn = document.querySelector('.scroll-btn-right');
+
     if (!container || !leftBtn || !rightBtn) return;
 
-    const cardCount = resultsList.length;
-    if (cardCount <= 3) { leftBtn.style.display = 'none'; rightBtn.style.display = 'none'; return; }
+    if (resultsList.length <= 3) {
+        leftBtn.style.display = 'none';
+        rightBtn.style.display = 'none';
+        return;
+    } else {
+        leftBtn.style.display = 'flex';
+        rightBtn.style.display = 'flex';
+    }
 
+    // 스크롤 위치
+    const scrollLeft = container.scrollLeft;
     const maxScroll = container.scrollWidth - container.clientWidth;
-    leftBtn.style.opacity = container.scrollLeft <= 0 ? 0 : 1;
-    leftBtn.style.pointerEvents = container.scrollLeft <= 0 ? 'none' : 'auto';
-    rightBtn.style.opacity = container.scrollLeft >= maxScroll-1 ? 0 : 1;
-    rightBtn.style.pointerEvents = container.scrollLeft >= maxScroll-1 ? 'none' : 'auto';
+
+    if (scrollLeft <= 0) {
+        leftBtn.disabled = true;
+        leftBtn.style.opacity = '0.3';
+        leftBtn.style.pointerEvents = 'none';  // 추가
+    } else {
+        leftBtn.disabled = false;
+        leftBtn.style.opacity = '1';
+         leftBtn.style.pointerEvents = 'auto';
+    }
+
+    if (scrollLeft >= maxScroll - 1) {
+        rightBtn.disabled = true;
+        rightBtn.style.opacity = '0.3';
+        rightBtn.style.pointerEvents = 'none';
+    } else {
+        rightBtn.disabled = false;
+        rightBtn.style.opacity = '1';
+        rightBtn.style.pointerEvents = 'auto';
+    }
 }
 
 const container = document.getElementById('cardsContainer');
@@ -563,48 +589,107 @@ if(container) container.addEventListener('scroll', updateScrollButtons);
 		}
 	}
 
-        // 모달 열기
+// 페이지 전역 차트 관리 객체
+const mypageChartInstances = { donut: null, bar: null };
+
+// 분석 모달 열기
 function openAnalysisModal(resultId) {
-
-    console.log('resultId:', resultId, 'typeof:', typeof resultId);
-    console.log('resultsList:', resultsList);
-
     const modal = document.getElementById('modal');
     if (!modal) return;
 
     const numericId = Number(resultId);
     const result = resultsList.find(r => r.id === numericId);
-    console.log('찾은 result:', result);
-
     if (!result) {
         alert('분석 데이터를 찾을 수 없습니다.');
         return;
     }
 
-    // 모달 내부 요소 선택
-    const modalOrigImage = modal.querySelector('.modal-img');
+    // 이미지 바인딩
+    const modalOrigImage = modal.querySelector('img[alt="원본 이미지"]');
     const modalRcnnImage = modal.querySelector('img[alt="rcnn 이미지"]');
     const modalOpencvImage = modal.querySelector('img[alt="opencv 이미지"]');
     const modalPcaImage = modal.querySelector('img[alt="pca 이미지"]');
 
-    const modalAnalysisDate = modal.querySelector('.analysis-date');
-    const modalTotal = modal.querySelector('.analysis-description strong');
-
-    // 이미지 업데이트
-    if(modalOrigImage) modalOrigImage.src = result.origImage || '';
-    if(modalRcnnImage) modalRcnnImage.src = result.rcnnResult || '';
-    if(modalOpencvImage) modalOpencvImage.src = result.opencvResult || '';
-    if(modalPcaImage) modalPcaImage.src = result.pca || '';
+    if (modalOrigImage) modalOrigImage.src = result.origImage || '';
+    if (modalRcnnImage) modalRcnnImage.src = result.rcnnResult || '';
+    if (modalOpencvImage) modalOpencvImage.src = result.opencvResult || '';
+    if (modalPcaImage) modalPcaImage.src = result.pca || '';
 
     // 텍스트 업데이트
-    if(modalAnalysisDate) modalAnalysisDate.textContent = `분석일자 ${result.analysisDate}`;
-    if(modalTotal) modalTotal.textContent = `${result.total}%`;
+    const modalAnalysisDate = modal.querySelector('.analysis-date');
+    const modalTotalStrong = modal.querySelector('.analysis-description strong');
+    const modalOpencvDesc = modal.querySelector('p.analysis-description:nth-of-type(2)');
+    const modalPcaDesc = modal.querySelector('p.analysis-description:nth-of-type(3)');
+
+    if (modalAnalysisDate) modalAnalysisDate.textContent = `분석일자 ${result.analysisDate}`;
+    if (modalTotalStrong) modalTotalStrong.textContent = `${result.total}%`;
+    if (modalOpencvDesc) modalOpencvDesc.textContent = `OpenCV 분석 결과 불순물 비율: ${result.total}%`;
+    if (modalPcaDesc) modalPcaDesc.textContent = `PCA 분석 완료, 주요 불순물 패턴 확인`;
+
+    // 기존 차트 제거
+    if (mypageChartInstances.donut) {
+        mypageChartInstances.donut.destroy();
+        mypageChartInstances.donut = null;
+    }
+    if (mypageChartInstances.bar) {
+        mypageChartInstances.bar.destroy();
+        mypageChartInstances.bar = null;
+    }
+
+    // 차트 데이터 계산
+    const totalCount = (result.vinyl || 0) + (result.plastic || 0) + (result.wood || 0);
+    const ratioVinyl = totalCount ? result.vinyl / totalCount * 100 : 0;
+    const ratioPlastic = totalCount ? result.plastic / totalCount * 100 : 0;
+    const ratioWood = totalCount ? result.wood / totalCount * 100 : 0;
+
+    // 도넛 차트
+    const donutCanvas = modal.querySelector('#modal-donut-chart');
+    if (donutCanvas) {
+        mypageChartInstances.donut = new Chart(donutCanvas.getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ["폐비닐","폐플라스틱","폐목재"],
+                datasets: [{ data: [ratioVinyl, ratioPlastic, ratioWood], backgroundColor: ['#3b4d08','#303e51','#be563d'] }]
+            },
+            options: { responsive:true, maintainAspectRatio:false }
+        });
+    }
+
+    // 바 차트
+    const barCanvas = modal.querySelector('#modal-bar-chart');
+    if (barCanvas) {
+        mypageChartInstances.bar = new Chart(barCanvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ["폐비닐","폐플라스틱","폐목재"],
+                datasets: [
+                    { label:"전체 이미지 평균", data:[result.avgVinyl||0,result.avgPlastic||0,result.avgWood||0], backgroundColor:'#f1512e' },
+                    { label:"해당 이미지 검출량", data:[result.vinyl||0,result.plastic||0,result.wood||0], backgroundColor:'black' }
+                ]
+            },
+            options: { responsive:true, maintainAspectRatio:false }
+        });
+    }
 
     // 모달 표시
     modal.style.display = 'flex';
 }
 
+// 모달 닫기
+function closeModal() {
+    const modal = document.getElementById('modal');
+    if (!modal) return;
+    modal.style.display = 'none';
 
+    if (mypageChartInstances.donut) { mypageChartInstances.donut.destroy(); mypageChartInstances.donut = null; }
+    if (mypageChartInstances.bar) { mypageChartInstances.bar.destroy(); mypageChartInstances.bar = null; }
+}
+
+// 닫기 버튼
+document.getElementById('modal-close').addEventListener('click', closeModal);
+
+// 외부 클릭 시 닫기
+window.addEventListener('click', e => { if(e.target.id === 'modal') closeModal(); });
 
     //탭 전환
 	function switchTab(tabName) {
