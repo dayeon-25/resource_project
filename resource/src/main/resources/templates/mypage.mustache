@@ -63,9 +63,6 @@
         </button>
     </div>
 
-    {{> modalDetail}}
-
-
     <!-- 분석 이력 탭 컨텐츠  -->
     <div id="history-content" class="tab-content active">
 
@@ -86,7 +83,6 @@
             </button>
         </div>
     </div>
-
 
     <!-- 분석 상세 모달 -->
     {{> modalDetail}}
@@ -275,9 +271,6 @@
                     <form id="passwordChangeForm" onsubmit="changePassword(event)">
                         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                         <div class="input-group">
-                            <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호" class="input-field" required autocomplete="current-password">
-                        </div>
-                        <div class="input-group">
                             <input type="password" id="newPassword" name="newPassword" placeholder="새 비밀번호" class="input-field" required autocomplete="new-password">
                         </div>
                         <div class="input-group">
@@ -287,10 +280,9 @@
                     </form>
                 </div>
 
-                <div class="action-section">
-                    <h3>회원 탈퇴</h3>
+                <div class="cancel-section">
+					<a class="cancel-link" onclick="confirmCancelAccount()">회원 탈퇴</a>
                     <p class="warning-text">회원 탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.</p>
-                    <button class="btn-danger" onclick="confirmCancelAccount()">회원 탈퇴</button>
                 </div>
             </div>
         </div>
@@ -358,7 +350,6 @@ async function loadResults() {
         const response = await fetch('/results', { credentials: 'include' });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-        // 서버가 ResultDTO[] 배열을 반환하므로 바로 배열로 받음
         const data = await response.json();
         if (Array.isArray(data)) {
             resultsList = data;
@@ -384,12 +375,17 @@ function createAnalysisCards() {
     if (!container) return;
 
     if (!resultsList || resultsList.length === 0) {
-        container.innerHTML = '<p class="empty-message">아직 분석 이력이 없습니다.</p>';
-        return;
-    }
+    container.innerHTML = `
+        <div class="empty-message-wrapper">
+            <h3 class="empty-message">아직 분석 이력이 없습니다.</h3>
+            <button class="btn-primary1" onclick="location.href='/analyze'">분석 시작하기</button>
+        </div>
+    `;
+    return;
+}
 
     container.innerHTML = resultsList.map(result => `
-        <div class="analysis-card" onclick="openAnalysisModal(${result.id})" style="cursor: pointer;">
+        <div class="analysis-card" onclick="openAnalysisModal('${result.id}')" style="cursor: pointer;">
             <div class="card-image-wrapper">
                 <img src="${result.origImage}" alt="분석 이미지" class="card-image">
                 <span class="badge ${result.suitable === '적합' ? 'suitable' : 'unsuitable'}">
@@ -541,6 +537,12 @@ if(container) container.addEventListener('scroll', updateScrollButtons);
 	}
 
    // --- 회원 탈퇴 ---
+   function confirmCancelAccount() {
+    if (confirm('정말로 회원 탈퇴하시겠습니까? 모든 데이터가 삭제되며 복구할 수 없습니다.')) {
+        cancelAccount();
+    }
+}
+
 	async function cancelAccount() {
 		try {
 			const response = await fetch(`/member/cancel/${memberDTO.id}`, {
@@ -560,6 +562,49 @@ if(container) container.addEventListener('scroll', updateScrollButtons);
 			alert('회원 탈퇴 중 오류가 발생했습니다.');
 		}
 	}
+
+        // 모달 열기
+function openAnalysisModal(resultId) {
+
+    console.log('resultId:', resultId, 'typeof:', typeof resultId);
+    console.log('resultsList:', resultsList);
+
+    const modal = document.getElementById('modal');
+    if (!modal) return;
+
+    const numericId = Number(resultId);
+    const result = resultsList.find(r => r.id === numericId);
+    console.log('찾은 result:', result);
+
+    if (!result) {
+        alert('분석 데이터를 찾을 수 없습니다.');
+        return;
+    }
+
+    // 모달 내부 요소 선택
+    const modalOrigImage = modal.querySelector('.modal-img');
+    const modalRcnnImage = modal.querySelector('img[alt="rcnn 이미지"]');
+    const modalOpencvImage = modal.querySelector('img[alt="opencv 이미지"]');
+    const modalPcaImage = modal.querySelector('img[alt="pca 이미지"]');
+
+    const modalAnalysisDate = modal.querySelector('.analysis-date');
+    const modalTotal = modal.querySelector('.analysis-description strong');
+
+    // 이미지 업데이트
+    if(modalOrigImage) modalOrigImage.src = result.origImage || '';
+    if(modalRcnnImage) modalRcnnImage.src = result.rcnnResult || '';
+    if(modalOpencvImage) modalOpencvImage.src = result.opencvResult || '';
+    if(modalPcaImage) modalPcaImage.src = result.pca || '';
+
+    // 텍스트 업데이트
+    if(modalAnalysisDate) modalAnalysisDate.textContent = `분석일자 ${result.analysisDate}`;
+    if(modalTotal) modalTotal.textContent = `${result.total}%`;
+
+    // 모달 표시
+    modal.style.display = 'flex';
+}
+
+
 
     //탭 전환
 	function switchTab(tabName) {

@@ -529,6 +529,7 @@ section {
     position: sticky;
     top: 30vh;
     width: 350px;
+    width: 350px;
     z-index: 10;
     opacity: 0;
     transform: translateY(50px);
@@ -681,12 +682,11 @@ section {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    background: #CCCCCC;
     }
 
 .stats-header {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
 .stats-label {
@@ -711,38 +711,32 @@ section {
 
 .stats-main-content {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 100px;
+    grid-template-columns: 1fr 5px 1fr;
+    gap: 50px;
     flex: 1;
     min-height: 0;
+}
+
+.vertical-divider {
+    background-color: #dcdcdc;
+    width: 1px;
+    height: 100%;
+    justify-self: center;
 }
 
 /* 왼쪽 섹션 */
 .stats-left-section {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 60px;
+    margin-top: 30px;
 }
 
 /* 숫자 카운터 */
 .key-metrics {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 20px;
-
-}
-
-.metric-card {
-    padding: 24px 16px;
-    border-radius: 16px;
-    background: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.metric-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    gap: 30px;
+    justify-content: center;
 }
 
 .metric-content {
@@ -774,21 +768,11 @@ section {
 }
 
 /* 지도 섹션 */
-.map-section {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
 .korea-map-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
 }
 
 .map-title {
@@ -802,15 +786,15 @@ section {
 .map-description {
     font-size: 14px;
     color: #495057;
-    margin-bottom: 10px;
+    margin-bottom: 50px;
     text-align: center;
 }
 
 #usage-korea-map {
-    width: 60%;
-    max-width: 450px;
-    flex: 1;
-    min-height: 0;
+    width: 100%;
+     height: 520px;
+     display: block;
+     margin: 0 auto;
 }
 
 /* 지도 범례 */
@@ -819,7 +803,7 @@ section {
     justify-content: center;
     gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 40px;
+    margin-top: 20px;
 }
 
 .legend-item {
@@ -846,10 +830,10 @@ section {
 }
 
 .chart-card {
-    background: white;
+    background: transparent;
     border-radius: 16px;
+    border: 1px solid #dcdcdc;
     padding: 24px;
-    transition: box-shadow 0.3s ease;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -878,7 +862,6 @@ section {
     min-height: 0;
 }
 
-
 /* 설명 */
 .insights-section {
     display: grid;
@@ -900,13 +883,13 @@ section {
 }
 
 .insight-card h4 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     margin-bottom: 10px;
 }
 
 .insight-card p {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.6;
     opacity: 0.95;
 }
@@ -994,6 +977,7 @@ section {
     max-width: 800px;
     text-align: center;
     margin: 0 auto 60px;
+    padding-top: 30px;
 }
 
 .slider-label {
@@ -1019,55 +1003,59 @@ section {
     font-weight: 600;
 }
 
-/*숫자 결과*/
+/* 숫자 결과 카드 */
 .simulation-results {
     display: flex;
     justify-content: center;
-    gap: 100px;
-    max-width: 1200px;
-    width: 100%;
-    align-items: center;
-    margin: 0 auto 0px;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    padding-bottom: 10px;
 }
 
 .result-card {
+    background-color: #ffffff;
+    padding: 20px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(67, 86, 74, 0.15);
     text-align: center;
+    flex: 0 0 450px;
+    transition: transform 0.2s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-5px);
 }
 
 .result-title {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 700;
     color: #43564A;
+    margin-bottom: 20px;
 }
 
 .result-value {
     display: flex;
-    align-items: baseline;
+     align-items: baseline;
     justify-content: center;
-    gap: 13px;
+    gap: 8px;
 }
 
 .result-label {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 500;
     color: #656565;
-    align-items: baseline;
 }
 
 .result-number {
-    font-size: 58px;
-    font-weight: 600;
-    background: #43564A;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-fill-color: transparent;
-    align-items: baseline;
+    font-size: 48px;
+    font-weight: 700;
+    color: #43564A;
 }
 
 .result-unit {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
     color: #656565;
 }
 
@@ -1075,7 +1063,7 @@ section {
 .simulation-slider {
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto 120px;
+    margin: 60px auto 120px;
 }
 
 .slider-main {
@@ -1748,143 +1736,86 @@ section {
     text-align: center;
 }
 
-
 .solution-title{
     font-size: 50px;
     font-weight: 700;
     text-align: center;
 }
 
-.solution-cards {
+.solution-grid {
     display: flex;
-    gap: 100px;
     justify-content: center;
-    align-items: stretch;
+    gap: 50px;
     flex-wrap: wrap;
-    margin: 0;
-    margin-bottom: 60px;
 }
 
-.solution-card {
-    min-width: 330px;
-    max-width: 300px;
-    border: 2px solid #43564A;
+.solution-item {
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     border-radius: 12px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.solution-item.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 이미지 */
+.solution-image {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.solution-image:hover {
+    transform: scale(1.05);
+}
+
+/* 텍스트 영역 */
+.solution-text {
     display: flex;
     flex-direction: column;
-    transition: translateY(90px);
-    transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    margin-bottom: 20px;
-    opacity: 0;
-}
-
-.solution-card.visible {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.solution-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-    border-color: #43554A;
-}
-
-.solution-card-content {
-    border-radius: 10px;
-    padding: 25px 35px 30px 30px;
-    display: flex;
-    flex-direction: column;
-    min-height: 300px;
-    align-items: center;
-}
-
-.card-image {
-    width: 200px;
-    height: auto;
-    display: block;
-     margin: 60px auto 0;
-    transform: translateY(70px);
-    opacity: 0;
-    transition: transform 0.6s ease, opacity 0.6s ease;
-}
-
-.solution-card.visible .card-image {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.solution-solution-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-    border-color: #43554A;
-}
-
-.solution-card-label {
-    display: inline-block;
-    align-self: center;
-    padding: 3px 8px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #43554A;
-    letter-spacing: 0.5px;
-    text-align: center;
-     background: transparent;
-     border: 1px solid #43564A;
-     margin-bottom: 10px;
-}
-
-.solution-card-title {
-    font-size: 25px;
-    font-weight: 700;
-    color: #43564A;
-    text-align: center;
-    margin-bottom: 20px;
-    line-height: 1.3;
-}
-
-.card-description {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.6;
-    color: #1F1F1F;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.card-features {
-    font-size: 23px;
-    color: #1F1F1F;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.card-features li {
-    display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
+}
+
+/* 카테고리 라벨 */
+.solution-tag {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background-color: #F2F2F2;
     font-size: 14px;
-    color: #1F1F1F;
-    line-height: 1.6;
+    font-weight: 500;
+    color: #0B0B0B;
+    text-align: canter;
+    letter-spacing: 0.4px;
+    width: auto;
+}
+
+/* 타이틀 */
+.solution-name {
+    font-size: 27px;
+    font-weight: 700;
     margin-bottom: 8px;
+    color: #000;
 }
 
-.card-features li:last-child {
-    margin-bottom: 0;
+/* 설명 */
+.solution-desc {
+    font-size: 17px;
+    color: #333;
+    line-height: 1.7;
 }
 
-.card-features li img {
-    flex-shrink: 0;
-    width: 18px;
-    height: 18px;
-    margin-top: 3px;
-}
-
-.card-features li span {
-    flex: 1;
-}
-
+/*버튼*/
 .button-section {
     display: flex;
     justify-content: center;

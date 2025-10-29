@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,19 +27,15 @@ public class ResultRestController {
 
     @GetMapping("/results")
     public List<ResultDTO> getAllResults(Principal principal) {
-        // 1. 로그인한 사용자의 이미지 목록 조회
-        List<OrigImage> origImages = origImageRepository.findAll()
+        return origImageRepository.findAll()
                 .stream()
                 .filter(img -> img.getMember().getUsername().equals(principal.getName()))
-                .sorted((a, b) -> b.getAnalysisDate().compareTo(a.getAnalysisDate())) // 최신순
-                .collect(Collectors.toList());
-
-        // 2. 각 이미지에 대한 분석 결과 가져와 DTO 변환
-        return origImages.stream()
+                .sorted((a, b) -> b.getAnalysisDate().compareTo(a.getAnalysisDate()))
                 .map(img -> {
                     AnalysisResult result = analysisResultRepository.findByOrigImgId(img.getId());
-                    return mapperService.toResultDTO(result, img);
+                    return result != null ? mapperService.toResultDTO(result, img) : null;
                 })
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 }

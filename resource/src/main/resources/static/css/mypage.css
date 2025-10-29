@@ -163,9 +163,7 @@ body.mypage .nav-link {
 }
 
 
-/* ============================================
-   📊 분석 이력 섹션
-   ============================================ */
+/* 분석 이력 섹션*/
 
 .analysis-section {
     padding: 20px 0 0;
@@ -207,9 +205,7 @@ body.mypage .nav-link {
 }
 
 
-/* ============================================
-   🃏 분석 카드
-   ============================================ */
+/* 🃏 분석 카드*/
 
 .analysis-card {
     background: #FFFFFF;
@@ -780,44 +776,62 @@ body.mypage .nav-link {
     background-color: #A03A27;
 }
 
-.warning-text {
-    font-size: 14px;
-    color: #BE563D;
-    margin-bottom: 15px;
-    font-weight: 500;
+.cancel-section {
+    padding-top: 0;
+    margin-top: 0;
 }
 
+.warning-text {
+    font-size: 13px;
+    color: #999;
+    font-weight: 400;
+}
 
-/* ============================================
-   📭 빈 상태 메시지
-   ============================================ */
+.cancel-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    text-align: center;
+}
 
+.cancel-link {
+    font-size: 13px;
+    color: #999;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.cancel-link:hover {
+    color: #666;
+}
+
+/* 공통 비어 있음 스타일 */
 .empty-state,
-.empty-message {
+.empty-message,
+.empty-dashboard {
     width: 100%;
     text-align: center;
     padding: 80px 20px;
     color: #999;
     font-size: 16px;
-}
-
-.empty-dashboard {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 100px 20px;
-    text-align: center;
 }
 
-.empty-dashboard h3 {
+/* 제목 스타일 */
+.empty-dashboard h3 .empty-message h3 {
     font-size: 20px;
     font-weight: 500;
     color: #6B7280;
-    margin: 0 0 20px 0;
+    margin: 0;
 }
 
-.empty-dashboard .btn-primary {
+/* 버튼 스타일 */
+.empty-dashboard .btn-primary,
+.empty-state .btn-primary,
+.empty-message .btn-primary {
     display: inline-block;
     width: auto;
     padding: 12px 24px;
@@ -830,16 +844,40 @@ body.mypage .nav-link {
     transition: all 0.3s ease;
 }
 
-.empty-dashboard .btn-primary:hover {
+.empty-dashboard .btn-primary:hover,
+.empty-state .btn-primary:hover,
+.empty-message .btn-primary:hover {
     background-color: #2A3A30;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(67, 86, 74, 0.3);
 }
 
+.empty-message-wrapper {
+    width: 100%;
+    text-align: center;
+    padding: 20px 20px;
+    color: #999;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-/* ============================================
-   📱 반응형 디자인
-   ============================================ */
+.btn-primary1 {
+    display: inline-block;
+    width: auto;
+    padding: 12px 24px;
+    background-color: #43564A;
+    color: #FFFFFF;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/*반응형 디자인*/
 
 @media (max-width: 1400px) {
     .container {

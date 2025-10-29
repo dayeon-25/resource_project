@@ -458,45 +458,49 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
     <div class="stats-left-section">
 
     <div class="key-metrics">
-        <div class="metric-card">
             <div class="metric-content">
                 <p class="metric-label">연간 순환골재 생산량</p>
                 <h2 class="metric-value" data-target="5111">0</h2>
                 <span class="metric-unit">만톤</span>
-            </div>
-        </div>
-    </div>
+        	</div>
+
+			<div class="metric-content">
+				<p class="metric-label">전국 생산시설</p>
+				<h2 class="metric-value" data-target="187">0</h2>
+				<span class="metric-unit">개소</span>
+			</div>
+		</div>
 
     <!-- 왼쪽: 지도 -->
-        <div class="map-section">
             <div class="korea-map-container">
             <h2 class="map-title">지역별 순환골재 생산량</h2>
             <p class="map-description">지도 위에 마우스를 올리면 지역별 생산 비중을 확인하실 수 있습니다.</p>
 
-                <!-- 지도 범례 -->
-                <div class="map-legend">
-                    <div class="legend-item">
-                        <span class="legend-color" style="background: #f94144;"></span>
-                        <span>15% 이상</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background: #f9c74f;"></span>
-                        <span>10-15%</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background: #90be6d;"></span>
-                        <span>5-10%</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color" style="background: #577590;"></span>
-                        <span>5% 미만</span>
-                    </div>
-                </div>
                 <svg id="usage-korea-map"></svg>
 
-</div>
+				<!-- 지도 범례 -->
+				<div class="map-legend">
+					<div class="legend-item">
+						<span class="legend-color" style="background: #f94144;"></span>
+						<span>15% 이상</span>
+					</div>
+					<div class="legend-item">
+						<span class="legend-color" style="background: #f9c74f;"></span>
+						<span>10-15%</span>
+					</div>
+					<div class="legend-item">
+						<span class="legend-color" style="background: #90be6d;"></span>
+						<span>5-10%</span>
+					</div>
+					<div class="legend-item">
+						<span class="legend-color" style="background: #577590;"></span>
+						<span>5% 미만</span>
+					</div>
+				</div>
+			</div>
         </div>
-    </div>
+
+		<div class="vertical-divider"></div>
 
     <!-- 오른쪽 차트 섹션 -->
     <div class="charts-section">
@@ -600,6 +604,7 @@ new Chart(document.getElementById("usage-line-chart").getContext('2d'), {
     type: 'line',
     data: {
         labels: ["2020", "2021", "2022", "2023"],
+
         datasets: [
             {
                 label: "건설폐기물 발생량",
@@ -696,8 +701,7 @@ new Chart(document.getElementById("usage-donut-chart").getContext('2d'), {
                 '#a46645',
                 '#4e4c4c'
             ],
-            borderWidth: 3,
-            borderColor: '#fff',
+            borderWidth: 0,
             hoverOffset: 15
         }]
     },
@@ -764,11 +768,10 @@ new Chart(ctx, {
             ],
             borderColor: '#f1512e',
             borderWidth: 2,
-            borderRadius: 10,
-            barPercentage: 0.6,
+            borderRadius: 3,
+            barPercentage: 0.8,
             categoryPercentage: 0.6,
             hoverBackgroundColor: 'rgba(241, 81, 46, 0.6)',
-            hoverBorderColor: '#f1512e'
         }]
     },
     options: {
@@ -886,17 +889,18 @@ fetch('/data/skorea-provinces-2018-topo.json')
                         `);
                 }
             })
-            .on("mousemove", function(event) {
-                tooltip.style("left", (event.pageX + 15) + "px")
-                    .style("top", (event.pageY + 15) + "px");
-            })
-            .on("mouseout", function() {
-                d3.select(this)
-                    .transition()
-                    .duration(200)
-                    .attr("fill", "#f0f0f0")
-                    .attr("stroke-width", 1)
-                    .style("filter", "brightness(1)");
+            .on("mouseover", function(event, d) {
+				d3.select(this)
+					.transition()
+					.duration(200)
+					.attr("fill", d => regionColors[d.properties.name] || "#ffd700");
+
+			})
+			.on("mouseout", function() {
+				d3.select(this)
+					.transition()
+					.duration(200)
+					.attr("fill", "#f0f0f0");
 
                 tooltip.style("opacity", 0);
             });
@@ -1813,8 +1817,7 @@ fetch('/data/skorea-provinces-2018-topo.json')
 		</div>
 	</div>
 </section>
-
-<!--과정 섹션 JS-->
+<!--과정 섹션 JS 추가하기-->
 <script>
 </script>
 
@@ -1826,106 +1829,69 @@ fetch('/data/skorea-provinces-2018-topo.json')
 		<h2 class="solution-title">우리의 솔루션</h2>
 	</div>
 
-	<div class="solution-cards">
-		<div class="solution-card">
-            <img src="/images/solution card1.svg" alt="R-CNN 객체 검출" class="card-image">
+	<div class="solution-grid">
 
-			<div class="solution-card-content">
-                <span class="solution-card-label">Deep Learning</span>
-				<h3 class="solution-card-title">R-CNN 객체 검출</h3>
-
-			<p class="card-description">
-				순환 골재 이미지에서 <br>
-                플라스틱, 비닐, 목재 등 <br>
-				다양한 불순물을 <br>
-                정밀하게 분리합니다.
-			</p>
+		<!-- R-CNN -->
+		<div class="solution-item">
+			<img src="/images/solution1.jpg" alt="R-CNN 객체 검출" class="solution-image">
+			<div class="solution-text">
+				<span class="solution-tag">Deep Learning</span>
+				<h3 class="solution-name">R-CNN 객체 검출</h3>
+				<p class="solution-desc">
+					순환골재 이미지에서 폐플라스틱, 폐비닐, 폐목재 등 다양한 불순물을<br>
+					정밀하게 분리합니다.
+				</p>
+			</div>
 		</div>
-        </div>
 
-		<div class="solution-card">
-            <img src="/images/solution card2.svg" alt="OpenCV 분석" class="card-image">
-			<div class="solution-card-content">
-                <span class="solution-card-label">Computer Vision</span>
-				<h3 class="solution-card-title">OpenCV 분석</h3>
-
-			<p class="card-description">
-				영상의 색상, 밝기, 경계 등 <br>
-                기초적인 영상 처리 기법을 활용하여 <br>
-                불순물 영역을 빠르게 검출합니다.
-			</p>
-
-<!--            <ul class="card-features">-->
-<!--                <li>-->
-<!--                    <img src="/images/solution.png" alt="icon">-->
-<!--                    <span>영상의 색상, 밝기, 경계 등 <br>-->
-<!--                    기초적인 영상 처리 기법 활용</span>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <img src="/images/solution.png" alt="icon">-->
-<!--                    <span>빠른 불순물 영역 검출</span>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <img src="/images/solution.png" alt="icon">-->
-<!--                    <span>실시간 이미지 전처리 및 품질 향상</span>-->
-<!--                </li>-->
-<!--            </ul>-->
+		<!-- OpenCV -->
+		<div class="solution-item">
+			<img src="/images/solution2.jpg" alt="OpenCV 분석" class="solution-image">
+			<div class="solution-text">
+				<span class="solution-tag">Computer Vision</span>
+				<h3 class="solution-name">OpenCV 분석</h3>
+				<p class="solution-desc">
+					영상의 색상, 밝기, 경계 등 기초적인 영상 처리 기법을 활용하여<br>
+					불순물 영역을 영역별로 분류해 검출합니다.
+				</p>
+			</div>
 		</div>
-        </div>
 
-		<div class="solution-card">
-            <img src="/images/solution card3.svg" alt="PCA 분석" class="card-image">
-			<div class="solution-card-content">
-                <span class="solution-card-label">Data Analysis</span>
-				<h3 class="solution-card-title">PCA 분석</h3>
-
-		<p class="card-description">
-			이미지의 색상 및 질감 정보를 축소하여<br>
-			핵심 특징을 추출합니다. <br>
-			추출된 주성분을 기반으로 클러스터링을 <br>
-            수행하여 불순물을 그룹화하고,<br>
-			배경과 대비되는 영역을 <br>
-            시각적으로 강조합니다.
-		</p>
-<!--        <ul class="card-features">-->
-<!--            <li>-->
-<!--                <img src="/images/solution.png" alt="icon">-->
-<!--                <span>이미지의 색상 및 질감 정보를 축소하여 <br>-->
-<!--                핵심 특징을 추출</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <img src="/images/solution.png" alt="icon">-->
-<!--                <span>클러스터링 기반 불순물 그룹화</span>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <img src="/images/solution.png" alt="icon">-->
-<!--                <span>배경 대비 영역 시각적 강조</span>-->
-<!--            </li>-->
-<!--        </ul>-->
+		<!-- PCA -->
+		<div class="solution-item">
+			<img src="/images/solution3.jpg" alt="PCA 분석" class="solution-image">
+			<div class="solution-text">
+				<span class="solution-tag">Data Analysis</span>
+				<h3 class="solution-name">PCA 분석</h3>
+				<p class="solution-desc">
+					이미지의 색상 및 질감 정보를 추출하여 핵심 특징을 분석합니다.<br>
+					주성분 기반 클러스터링으로 물질을 그룹화하고 대비 영역을 시각화합니다.
+				</p>
+			</div>
 		</div>
 	</div>
-    </div>
-		<div class="button-section">
-			<button class="btn-analyze" onclick="location.href='/analyze'"> 품질 검사 </button>
-		</div>
 </section>
 <!--솔루션 섹션 끝-->
+
 <!--솔루션 섹션 JS-->
 <script>
-	window.addEventListener('scroll', () => {
-		const cards = document.querySelectorAll('.solution-card');
-		const windowHeight = window.innerHeight;
+	document.addEventListener('DOMContentLoaded', () => {
+    const items = document.querySelectorAll('.solution-item');
 
-		cards.forEach((card, index) => {
-			const rect = card.getBoundingClientRect();
-			if (rect.top <= windowHeight * 0.8 && !card.classList.contains('visible')) {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
 
-				setTimeout(() => {
-					card.classList.add('visible');
-				}, index * 150);
-			}
-		});
-	});
+                setTimeout(() => {
+                    entry.target.classList.add('show');
+                }, index * 200);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    items.forEach(item => observer.observe(item));
+});
 </script>
 
 
