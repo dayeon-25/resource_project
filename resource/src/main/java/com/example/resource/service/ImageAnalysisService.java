@@ -26,7 +26,7 @@ public class ImageAnalysisService {
     private final WebClient webClient;
 
     public ImageAnalysisService(AnalysisResultService analysisResultService,
-                                @Qualifier("imageClient") WebClient imageClient) {
+                               WebClient imageClient) {
 
         this.analysisResultService = analysisResultService;
         this.webClient = imageClient;

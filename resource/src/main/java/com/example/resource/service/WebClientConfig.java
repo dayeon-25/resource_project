@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
 
     @Bean
-    @Qualifier("imageClient")
     public WebClient imageClient() {
         return WebClient.builder()
                 .exchangeStrategies(ExchangeStrategies.builder()
@@ -21,11 +20,4 @@ public class WebClientConfig {
                 .build();
     }
 
-    @Bean
-    @Qualifier("raPredict")
-    public WebClient raPredict() {
-        return WebClient.builder()
-                .baseUrl("http://192.168.0.46:8001")
-                .build();
-    }
 }
