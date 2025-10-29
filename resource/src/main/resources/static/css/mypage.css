@@ -325,7 +325,6 @@ body.mypage .nav-link {
 
 
 /* 통계 대시보드*/
-
 .dashboard-header {
     background: linear-gradient(135deg, #43564A 0%, #5A6F60 100%);
     padding: 40px 189px 30px;
@@ -382,7 +381,7 @@ body.mypage .nav-link {
     border-radius: 16px;
     padding: 28px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s, box-shadow 0.2s;
