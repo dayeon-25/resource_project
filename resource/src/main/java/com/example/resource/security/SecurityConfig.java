@@ -54,7 +54,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/error","/css/**", "/webjars/**","/images/**","/data/**","/morphing").permitAll()
+                        .requestMatchers("/error","/css/**", "/webjars/**","/images/**","/data/**","/morphing","/favicon.ico").permitAll()
                         .requestMatchers("/", "/about").permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/signup").permitAll()
@@ -78,6 +78,7 @@ public class SecurityConfig {
                     String uri = request.getRequestURI();
                     return !uri.startsWith("/ws") &&
                            !uri.startsWith("/login") &&
+                           !uri.startsWith("/favicon.ico") &&
                            !uri.startsWith("/.well-known");
                 }
             });
