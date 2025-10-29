@@ -42,4 +42,13 @@ public class ResultController {
         return "result";
     }
 
+    @GetMapping("/result/{id}/morphing")
+    public String morphing(@PathVariable Long id, Model model, Principal principal) {
+        return "morphing";
+    }
+//    @GetMapping("/morphing")
+//    public String morphing(){
+//        return "morphing";
+//    }
+
 }
