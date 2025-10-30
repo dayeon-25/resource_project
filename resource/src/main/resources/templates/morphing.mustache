@@ -45,7 +45,7 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .hsv-controls {
@@ -148,6 +148,11 @@
             transform: translateY(1px);
         }
 
+        .generate-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
         .morph-section {
             margin-top: 10px;
         }
@@ -177,9 +182,8 @@
             margin-bottom: 15px;
         }
 
-
         .morph-slider-container {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .morph-slider {
@@ -217,35 +221,29 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 300px;
+            height:350px;
             background: #f9f9f9;
             border-radius: 8px;
             position: relative;
         }
 
         .preview-image {
-            max-width: 100%;
-            max-height: 350px;
+            width:100%;
+            height:100%;
+            object-fit: contain;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .hsv-display {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0,0,0,0.75);
-            color: white;
-            padding: 12px 18px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            font-weight: 600;
         }
 
         .placeholder {
             color: #999;
             font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .loading {
+            color: #666;
+            font-size: 1.1rem;
             text-align: center;
         }
 
@@ -266,21 +264,21 @@
     </style>
 </head>
 <body>
+<input type="hidden" id="_csrf" name="_csrf" value="{{_csrf.token}}"/>
 <div class="container">
     <button id="backButton" style="
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    background: #1a1a1a;
-    color: white;
-    font-size: 0.95rem;
-    cursor: pointer;
-    z-index: 1000;
-">← 뒤로가기</button>
-
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #1a1a1a;
+        color: white;
+        font-size: 0.95rem;
+        cursor: pointer;
+        z-index: 1000;
+    ">← 뒤로가기</button>
 
     <h1>HSV 색상 검출 및 모핑</h1>
     <p class="subtitle">HSV 임계값을 설정하여 마스킹된 이미지를 생성하고 변화 과정을 확인하세요.</p>
@@ -299,18 +297,18 @@
             </div>
             <div class="control-group">
                 <label>명도 (0-255)</label>
-                <input type="number" id="valInput" min="0" max="255" value="76">
-                <input type="range" id="valSlider" class="color-slider" min="0" max="255" value="76">
+                <input type="number" id="valInput" min="0" max="255" value="127">
+                <input type="range" id="valSlider" class="color-slider" min="0" max="255" value="127">
             </div>
         </div>
 
-        <button class="generate-btn" onclick="generateMaskedImages()">색상 검출 시작</button>
+        <button class="generate-btn" id="generateBtn" onclick="generateMaskedImages()">색상 검출 시작</button>
     </div>
 
     <div class="card morph-section" id="morphSection" style="display: none;">
         <div class="morph-header">
             <h3>모핑 제어</h3>
-            <span class="morph-indicator" id="morphIndicator">Image 0 → 6</span>
+            <span class="morph-indicator" id="morphIndicator">이미지 0 / 6</span>
         </div>
 
         <p class="morph-subtitle">슬라이더를 움직여 변화 과정을 확인해보세요.</p>
@@ -320,8 +318,7 @@
         </div>
 
         <div class="preview-container" id="previewContainer">
-            <div class="hsv-display" id="hsvDisplay">H:0 S:0 V:0</div>
-            <div class="placeholder">결과 이미지가 여기에 표시됩니다</div>
+            <div class="placeholder"></div>
         </div>
     </div>
 </div>
@@ -336,13 +333,14 @@
     const morphSection = document.getElementById('morphSection');
     const morphSlider = document.getElementById('morphSlider');
     const morphIndicator = document.getElementById('morphIndicator');
-    const hsvDisplay = document.getElementById('hsvDisplay');
     const previewContainer = document.getElementById('previewContainer');
+    const generateBtn = document.getElementById('generateBtn');
 
-    let targetH = 90;
-    let targetS = 127;
-    let targetV = 76;
-    let morphSteps = 6;
+    // 서버에서 받을 이미지들을 저장할 배열
+    let morphImages = [];
+    let targetH = 0;
+    let targetS = 0;
+    let targetV = 0;
 
     function syncInput(slider, input) {
         input.value = slider.value;
@@ -366,81 +364,115 @@
     satInput.addEventListener('input', () => syncSlider(satInput, satSlider));
     valInput.addEventListener('input', () => syncSlider(valInput, valSlider));
 
-    function generateMaskedImages() {
+    async function generateMaskedImages() {
         targetH = parseInt(hueInput.value);
         targetS = parseInt(satInput.value);
         targetV = parseInt(valInput.value);
 
-        morphSection.style.display = 'block';
-        morphSlider.value = 0;
-        updateMorphPreview();
+        // 버튼 비활성화 및 로딩 표시
+        generateBtn.disabled = true;
+        generateBtn.textContent = '처리 중...';
 
-        morphSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+         try {
+            const csrfToken = document.getElementById('_csrf').value;
+            const csrfHeader = 'X-CSRF-TOKEN';
+
+            const pathParts = window.location.pathname.split('/');
+            const origImageId = pathParts[2];
+
+            const response = await fetch(`/morphing/${origImageId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [csrfHeader]: csrfToken
+                },
+                body: JSON.stringify({ h: targetH, s: targetS, v: targetV })
+            });
+
+            const result = await response.json();
+
+            console.log(targetH, targetS, targetV);
+
+            if (result.status === 0 && result.data) {
+                const keys = Object.keys(result.data).sort();
+                morphImages = keys.map(key => result.data[key]);
+
+                const originIndex = keys.indexOf('origin_img');
+                if (originIndex > 0) {
+                    const originImage = morphImages.splice(originIndex, 1)[0];
+                    morphImages.unshift(originImage);
+                }
+
+                morphSection.style.display = 'block';
+                morphSlider.value = 0;
+                updateMorphPreview();
+            } else {
+                throw new Error(result.error || '이미지 생성 실패');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('이미지 생성 중 오류가 발생했습니다: ' + error.message);
+        } finally {
+            generateBtn.disabled = false;
+            generateBtn.textContent = '색상 검출 시작';
+        }
     }
 
     morphSlider.addEventListener('input', updateMorphPreview);
 
     function updateMorphPreview() {
+        if (morphImages.length === 0) return;
+
         const progress = parseInt(morphSlider.value);
-        const step = Math.floor(progress / (100 / morphSteps));
+        const maxIndex = morphImages.length - 1;
 
-        morphIndicator.textContent = `Image ${step} → ${morphSteps}`;
+        const exactIndex = (progress / 100) * maxIndex;
+        const lowerIndex = Math.floor(exactIndex);
+        const upperIndex = Math.ceil(exactIndex);
+        const blendRatio = exactIndex - lowerIndex;
 
-        const ratio = progress / 100;
-        const currentH = Math.round(targetH * ratio);
-        const currentS = Math.round(targetS * ratio);
-        const currentV = Math.round(targetV * ratio);
+        morphIndicator.textContent = `이미지 ${exactIndex.toFixed(1)} / ${maxIndex}`;
 
-        hsvDisplay.textContent = `H:${currentH} S:${currentS} V:${currentV}`;
+        // 기존 이미지들 찾기
+        let imgLower = previewContainer.querySelector('.img-lower');
+        let imgUpper = previewContainer.querySelector('.img-upper');
 
-        const canvas = document.createElement('canvas');
-        canvas.width = 400;
-        canvas.height = 400;
-        const ctx = canvas.getContext('2d');
-
-        const intensity = progress / 100;
-        const bgColor = 128 - (128 * intensity);
-        const fgColor = 255 * intensity;
-
-        ctx.fillStyle = `rgb(${bgColor}, ${bgColor}, ${bgColor})`;
-        ctx.fillRect(0, 0, 400, 400);
-
-        const numShapes = Math.floor(10 * intensity);
-        for (let i = 0; i < numShapes; i++) {
-            ctx.fillStyle = `rgb(${fgColor}, ${fgColor}, ${fgColor})`;
-            const x = Math.random() * 400;
-            const y = Math.random() * 400;
-            const size = 20 + Math.random() * 40;
-            ctx.fillRect(x, y, size, size);
+        // 없으면 새로 생성
+        if (!imgLower) {
+            imgLower = document.createElement('img');
+            imgLower.className = 'preview-image img-lower';
+            imgLower.style.position = 'absolute';
+            imgLower.alt = 'Masked Preview';
+            previewContainer.appendChild(imgLower);
         }
 
-        previewContainer.innerHTML = '';
-        const img = new Image();
-        img.src = canvas.toDataURL();
-        img.className = 'preview-image';
-        img.alt = 'Masked Preview';
+        if (!imgUpper) {
+            imgUpper = document.createElement('img');
+            imgUpper.className = 'preview-image img-upper';
+            imgUpper.style.position = 'absolute';
+            imgUpper.alt = 'Masked Preview';
+            previewContainer.appendChild(imgUpper);
+        }
 
-        const hsvDisplayNew = document.createElement('div');
-        hsvDisplayNew.className = 'hsv-display';
-        hsvDisplayNew.id = 'hsvDisplay';
-        hsvDisplayNew.textContent = `H:${currentH} S:${currentS} V:${currentV}`;
+        // 이미지 소스 업데이트
+        imgLower.src = morphImages[lowerIndex];
 
-        previewContainer.appendChild(hsvDisplayNew);
-        previewContainer.appendChild(img);
+        if (upperIndex !== lowerIndex) {
+            imgUpper.src = morphImages[upperIndex];
+            imgUpper.style.opacity = blendRatio;
+            imgUpper.style.display = 'block';
+        } else {
+            imgUpper.style.display = 'none';
+        }
     }
 
     const backButton = document.getElementById('backButton');
-
     backButton.addEventListener('click', () => {
-    const pathParts = window.location.pathname.split('/');
-    const origImageId = pathParts[2]; // /result/{id}/morphing
-    window.location.href = `/result/${origImageId}`;
+        const pathParts = window.location.pathname.split('/');
+        const origImageId = pathParts[2]; // /result/{id}/morphing
+        window.location.href = `/result/${origImageId}`;
     });
-
-
-
-
-
 </script>
 </body>
 </html>

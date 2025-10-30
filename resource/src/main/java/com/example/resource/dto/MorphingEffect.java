@@ -11,6 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MorphingEffect {
+    @JsonProperty("origin_img")  // 원본 이미지
+    private String originImg;
+
     @JsonProperty("opencv_pro1")
     private String opencvPro1;
     @JsonProperty("opencv_pro2")

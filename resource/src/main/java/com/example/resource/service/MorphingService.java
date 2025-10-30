@@ -62,6 +62,8 @@ public class MorphingService {
                 throw new IllegalArgumentException("이미지 데이터가 존재하지 않습니다.");
             }
 
+            String originDataUri = mapperService.toDataUri(imageData);
+
             ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
 
             MultipartBodyBuilder builder = new MultipartBodyBuilder();
@@ -78,7 +80,11 @@ public class MorphingService {
                     .body(BodyInserters.fromMultipartData(builder.build()))
                     .retrieve()
                     .bodyToMono(MorphingEffect.class)
-                    .map(this::base64ToDataUri);
+                    .map(effect -> {
+                        MorphingEffect result = base64ToDataUri(effect);  // FastAPI 결과 5개 변환
+                        result.setOriginImg(originDataUri);  // 원본 이미지 추가
+                        return result;
+                    });
 
         } catch (Exception e) {
             log.error("Python 모핑 호출 중 오류 발생: {}", e.getMessage());
@@ -92,6 +98,10 @@ public class MorphingService {
 
         Field[] fields = MorphingEffect.class.getDeclaredFields();
         for (Field field : fields) {
+
+            if (field.getName().equals("originImg")) {
+                continue;
+            }
             if (field.getType() == String.class) {
                 field.setAccessible(true);
                 try {
