@@ -232,69 +232,62 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 
 <!--순환 골재는 JS-->
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-       const section = document.querySelector('.aggregate-section');
-       const textLines = document.querySelectorAll('.texts p');
-       const images = document.querySelectorAll('.aggregate-image');
-       const viewportHeight = window.innerHeight;
+	document.addEventListener('DOMContentLoaded', function() {
+		const section = document.getElementById('recycled-aggregate');
+		const textElements = document.querySelectorAll('.texts p');
+		const images = document.querySelectorAll('.aggregate-image');
 
-       // 초기 상태
-       images.forEach(img => {
-          img.style.visibility = 'hidden';
-          img.style.transform = 'translateY(40px)';
-          img.style.transition = 'transform 0.6s cubic-bezier(.22,.9,.27,1), opacity 0.6s ease-out';
-          img.style.opacity = 0;
-       });
+		function handleScroll() {
+			const rect = section.getBoundingClientRect();
+			const sectionHeight = section.offsetHeight;
+			const windowHeight = window.innerHeight;
 
-       textLines.forEach(line => {
-          line.style.transition = 'opacity 0.4s ease, transform 0.5s ease-out';
-       });
+			// 섹션이 뷰포트에 들어온 정도 계산
+			const sectionTop = rect.top;
+			const sectionVisible = windowHeight - sectionTop;
+			const scrollProgress = Math.max(0, Math.min(1, sectionVisible / windowHeight));
 
-       function animateOnScroll() {
-          const scrollY = window.scrollY;
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.offsetHeight;
+			// 텍스트 애니메이션 (0 ~ 0.5 구간)
+			textElements.forEach((text, index) => {
+				const startPoint = index * 0.1;
+				const endPoint = startPoint + 0.3;
 
-          let progress = (scrollY - sectionTop + viewportHeight) / sectionHeight;
-          progress = Math.min(Math.max(progress, 0), 1);
+				if (scrollProgress >= startPoint && scrollProgress <= endPoint) {
+					const progress = (scrollProgress - startPoint) / (endPoint - startPoint);
+					text.style.opacity = progress;
+					text.style.transform = `translateY(${(1 - progress) * 30}px)`;
+				} else if (scrollProgress > endPoint) {
+					text.style.opacity = 1;
+					text.style.transform = 'translateY(0)';
+				} else {
+					text.style.opacity = 0;
+					text.style.transform = 'translateY(30px)';
+				}
+			});
 
-          // 1. 텍스트 등장
-          textLines.forEach((line, i) => {
-             const start = 0.25 + i * 0.05;
-             const end = start + 0.15;
-             let p = (progress - start) / (end - start);
-             p = Math.min(Math.max(p, 0), 1);
-             line.style.opacity = p;
-             line.style.transform = `translateY(${20 * (1 - p)}px)`;
-          });
+			// 이미지 애니메이션 (0.5 ~ 1.0 구간)
+			if (scrollProgress > 0.5) {
+				const imageProgress = (scrollProgress - 0.5) / 0.5;
 
-          const textDone = 0.25 + (textLines.length - 1) * 0.05 + 0.15;
+				images.forEach((img, index) => {
+					const imageStart = index * 0.2;
 
-          // 2. 이미지 등장 (3개만)
-          const imageOffsets = [
-             textDone + 0.08,
-             textDone + 0.16,
-             textDone + 0.24
-          ];
+					if (imageProgress >= imageStart) {
+						img.style.visibility = 'visible';
+					} else {
+						img.style.visibility = 'hidden';
+					}
+				});
+			} else {
+				images.forEach(img => {
+					img.style.visibility = 'hidden';
+				});
+			}
+		}
 
-          images.forEach((img, i) => {
-             if (progress >= imageOffsets[i]) {
-                img.style.visibility = 'visible';
-                img.style.opacity = 1;
-                img.style.transform = 'translateY(0px)';
-                img.style.zIndex = 10 + i;
-             } else {
-                img.style.opacity = 0;
-                img.style.visibility = 'hidden';
-                img.style.transform = 'translateY(40px)';
-             }
-          });
-       }
-
-       window.addEventListener('scroll', animateOnScroll);
-       window.addEventListener('resize', animateOnScroll);
-       animateOnScroll();
-    });
+		window.addEventListener('scroll', handleScroll);
+		handleScroll(); // 초기 실행
+	});
 </script>
 
 <!--순환 골재는 섹션 끝-->
@@ -1186,7 +1179,7 @@ fetch('/data/skorea-provinces-2018-topo.json')
 <section id="limitation" class="limitation-section" data-theme="light">
 	<div class="limitation-header">
 		<span class="limitation-label">LIMITATION</span>
-		<h2 class="limitation-title">순환골재 사용량이 더이상 증가하지 않는 이유는?</h2>
+		<h2 class="limitation-title">순환골재의 성장과 한계</h2>
 	</div>
 
 	<div class="comparison-container">
@@ -1199,7 +1192,8 @@ fetch('/data/skorea-provinces-2018-topo.json')
 				</div>
 				<div class="limitation-section-label before-label">
 					<h3>성장 구간</h3>
-					<p>2016년 의무 사용량 확대(40%)로 인한 사용량 증가</p>
+					<p>2011년부터 2016년까지 순환골재 사용량은 꾸준히 증가했으며, <br>
+						특히 2016년 의무 사용 비율 확대(40%) 이후 사용량이 급격히 증가하는 추세를 보였습니다.</p>
 				</div>
 			</div>
 
@@ -1210,7 +1204,8 @@ fetch('/data/skorea-provinces-2018-topo.json')
 				</div>
 				<div class="limitation-section-label after-label">
 					<h3>정체 구간</h3>
-					<p> 2019년도 ~ 사용량 정체</p>
+					<p> 2019년 이후에는 사용량이 점차 정체되며, <br>
+						증가세가 거의 멈춘 상태를 보여 순환골재 사용 확대에 한계가 있음을 나타냅니다</p>
 				</div>
 			</div>
 
@@ -1218,8 +1213,12 @@ fetch('/data/skorea-provinces-2018-topo.json')
 			<div class="slider-line"></div>
 			<div class="slider-handle">
 				<div class="handle-icon">
-					<span>‹</span>
-					<span>›</span>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+					<polyline points="15 18 9 12 15 6"></polyline>
+					</svg>
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="9 18 15 12 9 6"></polyline>
+					</svg>
 				</div>
 			</div>
 		</div>
@@ -1230,82 +1229,53 @@ fetch('/data/skorea-provinces-2018-topo.json')
 
 <!--한계 섹션 JS -->
 <script>
-	const beforeYears = [2011, 2013, 2015, 2017, 2019];
-	const afterYears = [2019, 2021, 2023, 2025];
+	const beforeYears = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019];
+	const afterYears = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
-	const beforeData = [39663247.87, 37505727.45, 36447265.56, 44784696.06, 54073761.09];
-	const afterData = [54073761.09, 52177874.85, 51000000, 50000000];
+	const beforeData = [39663247.87, 41152968.06, 37505727.45, 35356474.74, 36447265.56,44113565.38, 44784696.06,52924767.04, 54073761.09];
+	const afterData = [54073761.09, 50249195.66 ,52177874.85,48857859.15618628,48611349.38714427, 48364839.61810225,48118329.84906024];
 
 	// 공통 차트
 	const commonOptions = {
-		responsive: true,
-		maintainAspectRatio: false,
-		animation: {
-			duration: 0
-		},
-		 layout: {
-            padding: {
-                left: 30,
-                right: 30,
-                top: 30,
-                bottom: 30
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+        duration: 1500,
+        easing: 'easeOutQuart'
+    },
+    layout: { padding: { left: 30, right: 30, top: 30, bottom: 30 } },
+    plugins: {
+        legend: { display: false },
+        tooltip: {
+            callbacks: {
+                label: function(context) {
+                    return '사용량: ' + context.parsed.y.toLocaleString() + '톤';
+                }
             }
-		},
-		plugins: {
-			legend: {
-				display: false
-			},
-			tooltip: {
-				callbacks: {
-					label: function(context) {
-						return '사용량: ' + context.parsed.y.toLocaleString() + '톤';
-					}
-				}
-			}
-		},
-		scales: {
-			x: {
-				border: {
-					display: true,
-					color: '#E0E0E0',
-					width: 1
-				},
-				grid: {
-					display: false
-				},
-				ticks: {
-					color: '#666',
-					font: {
-						size: 16
-					},
-					padding: 20
-				}
-			},
-			y: {
-				border: {
-					display: true,
-					color: '#E0E0E0',
-					width: 1
-				},
-				min: 35000000,
-				max: 55000000,
-				ticks: {
-					stepSize: 5000000,
-					callback: function(value) {
-						return value.toLocaleString();
-					},
-					color: '#666',
-					font: {
-						size: 14
-					},
-					padding: 20
-				},
-				grid: {
-					display: false
-				}
-			}
-		}
-	};
+        }
+    },
+    scales: {
+        x: {
+            border: { display: true, color: '#E0E0E0', width: 1 },
+            grid: { display: false },
+            ticks: { color: '#666', font: { size: 16 }, padding: 20 }
+        },
+        y: {
+            border: { display: true, color: '#E0E0E0', width: 1 },
+            min: 35000000,
+            max: 55000000,
+            ticks: {
+                stepSize: 5000000,
+                callback: function(value) { return value.toLocaleString(); },
+                color: '#666',
+                font: { size: 14 },
+                padding: 20
+            },
+            grid: { display: false }
+        }
+    }
+};
+
 
 	// Before 차트
 	const beforeCtx = document.getElementById('beforeChart').getContext('2d');
@@ -1367,6 +1337,13 @@ fetch('/data/skorea-provinces-2018-topo.json')
 	const afterSection = document.querySelector('.after-section');
 	let isDragging = false;
 
+	function setInitialSliderPosition() {
+    sliderHandle.style.left = '100%';
+    sliderLine.style.left = '100%';
+    afterSection.style.clipPath = 'inset(0 0 0 100%)';
+}
+	setInitialSliderPosition();
+
 	function updateSliderPosition(clientX) {
 		const rect = comparisonWrapper.getBoundingClientRect();
 		let position = ((clientX - rect.left) / rect.width) * 100;
@@ -1391,6 +1368,7 @@ fetch('/data/skorea-provinces-2018-topo.json')
 	document.addEventListener('mouseup', () => {
 		isDragging = false;
 	});
+
 
 	// 터치 이벤트
 	sliderHandle.addEventListener('touchstart', (e) => {
@@ -1427,7 +1405,6 @@ fetch('/data/skorea-provinces-2018-topo.json')
 
 	limitationObserver.observe(document.querySelector('.limitation-section'));
 
-	//그라데이션 효과
 	window.addEventListener('scroll', () => {
     const limitationSection = document.querySelector('.limitation-section');
     const whySection = document.querySelector('.why-section');
@@ -1450,7 +1427,7 @@ fetch('/data/skorea-provinces-2018-topo.json')
 <section id="why" class="why-section" data-theme="dark">
 	<div class="why-header">
 		<span class="why-label">WHY?</span>
-		<h2 class="why-title">정체 구간의 원인</h2>
+		<h2 class="why-title">순환골재 사용량이 더이상 증가하지 않는 이유는?</h2>
 	</div>
 
 	<div class="charts-grid">
@@ -1482,7 +1459,7 @@ fetch('/data/skorea-provinces-2018-topo.json')
 
 		<!-- 오른쪽: 새로운 수평 막대 그래프 -->
 		<div class="chart-card">
-			<h3 class="chart-card-title">순환골재 재활용 제품 미사용 이유</h3>
+			<h3 class="chart-card-title">순환골재 미사용 이유 설문조사</h3>
 
 			<div class="chart-container-right">
 				<canvas id="reasonChart"></canvas>
@@ -1507,7 +1484,7 @@ fetch('/data/skorea-provinces-2018-topo.json')
 
 <!--문제 섹션 JS 전체-->
 <script>
-	// 왼쪽 차트 (기존)
+	// 왼쪽 차트
 	const whyCtx = document.getElementById('whyChart').getContext('2d');
 
 	const whyChartInstance = new Chart(whyCtx, {
@@ -1621,7 +1598,7 @@ fetch('/data/skorea-provinces-2018-topo.json')
 			labels: [
 				'순환골재 수급부족',
 				'순환골재품질기준 미달 및\n품질편차 증대',
-				'기증인증(KC, GR, 환경)\n표지 등 기준 충족미달',
+				'기증인증표지 등 기준 충족미달',
 				'설비 없음',
 				'기타'
 			],
@@ -1869,6 +1846,10 @@ fetch('/data/skorea-provinces-2018-topo.json')
                     대비 영역을 시각화합니다.
 				</p>
 			</div>
+		</div>
+
+		<div class="button-section">
+			<button class="btn-analyze" onclick="location.href='/analyze'"> 품질 검사 </button>
 		</div>
 	</div>
 </section>
