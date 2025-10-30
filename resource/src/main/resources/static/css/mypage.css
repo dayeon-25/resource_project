@@ -154,34 +154,27 @@ body.mypage .nav-link {
 }
 
 
-/* 분석 이력 섹션*/
-
+/* 분석 이력 섹션 */
 .analysis-section {
-    padding: 20px 0 0;
+   padding: 0 50px
     position: relative;
     display: flex;
+    gap: 10px;
+    justify-content: space-between;
     align-items: center;
-    gap: 30px;
-    justify-content: center;
-}
-
-.section-header {
-    display: none;
+    width: 100%;
+    margin: 0 -50px
 }
 
 .cards-wrapper {
     position: relative;
     padding: 0;
     flex: 1;
-    max-width: 100%;
     display: flex;
     justify-content: center;
     overflow: hidden;
     width: 100%;
-}
-
-.cards-wrapper:hover .scroll-btn {
-    opacity: 1;
+    max-width: none
 }
 
 .cards-container {
@@ -190,16 +183,16 @@ body.mypage .nav-link {
     overflow-x: auto;
     scroll-behavior: smooth;
     padding: 40px 0;
-    max-width: calc((360px * 3) + (60px * 2));
+    width: 100%;
+    max-width: 100%; /* 카드 3개 + 간격 2개 */
+    justify-content: flex-start;
 }
 
 .cards-container::-webkit-scrollbar {
     display: none;
 }
 
-
 /* 분석 카드*/
-
 .analysis-card {
     background: #FFFFFF;
     border-radius: 20px;
@@ -294,33 +287,55 @@ body.mypage .nav-link {
 
 
 /* 스크롤 버튼*/
-
 .scroll-btn {
-    position: static;
-    background-color: #D9D9D9;
-    color: #444444;
+    position: relative;
+    background-color: #CCCCCC;
+    color: #FFFFFF;
     border: none;
     border-radius: 50%;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
-    transition: background-color 0.3s, opacity 0.3s;
+    transition: all 0.3s ease;
     z-index: 10;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
-    opacity: 0;
     flex-shrink: 0;
+    opacity: 0;
 }
 
-.cards-wrapper:hover .scroll-btn:not([disabled]) {
-    opacity: 0;
-    pointer-events: auto;
+/* 카드가 3개 초과일 때만 표시 */
+.scroll-btn.visible {
+    display: flex;
+}
+
+/* hover 시 나타남 */
+.analysis-section:hover .scroll-btn.visible:not([disabled]) {
+    opacity: 1;
+}
+
+.scroll-btn:hover:not([disabled]) {
+    background-color: #2A3A30;
+    transform: scale(1.1);
+}
+
+.scroll-btn[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .scroll-btn span {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
+    line-height: 1;
+}
+
+/* Empty 상태 - 스크롤 버튼 없을 때 */
+.empty-message {
+    width: 100%;
+    padding: 25px 20px 80px;
 }
 
 
@@ -360,7 +375,7 @@ body.mypage .nav-link {
 }
 
 .quick-stat-value.suitable {
-    color: #A7F3D0;
+    color: #A1EEB8;
 }
 
 .quick-stat-divider {
@@ -431,14 +446,13 @@ body.mypage .nav-link {
 .stat-label {
     font-size: 14px;
     color: #6B7280;
-    margin-bottom: 8px;
     font-weight: 400;
 }
 
 .stat-value {
     font-size: 38px;
     font-weight: 700;
-    color: #1F2937;
+    color: #43564A;
     line-height: 1;
     margin-bottom: 6px;
 }
@@ -456,10 +470,7 @@ body.mypage .nav-link {
 }
 
 
-/* ============================================
-   📊 차트 섹션
-   ============================================ */
-
+/* 차트 섹션 */
 .charts-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -502,6 +513,7 @@ body.mypage .nav-link {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding-left: 90px; /* 라벨 공간 확보 */
 }
 
 .material-bar-container {
@@ -513,12 +525,14 @@ body.mypage .nav-link {
     border-radius: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end; /* 값을 오른쪽으로 */
     padding: 0 18px;
     transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* 라벨이 밖으로 나갈 수 있도록 */
+    min-width: 80px; /* 최소 너비 설정 */
 }
+
 
 .material-bar.plastic {
     background: #5C80BC;
@@ -526,22 +540,31 @@ body.mypage .nav-link {
 }
 
 .material-bar.vinyl {
-    background: #E4B363;
-    box-shadow: 0 2px 8px rgba(228, 179, 99, 0.35);
+    background: #778088; /* 차갑고 묵직한 회색 */
+    box-shadow: 0 2px 8px rgba(50, 60, 70, 0.45);
 }
 
 .material-bar.wood {
     background: #A1887F;
     box-shadow: 0 2px 8px rgba(161, 136, 127, 0.35);
 }
+.material-label {
+    position: absolute;
+    left: -80px; /* 바 왼쪽 밖으로 배치 */
+    color: #374151; /* 배경색에 맞게 어두운 색으로 변경 */
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    z-index: 1;
+}
 
-.material-label,
 .material-value {
     color: #FFFFFF;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 14px;
     z-index: 1;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
 }
 
 /* 타임라인 차트 */
@@ -795,7 +818,8 @@ body.mypage .nav-link {
 /* 공통 비어 있음 스타일 */
 .empty-state,
 .empty-message,
-.empty-dashboard {
+.empty-dashboard,
+.empty-message-wrapper {
     width: 100%;
     text-align: center;
     padding: 80px 20px;
@@ -805,63 +829,68 @@ body.mypage .nav-link {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 15px;
 }
 
 /* 제목 스타일 */
-.empty-dashboard h3 .empty-message h3 {
-    font-size: 20px;
-    font-weight: 500;
+.empty-dashboard h3,
+.empty-message h3,
+.empty-state h3,
+.empty-message-wrapper h3 {
+    font-size: 16px;
+    font-weight: 400;
     color: #6B7280;
-    margin: 0;
 }
 
-/* 버튼 스타일 */
+/* 모달 내부의 .btn-primary는 별도 스타일 유지 */
+.modal-body .btn-primary,
+.action-section .btn-primary {
+    display: block;
+    width: 100%;
+    background-color: #43564A;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* 버튼 스타일 - 통일 */
 .empty-dashboard .btn-primary,
 .empty-state .btn-primary,
-.empty-message .btn-primary {
-    display: inline-block;
-    width: auto;
-    padding: 12px 24px;
+.empty-message .btn-primary,
+.empty-message-wrapper .btn-primary,
+.empty-message a.btn-primary,
+.empty-dashboard a.btn-primary {
+    display: inline-block !important;
+    width: auto !important;
+    padding: 8px 16px !important;
     background-color: #43564A;
     color: #FFFFFF;
     text-decoration: none;
     border-radius: 5px;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
 }
 
 .empty-dashboard .btn-primary:hover,
 .empty-state .btn-primary:hover,
-.empty-message .btn-primary:hover {
+.empty-message .btn-primary:hover,
+.empty-message-wrapper .btn-primary:hover,
+.btn-primary1:hover {
     background-color: #2A3A30;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(67, 86, 74, 0.3);
 }
 
-.empty-message-wrapper {
-    width: 100%;
-    text-align: center;
-    padding: 20px 20px;
-    color: #999;
-    font-size: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-primary1 {
-    display: inline-block;
-    width: auto;
-    padding: 12px 24px;
-    background-color: #43564A;
-    color: #FFFFFF;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 500;
-    font-size: 16px;
-    transition: all 0.3s ease;
+.empty-message {
+    padding: 25px 20px 80px;
 }
 
 /*반응형 디자인*/

@@ -1,5 +1,3 @@
-
-
 /*인트로 섹션*/
 .intro-section {
     height: 120vh;
@@ -344,7 +342,7 @@ section {
 
 /* 순환골재는 섹션 */
 .aggregate-section {
-    height: 250vh;
+    height: 150vh;
     position: relative;
 }
 
@@ -352,7 +350,7 @@ section {
     position:
     sticky;
     top: 0;
-    height: 100vh;
+    height: 120vh;
     display: flex;
    flex-direction: column;
     justify-content: center;
@@ -424,7 +422,6 @@ section {
     justify-content: center;
     width: 100%;
     height: 100%;
-    transition: transform 0.7s cubic-bezier(.22,.9,.27,1);
     visibility: hidden;
     transform-origin: center center;
 }
@@ -1340,12 +1337,13 @@ section {
 
 .limitation-section-label h3 {
     font-size: 28px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .limitation-section-label p {
-    font-size: 14px;
-    opacity: 0.9;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.12;
 }
 
 .before-label {
@@ -1353,7 +1351,7 @@ section {
 }
 
 .after-label {
-    color: #ffffff;
+    color: #C5C5C5;
 }
 
 /* 슬라이더 */
@@ -1383,6 +1381,7 @@ section {
     align-items: center;
     justify-content: center;
     transition: transform 0.2s ease;
+    border: 2px solid #333;
 }
 
 .slider-handle:hover {
@@ -1395,14 +1394,17 @@ section {
 
 .handle-icon {
     display: flex;
-    gap: 5px;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
     color: #333;
+    align-items: center;
+    justify-content: center;
 }
 
 .handle-icon span {
     opacity: 0.6;
+    display: inline-block;
+    line-height: 1;
 }
 
 .chart-source {

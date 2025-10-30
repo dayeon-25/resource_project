@@ -45,36 +45,14 @@
 
 <!--스크롤 탑 버튼, 툴바 JS-->
 <script>
-const scrollTopBtn = document.getElementById('scrollTopBtn');
-const toolbar = document.querySelector('.toolbar');
+	const scrollTopBtn = document.getElementById('scrollTopBtn');
 
-scrollTopBtn.addEventListener('click', function() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-window.addEventListener('scroll', function() {
-    const scrollTopBtnRect = scrollTopBtn.getBoundingClientRect();
-    const toolbarRect = toolbar.getBoundingClientRect();
-    const scrollTopBtnTop = scrollTopBtn.offsetTop;
-
-    const btnPageTop = window.pageYOffset + scrollTopBtnRect.top;
-    const toolbarHeight = toolbarRect.height;
-    const toolbarBottom = window.pageYOffset + toolbarRect.bottom;
-
-	const gap = 20;
-
-    if (toolbarBottom >= btnPageTop - gap) {
-        toolbar.classList.add('stopped');
-
-        toolbar.style.bottom = (document.documentElement.scrollHeight - scrollTopBtnTop + gap) + 'px';
-    } else {
-        toolbar.classList.remove('stopped');
-        toolbar.style.bottom = '';
-    }
-});
+	scrollTopBtn.addEventListener('click', function() {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
+	});
 </script>
 
 </body>

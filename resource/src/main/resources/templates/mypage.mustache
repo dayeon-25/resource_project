@@ -6,11 +6,8 @@
 
 	<link rel="stylesheet" href="/css/mypage.css">
     <link rel="stylesheet" href="/css/common.css">
-	<link rel="stylesheet" href="/css/modalDetail.css">
 
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/js/modalDetail.js"></script>
-
 
 </head>
 <body class="mypage">
@@ -83,9 +80,6 @@
             </button>
         </div>
     </div>
-
-    <!-- 분석 상세 모달 -->
-    {{> modalDetail}}
 
     <!--  통계 탭 컨텐츠  -->
     <div id="dashboard-content" class="tab-content">
@@ -331,9 +325,9 @@
 		if (modalBirthday) modalBirthday.textContent = memberDTO.birthday || '-';
 		if (modalJoinDate) modalJoinDate.textContent = joinDateFormatted;
 
-		const userTypeText = memberDTO.userType === 'COMPANY' ? '기업' : '개인';
-		if (modalUserType) modalUserType.textContent = userTypeText;
-	}
+		const userTypeText = memberDTO.userType === 'business' ? '기업' : '개인';
+    	if (modalUserType) modalUserType.textContent = userTypeText;
+}
 
 	function formatDate(dateString) {
 		if (!dateString) return '-';
@@ -369,20 +363,25 @@ async function loadResults() {
     }
 }
 
-	// 분석 카드 생성
+// 분석 카드 생성
 function createAnalysisCards() {
     const container = document.getElementById('cardsContainer');
     if (!container) return;
 
     if (!resultsList || resultsList.length === 0) {
-    container.innerHTML = `
-        <div class="empty-message-wrapper">
-            <h3 class="empty-message">아직 분석 이력이 없습니다.</h3>
-            <button class="btn-primary1" onclick="location.href='/analyze'">분석 시작하기</button>
-        </div>
-    `;
-    return;
-}
+        container.innerHTML = `
+            <div class="empty-message">
+                <h3>아직 분석 이력이 없습니다.</h3>
+                <button class="btn-primary" onclick="location.href='/analyze'">분석 시작하기</button>
+            </div>
+        `;
+        // 빈 상태일 때는 버튼 숨김
+        const leftBtn = document.querySelector('.scroll-btn-left');
+        const rightBtn = document.querySelector('.scroll-btn-right');
+        if (leftBtn) leftBtn.style.display = 'none';
+        if (rightBtn) rightBtn.style.display = 'none';
+        return;
+    }
 
     container.innerHTML = resultsList.map(result => `
         <div class="analysis-card" onclick="location.href='/result/${result.id}'" style="cursor: pointer;">
@@ -392,7 +391,6 @@ function createAnalysisCards() {
                     ${result.suitable}
                 </span>
             </div>
-
             <div class="card-info">
                 <div class="card-date">${result.analysisDate}</div>
                 <div class="card-stats">
@@ -408,13 +406,19 @@ function createAnalysisCards() {
     updateScrollButtons();
 }
 
-	function scrollCards(direction) {
+function scrollCards(direction) {
     const container = document.getElementById('cardsContainer');
     if (!container) return;
 
-    const cardWidth = 360, gap = 60;
+    const cardWidth = 360;
+    const gap = 60;
     const scrollAmount = (cardWidth + gap) * 3;
-    container.scrollTo({ left: container.scrollLeft + scrollAmount*direction, behavior: 'smooth' });
+
+    container.scrollTo({
+        left: container.scrollLeft + scrollAmount * direction,
+        behavior: 'smooth'
+    });
+
     setTimeout(updateScrollButtons, 300);
 }
 
@@ -425,39 +429,52 @@ function updateScrollButtons() {
 
     if (!container || !leftBtn || !rightBtn) return;
 
+    // 카드가 3개 이하면 버튼 완전히 숨김
     if (resultsList.length <= 3) {
+        leftBtn.classList.remove('visible');
+        rightBtn.classList.remove('visible');
         leftBtn.style.display = 'none';
         rightBtn.style.display = 'none';
         return;
-    } else {
-        leftBtn.style.display = 'flex';
-        rightBtn.style.display = 'flex';
     }
 
-    // 스크롤 위치
+    // 카드가 3개 초과면 버튼 표시
+    leftBtn.classList.add('visible');
+    rightBtn.classList.add('visible');
+    leftBtn.style.display = 'flex';
+    rightBtn.style.display = 'flex';
+
+    // 스크롤 위치에 따라 버튼 활성화/비활성화
     const scrollLeft = container.scrollLeft;
     const maxScroll = container.scrollWidth - container.clientWidth;
 
+    // 왼쪽 버튼
     if (scrollLeft <= 0) {
         leftBtn.disabled = true;
-        leftBtn.style.opacity = '0.3';
-        leftBtn.style.pointerEvents = 'none';  // 추가
+        leftBtn.style.opacity = '0';
     } else {
         leftBtn.disabled = false;
         leftBtn.style.opacity = '1';
-         leftBtn.style.pointerEvents = 'auto';
     }
 
+    // 오른쪽 버튼
     if (scrollLeft >= maxScroll - 1) {
         rightBtn.disabled = true;
-        rightBtn.style.opacity = '0.3';
-        rightBtn.style.pointerEvents = 'none';
+        rightBtn.style.opacity = '0';
     } else {
         rightBtn.disabled = false;
         rightBtn.style.opacity = '1';
-        rightBtn.style.pointerEvents = 'auto';
     }
 }
+
+// 스크롤 이벤트 리스너
+window.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('cardsContainer');
+    if (container) {
+        container.addEventListener('scroll', updateScrollButtons);
+    }
+});
+
 
 const container = document.getElementById('cardsContainer');
 if(container) container.addEventListener('scroll', updateScrollButtons);
