@@ -1,10 +1,10 @@
 package com.example.resource.service;
 
 import com.example.resource.dto.AnalysisResponse;
+import com.example.resource.dto.ImageValidDTO;
 import com.example.resource.entity.Member;
 import com.example.resource.exception.AnalysisFailedException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -30,6 +30,30 @@ public class ImageAnalysisService {
 
         this.analysisResultService = analysisResultService;
         this.webClient = imageClient;
+    }
+
+
+    public Mono<ImageValidDTO> validateImage(MultipartFile image) {
+        return sendForValidation(image)
+                .onErrorResume(e -> Mono.just(new ImageValidDTO("1", e.getMessage())));
+    }
+
+    private Mono<ImageValidDTO> sendForValidation(MultipartFile file) {
+        try {
+            MultipartBodyBuilder builder = new MultipartBodyBuilder();
+            builder.part("image", new InputStreamResource(file.getInputStream()))
+                    .header("Content-Disposition", "form-data; name=image; filename=" + file.getOriginalFilename());
+
+            return webClient.post()
+                    .uri("/image/validation")
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .body(BodyInserters.fromMultipartData(builder.build()))
+                    .retrieve()
+                    .bodyToMono(ImageValidDTO.class)
+                    .doOnNext(dto -> System.out.println("validDTO: " + dto));
+        } catch (IOException e) {
+            return Mono.error(new RuntimeException("파일 처리 중 오류 발생", e));
+        }
     }
 
 

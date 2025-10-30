@@ -240,20 +240,20 @@
 
         try {
              //✅ 실제 fetch (주석 해제 시 사용)
-<!--             const formData = new FormData();-->
-<!--             formData.append('image', file);-->
-<!--             const res = await fetch('/api/images/validate', {-->
-<!--                 method: 'POST',-->
-<!--                 headers: { 'X-CSRF-TOKEN': csrfToken },-->
-<!--                 body: formData-->
-<!--             });-->
-<!--             const data = await res.json();-->
+             const formData = new FormData();
+             formData.append('image', file);
+             const res = await fetch('/api/images/validate', {
+                 method: 'POST',
+                 headers: { 'X-CSRF-TOKEN': csrfToken },
+                 body: formData
+             });
+             const data = await res.json();
 
             // 🧪 가짜 응답 시뮬레이션 (응답 올 때까지 대기)
-            await new Promise(res => setTimeout(res, 1500));
-            const data = { status: 0 };
+<!--            await new Promise(res => setTimeout(res, 1500));-->
+<!--            const data = { status: 0 };-->
 
-            if (data.status !== 0) throw new Error(data.error || '이미지 규격 검사 실패');
+            if (data.status !== '0') throw new Error(data.error || '이미지 규격 검사 실패');
 
             // 🎯 응답 온 후 0 → 100%까지 채우기
             await fillProgressBar(bar, 500); // 0.5초 동안

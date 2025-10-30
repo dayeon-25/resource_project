@@ -39,7 +39,7 @@ public class ResultController {
         ResultDTO resultdto = mapperService.toResultDTO(analysisResult, origImage);
         model.addAttribute("result", resultdto);
 
-        return "result";
+        return "result2";
     }
 
     @GetMapping("/result/{id}/morphing")

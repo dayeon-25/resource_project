@@ -2,6 +2,7 @@
 package com.example.resource.restcontroller;
 
 
+import com.example.resource.dto.ImageValidDTO;
 import com.example.resource.security.MemberDetails;
 import com.example.resource.service.ImageAnalysisService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,29 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ImageRestController {
     private final ImageAnalysisService imageAnalysisService;
+
+    @PostMapping("/api/images/validate")
+    public Mono<ResponseEntity<ImageValidDTO>> validateImage(
+            @RequestParam("image") MultipartFile file,
+            @AuthenticationPrincipal MemberDetails memberDetails) {
+
+        if (memberDetails == null) {
+            return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ImageValidDTO("1", "로그인이 필요합니다")));
+        }
+
+        return imageAnalysisService.validateImage(file)
+                .map(result -> {
+                    if ("0".equals(result.getStatus())) {
+                        return ResponseEntity.ok(result);
+                    } else {
+                        return ResponseEntity.badRequest().body(result);
+                    }
+                })
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(500)
+                        .body(new ImageValidDTO("1", e.getMessage()))));
+    }
+
 
     @PostMapping("/api/images/upload")
     public Mono<ResponseEntity<Map<String, Object>>> uploadImage(@RequestParam("image") MultipartFile file,
