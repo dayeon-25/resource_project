@@ -332,12 +332,9 @@ body.mypage .nav-link {
     line-height: 1;
 }
 
-/* Empty 상태 - 스크롤 버튼 없을 때 */
-.empty-message {
-    width: 100%;
-    padding: 25px 20px 80px;
+.empty-message{
+    top:
 }
-
 
 /* 통계 대시보드*/
 .dashboard-header {
@@ -822,14 +819,14 @@ body.mypage .nav-link {
 .empty-message-wrapper {
     width: 100%;
     text-align: center;
-    padding: 80px 20px;
+    padding: 100px 20px;
     color: #999;
     font-size: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 /* 제목 스타일 */
@@ -842,7 +839,6 @@ body.mypage .nav-link {
     color: #6B7280;
 }
 
-/* 모달 내부의 .btn-primary는 별도 스타일 유지 */
 .modal-body .btn-primary,
 .action-section .btn-primary {
     display: block;
@@ -858,7 +854,7 @@ body.mypage .nav-link {
     transition: background-color 0.3s;
 }
 
-/* 버튼 스타일 - 통일 */
+/* 버튼 스타일  */
 .empty-dashboard .btn-primary,
 .empty-state .btn-primary,
 .empty-message .btn-primary,
@@ -889,9 +885,6 @@ body.mypage .nav-link {
     box-shadow: 0 4px 12px rgba(67, 86, 74, 0.3);
 }
 
-.empty-message {
-    padding: 25px 20px 80px;
-}
 
 /*반응형 디자인*/
 

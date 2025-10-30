@@ -26,7 +26,7 @@ class ImageController {
 
     @GetMapping("/analyze")
     public String analyze() {
-        return "analyze";
+        return "newAnalyze2";
     }
 
 

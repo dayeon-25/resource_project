@@ -15,23 +15,19 @@
 {{>layout/header}}
 <div class="container">
     <div class="title_container">
-        <p id="title">순환 골재 품질 분석</p>
+        <p id="title">순환 골재 품질 분석 결과</p>
         <p class="subtitle">AI 기반 불순물 검출 및 품질 </p>
     </div>
     <div class="distinction_container">
         <div class="distinction_container_left">
             <h2 id="distinction_label">분석 완료 - 품질 {{result.suitable}}</h2>
-            <p style="font-size:0.8rem; margin-bottom:1rem;">총 3개의 불순물이 검출되었습니다. 전체 비율 {{result.total}}%</p>
+            <p style="font-size:16px; margin-bottom:1rem; color: #6b7280; font-weight: 500;">총 3개의 불순물이 검출되었습니다. 전체 비율 {{result.total}}%</p>
             <div class="button_group">
                 <button id="view_detail_button">상세 분석 보기</button>
                 <button id="new_analyze_button">새로운 분석</button>
             </div>
         </div>
         <button id="distinction_mark">{{result.suitable}}</button>
-    </div>
-    <div class="result_title">
-        <h2>불순물 검출 결과</h2>
-        <hr style="border: 0.2rem solid black; margin:1rem 0;">
     </div>
     <div class="result_container">
         <div class="result_left">
@@ -41,16 +37,16 @@
                 <div id="recap_number">
                     <h3>총 불순물 개수</h3>
                     <p class="recap_text" style="font-size:1.5rem;"><strong>{{result.count}}</strong></p>
-                    <p style="font-size:0.7rem;">검출된 전체 불순물</p>
+                    <p style="font-size: 12px;">검출된 전체 불순물</p>
                 </div>
                 <div id="recap_ratio">
                     <h3>전체 불순물 비율</h3>
                     <p class="recap_text" style="font-size:1.5rem;"><strong>{{result.total}}%</strong></p>
-                    <p style="font-size:0.7rem;">전체 골재 대비</p>
+                    <p style="font-size: 12px;">전체 골재 대비</p>
                 </div>
             </div>
             <div class="barchart_title">
-                <h4>검출 불순물 비율 비교</h4><p style="font-size:0.8rem;">AI 기반 불순물 검출 및 품질 기준 적합성 판단</p>
+                <h4>검출 불순물 비율 비교</h4><p style="font-size:0.8rem;">현재 분석 결과와 누적 평균의 불순물 비율 변화</p>
             </div>
             <div class="bar_container">
                 <canvas id="bar-chart"></canvas>
@@ -60,7 +56,7 @@
         <div class="result_right">
             <h4>이미지 분석 결과</h4>
             <img src="{{result.rcnnResult}}" alt="결과 이미지">
-            <button id="view_morphin_button">이미지 처리 과정 자세히 보기</button>
+            <button id="view_morphin_button">색상 검출 과정 확인 하기</button>
             <div class="ratio_container">
                 <div class="ratio_box">
                     <p><span class="color_mark" style="background:#3b4d08;"></span>폐비닐({{result.vinyl}}%)</p>
@@ -82,14 +78,13 @@
         </div>
     </div>
     <div class="recommendation">
-        <h3 style="margin-bottom:0.5rem;">품질 관리 개선 사항</h3>
-        <p id="recommendation_text"></p>
+            <h3 style="margin-bottom:0.5rem;">품질 관리 개선 사항</h3>
+            <p id="recommendation_text"></p>
     </div>
 </div>
 
 
 <!--============================================ 모달 시작 ============================================-->
-
 <div class="modal" id="modal">
     <div class="modal-container">
         <button class="pdf-button" onclick="downloadPDF()">PDF 다운로드</button>
@@ -289,16 +284,17 @@
 
             <!-- ===== 4. 서명 및 확인 ===== -->
             <section class="section" style="margin-top: 40px;">
-<!--                <h2 style="font-size: 22px; font-weight: bold;">4. 확인 및 승인</h2>-->
-<!--                <p style="margin-top: 8px;">-->
-<!--                    본 보고서는 AI 기반 자동 분석 시스템을 통해 생성되었습니다.-->
-<!--                </p>-->
+                <!--                <h2 style="font-size: 22px; font-weight: bold;">4. 확인 및 승인</h2>-->
+                <!--                <p style="margin-top: 8px;">-->
+                <!--                    본 보고서는 AI 기반 자동 분석 시스템을 통해 생성되었습니다.-->
+                <!--                </p>-->
                 <div style="margin-top: 40px; text-align: right;">
                     <div style="border-top: 1px solid #000; width: 100%; margin-left: auto;"></div>
                     <p style="font-size: 14px; margin-top: 4px; text-align: center;">본 보고서는 AI 기반 자동 분석 시스템을 통해 생성되었습니다.</p>
                 </div>
             </section>
         </div> <!-- report-content 끝 -->
+
     </div>
 </div>
 <!--============================================ 모달 끝 ============================================-->
@@ -315,19 +311,19 @@
     });
 
     const distinctionLabel = document.getElementById("distinction_label");
-    distinctionLabel.style.color = ("{{result.suitable}}" === "적합") ? "#2f9055" : "#b52b09";
+    distinctionLabel.style.color = ("{{result.suitable}}" === "적합") ? "#43564A" : "#BE563D";
 
 
     const distinctMark = document.getElementById('distinction_mark');
-    distinctMark.style.backgroundColor = ("{{result.suitable}}" === "적합") ? "#2f9055" : "#b52b09";
+    distinctMark.style.backgroundColor = ("{{result.suitable}}" === "적합") ? "#43564A" : "#BE563D";
 
     const total = Number("{{result.total}}");
     const recapTexts = document.querySelectorAll('.recap_text');
     recapTexts.forEach(p => {
         if(total>1){
-            p.style.color = "#b52b09";
+            p.style.color = "#BE563D";
             } else {
-            p.style.color = "#2f9055";
+            p.style.color = "#43564A";
         }
     });
 
@@ -335,10 +331,10 @@
     const recommendationText = document.getElementById('recommendation_text');
 
     if(total > 1){
-        recommendationText.innerHTML = `검출된 불순물 비율(${total}%)이 KS기준(1.0% 이하)을 초과합니다.<br>
+        recommendationText.innerHTML = `검출된 불순물 비율(${total}%)이 KS기준(1.0% 이하)을 초과합니다.
     추가 선별 과정을 통해 불순물 제거 후 재검사를 권장합니다.`;
     }else{
-        recommendationText.innerHTML = `검출된 불순물 비율(${total}%)이 KS기준(1.0% 이하)을 만족합니다.<br>
+        recommendationText.innerHTML = `검출된 불순물 비율(${total}%)이 KS기준(1.0% 이하)을 만족합니다.
     추가 선별 과정없이 진행하셔도 좋습니다.`;
     }
 
@@ -384,8 +380,6 @@
        }
     });
 
-
-
     new Chart(document.getElementById("donut-chart").getContext('2d'), {
        type: 'doughnut',
        data: {
@@ -416,8 +410,6 @@
            }
        }
    });
-
-
 
     const modal = document.getElementById('modal');
     const viewDetailButton = document.getElementById('view_detail_button');
