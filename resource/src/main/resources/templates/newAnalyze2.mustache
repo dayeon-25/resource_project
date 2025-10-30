@@ -158,28 +158,31 @@
 	</div>
 
 	<!-- 이미지 업로드 박스 -->
-	<div class="upload-analysis-grid">
-	<div class="upload-card">
-		<div class="card-header">
-			<h3>이미지 업로드</h3>
-		</div>
-		<p class="card-subtitle">분석할 골재 이미지를 업로드해주세요</p>
+    <div class="upload-analysis-grid">
+        <div class="upload-card">
+            <div class="card-header">
+                <h3>이미지 업로드</h3>
+            </div>
+            <p class="card-subtitle">분석할 골재 이미지를 업로드해주세요</p>
 
-		<div class="upload-area" onclick="document.getElementById('image-upload').click()">
-			<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#43564A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon-large">
-				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-				<polyline points="17 8 12 3 7 8"></polyline>
-				<line x1="12" x2="12" y1="3" y2="15"></line>
-			</svg>
-			<p class="upload-text">클릭하거나 이미지 업로드</p>
-			<p class="upload-hint">또는 파일을 드래그 앤 드롭</p>
-			<small class="upload-format">JPG, JPEG, PNG, WEBP (최대 10MB)</small>
-		</div>
-        <button class="start-analysis-btn" id="start-analysis-btn">분석 시작</button>
-        <input type="file" id="file-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display:none">
-    </div>
-        <div class="preview-container" id="preview-container" style="display: none;">
-            <img id="preview-img" src="" alt="미리보기"></div>
+            <div class="upload-area" id="upload-area"> <div class="upload-default-content" id="upload-default-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#43564A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon-large">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" x2="12" y1="3" y2="15"></line>
+                </svg>
+                <p class="upload-text">클릭하거나 이미지 업로드</p>
+                <p class="upload-hint">또는 파일을 드래그 앤 드롭</p>
+                <small class="upload-format">JPG, JPEG, PNG, WEBP (최대 10MB)</small>
+            </div>
+
+                <div class="preview-container" id="preview-container" style="display: none;">
+                    <img id="preview-img" src="" alt="미리보기">
+                </div>
+            </div>
+            <button class="start-analysis-btn" id="start-analysis-btn" style="display: none;">분석 시작</button>
+            <input type="file" id="file-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display:none">
+        </div>
 
 	<!-- 분석 진행 상황 -->
 	<div class="analysis-card">
@@ -224,146 +227,253 @@
 </section>
 
 <script>
-    /* 이미지 업로드 및 분석 기능 */
+    // --- 요소 참조 (새로운 HTML 구조에 맞게 수정) ---
+    // --- 요소 참조 (새로운 HTML 구조에 맞게 수정) ---
     const fileInput = document.getElementById('file-input');
-    const uploadArea = document.querySelector('.upload-area');
-    const startBtn = document.getElementById('start-analysis-btn');
+    const uploadArea = document.getElementById('upload-area');
+    const uploadDefaultContent = document.getElementById('upload-default-content');
     const previewContainer = document.getElementById('preview-container');
     const previewImg = document.getElementById('preview-img');
-    const condLabel = document.getElementById('cond-label');
-    const completeMsg = document.getElementById('complete-message');
+// ... (나머지 변수 유지) ...
+    const analyzeStartBtn = document.getElementById('start-analysis-btn');
+    const completeMessage = document.getElementById('complete-message'); // '분석 완료' 메시지 컨테이너
+    const analyzeResultBtn = document.querySelector('.view-result-btn'); // '분석 결과' 버튼
 
-    const progressBars = [
-        document.getElementById('progress-1'),
-        document.getElementById('progress-2'),
-        document.getElementById('progress-3')
-    ];
-
-    const validExtensions = ['jpeg','jpg','png','webp'];
-    const maxSize = 10*1024*1024;
-
+    const validExtensions = ['jpeg', 'jpg', 'png', 'webp'];
+    const maxSize = 10 * 1024 * 1024;
+    const csrfToken = document.querySelector('input[name="_csrf"]').value;
     let lastSelectedFile = null;
     let origImageId = null;
-    const csrfToken = document.querySelector('input[name="_csrf"]').value;
 
-    /* 업로드 영역 클릭 → 파일 선택 */
+    // --- 프로그레스바 목록 (새로운 CSS/HTML 구조에 맞게 수정) ---
+    // 참고: 체크 마크 요소는 HTML에 추가해주셔야 합니다. (아래 '참고사항' 확인)
+    const progressBars = [
+        { bar: document.getElementById('progress-bar1'), check: document.getElementById('progress-check1') },
+        { bar: document.getElementById('progress-bar2'), check: document.getElementById('progress-check2') },
+        { bar: document.getElementById('progress-bar3'), check: document.getElementById('progress-check3') }
+    ];
+
+    // --- 파일 선택 (새로운 UI에 맞게 수정) ---
     uploadArea.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', handleFileSelect);
+    // '다시 선택' 버튼이 새 UI에 없으므로 해당 리스너 제거
 
-    /* 드래그 앤 드롭 */
-    uploadArea.addEventListener('dragover', e => {
-        e.preventDefault();
-        uploadArea.classList.add('dragover');
-    });
-    uploadArea.addEventListener('dragleave', e => {
-        e.preventDefault();
-        uploadArea.classList.remove('dragover');
-    });
-    uploadArea.addEventListener('drop', e => {
-        e.preventDefault();
-        uploadArea.classList.remove('dragover');
-        if(e.dataTransfer.files.length > 0){
-            handleFile(e.dataTransfer.files[0]);
+    // 파일 선택 시
+    function handleFileSelect() {
+        if (fileInput.files.length === 0) return;
+        const file = fileInput.files[0];
+        lastSelectedFile = file;
+        const ext = file.name.split('.').pop().toLowerCase();
+
+        // 에러 메시지를 condLabel 대신 alert()으로 변경
+        if (!validExtensions.includes(ext)) {
+            alert('지원되지 않는 파일 형식입니다. 다른 파일을 선택해주세요.');
+            analyzeStartBtn.style.display = 'none';
+        } else if (file.size > maxSize) {
+            alert('파일 용량이 10MB를 초과했습니다. 다른 파일을 선택해주세요.');
+            analyzeStartBtn.style.display = 'none';
+        } else {
+            // 유효한 파일 선택 시
+
+        // 👈 [추가] '분석 시작' 버튼 표시
+            analyzeStartBtn.style.display = 'block';
+
+            // 👈 [수정] UI 전환 로직 (uploadDefaultContent를 참조합니다.)
+            uploadDefaultContent.style.display = 'none'; // 기본 텍스트 숨김
+            previewContainer.style.display = 'flex'; // 미리보기 표시 (CSS에서 flex로
+
+            const reader = new FileReader();
+            reader.onload = e => previewImg.src = e.target.result;
+            reader.readAsDataURL(file);
         }
-    });
 
-    /* 파일 선택 시 처리 */
-    fileInput.addEventListener('change', () => {
-        if(fileInput.files.length > 0){
-            handleFile(fileInput.files[0]);
-        }
-    });
-
-    function handleFile(file){
-    const ext = file.name.split('.').pop().toLowerCase();
-    if(!validExtensions.includes(ext)){
-        alert('지원되지 않는 파일 형식입니다.');
-        return;
-    }
-    if(file.size > maxSize){
-        alert('파일 용량 10MB 초과');
-        return;
+        fileInput.value = ''; // 동일 파일 재선택 가능하도록 초기화
     }
 
-    lastSelectedFile = file;
-
-    // 기존 이미지 제거
-    let existingImg = uploadArea.querySelector('img');
-    if(existingImg){
-        existingImg.remove();
-    }
-
-  const reader = new FileReader();
-reader.onload = e => {
-    let img = uploadArea.querySelector('img');
-    if(!img){
-        img = document.createElement('img');
-        uploadArea.appendChild(img);
-    }
-    img.src = e.target.result;
-};
-reader.readAsDataURL(file);
-
-    startBtn.style.display = 'block';
-}
-
-    /* 분석 진행 */
-    function runProgress(index){
-        if(index >= progressBars.length){
-            completeMsg.style.display = 'block';
+    // --- 분석 시작 ---
+    analyzeStartBtn.addEventListener('click', async () => {
+        // fileInput.files[0]이 없을 경우 (파일 선택 후 '취소' 누른 경우 등) lastSelectedFile 사용
+        const file = lastSelectedFile;
+        if (!file) {
+            alert('파일을 먼저 선택해주세요.');
             return;
         }
-        const bar = progressBars[index];
-        let progress = 0;
-        const intervalTime = 10;
-        const duration = 1000;
-        const step = 100 / (duration / intervalTime);
 
-        const interval = setInterval(()=>{
-            progress += step;
-            if(progress >= 100){
-                progress = 100;
-                clearInterval(interval);
-                runProgress(index+1);
-            }
-            bar.style.width = progress + '%';
-        }, intervalTime);
-    }
+        try {
+            prepareUIForAnalysis();
 
-    /* 분석 시작 버튼 */
-    startBtn.addEventListener('click', async () => {
-        if(!lastSelectedFile) return;
+            // 1️⃣ 이미지 규격 검사
+            await performStep1Validation(file);
 
-        startBtn.disabled = true;
-        completeMsg.style.display = 'none';
+            // 2️⃣ 딥러닝 분석 (기존 upload)
+            await performStep2Analysis(file);
 
-        runProgress(0);
+            // 3️⃣ 결과 정리 (하드코딩)
+            await performStep3Finalize();
 
-        const formData = new FormData();
-        formData.append('image', lastSelectedFile);
+            showAnalysisComplete();
 
-        try{
-            const res = await fetch('/api/images/upload',{
-                method:'POST',
-                headers:{'X-CSRF-TOKEN': csrfToken},
+        } catch (err) {
+            console.error('분석 실패:', err);
+            alert('분석 실패: ' + (err.message || '알 수 없는 오류'));
+            resetAnalysisUI();
+        }
+    });
+
+    /**
+     * 1단계: 이미지 규격 검사
+     */
+    async function performStep1Validation(file) {
+        const { bar, check } = progressBars[0];
+        bar.style.width = '0%'; // div는 value 대신 style.width 사용
+
+        try {
+            //✅ 실제 fetch (주석 해제 시 사용)
+            const formData = new FormData();
+            formData.append('image', file);
+            const res = await fetch('/api/images/validate', {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': csrfToken },
                 body: formData
             });
             const data = await res.json();
-            origImageId = data.id;
-            console.log("업로드 완료, 원본 이미지 ID:", origImageId);
-        } catch(err){
-            console.error(err);
-            alert('이미지 업로드 실패! 서버 확인 필요');
-            startBtn.disabled = false;
+
+            // 🧪 가짜 응답 시뮬레이션 (테스트용)
+            // await new Promise(res => setTimeout(res, 1500));
+            // const data = { status: '0' };
+
+            if (data.status !== '0') throw new Error(data.error || '이미지 규격 검사 실패');
+
+            await fillProgressBar(bar, 500); // 0.5초 동안
+
+            // 체크마크 애니메이션 (요소가 존재할 경우에만 실행)
+            if (check) {
+                check.classList.add('animate');
+                await sleep(300);
+                check.classList.add('fill');
+                await sleep(200);
+            }
+
+        } catch (err) {
+            throw err;
         }
+    }
+
+    /**
+     * 2단계: 딥러닝 분석
+     */
+    async function performStep2Analysis(file) {
+        const { bar, check } = progressBars[1];
+        bar.style.width = '0%';
+
+        try {
+            // ✅ 실제 fetch (주석 해제 시 사용)
+            const formData = new FormData();
+            formData.append('image', file);
+            const res = await fetch('/api/images/upload', {
+                method: 'POST',
+                headers: { 'X-CSRF-TOKEN': csrfToken },
+                body: formData
+            });
+            const data = await res.json();
+
+            // 🧪 가짜 응답 시뮬레이션 (테스트용)
+            // await new Promise(res => setTimeout(res, 2000));
+            // const data = { id: 'dummy-result-id' };
+
+            if (!data.id) throw new Error('딥러닝 분석 실패 (ID 없음)');
+            origImageId = data.id;
+
+            await fillProgressBar(bar, 600); // 0.6초 동안
+
+            if (check) {
+                check.classList.add('animate');
+                await sleep(300);
+                check.classList.add('fill');
+                await sleep(200);
+            }
+
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    /**
+     * 3단계: 결과 정리 (하드코딩)
+     */
+    async function performStep3Finalize() {
+        const { bar, check } = progressBars[2];
+        bar.style.width = '0%';
+
+        await fillProgressBar(bar, 600); // 0.6초 동안
+
+        if (check) {
+            check.classList.add('animate');
+            await sleep(300);
+            check.classList.add('fill');
+            await sleep(200);
+        }
+    }
+
+    /**
+     * 🎯 0%에서 100%까지 부드럽게 채우는 함수
+     * @param {HTMLElement} bar - 프로그레스바 <div.progress-fill> 요소
+     * @param {number} duration - 채우는데 걸리는 시간 (밀리초)
+     */
+    async function fillProgressBar(bar, duration) {
+        const steps = 30; // 부드러움 정도
+        const increment = 100 / steps;
+        const delay = duration / steps;
+
+        for (let i = 0; i < steps; i++) {
+            // <progress>의 .value 대신 <div>의 .style.width 사용
+            bar.style.width = Math.min(increment * (i + 1), 100) + '%';
+            await sleep(delay);
+        }
+        bar.style.width = '100%';
+    }
+
+    // --- 유틸리티 ---
+    function sleep(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+    function prepareUIForAnalysis() {
+        analyzeStartBtn.style.display = 'none'; // '분석 시작' 버튼 숨기기
+        completeMessage.style.display = 'none'; // '분석 완료' 메시지 숨기기
+        // 프로그레스바 초기화 (resetAnalysisUI에서 수행)
+        progressBars.forEach(({ bar, check }) => {
+        if (bar) bar.style.width = '0%';
+        if (check) check.classList.remove('animate', 'fill');
+    });
+    }
+
+    function resetAnalysisUI() {
+        // 모든 프로그레스바 너비를 0으로
+        progressBars.forEach(({ bar, check }) => {
+            if (bar) bar.style.width = '0%';
+            if (check) check.classList.remove('animate', 'fill');
+        });
+       if (uploadDefaultContent) uploadDefaultContent.style.display = 'flex'; // 기본 텍스트 복구
+        if (previewContainer) previewContainer.style.display = 'none'; // 미리보기 숨김
+
+        // 분석 실패 시, 다시 시도할 수 있도록 '분석 시작' 버튼 표시 (파일이 있는 경우에만)
+        if (lastSelectedFile) {
+            analyzeStartBtn.style.display = 'block';
+        } else {
+            analyzeStartBtn.style.display = 'none';
+        }
+    }
+
+    function showAnalysisComplete() {
+        completeMessage.style.display = 'block'; // '분석 완료' 메시지 표시
+    }
+
+    // '분석 결과' 버튼의 기본 onclick을 덮어쓰고 새 로직 할당
+    analyzeResultBtn.onclick = null; // HTML에 하드코딩된 onclick 제거
+    analyzeResultBtn.addEventListener('click', () => {
+        if (!origImageId) return alert('결과 ID가 없습니다.');
+        window.location.href = '/result/' + origImageId;
     });
 
-    /* 분석 결과 버튼 */
-    const resultBtn = completeMsg.querySelector('button');
-    resultBtn?.addEventListener('click', () => {
-        if(origImageId){
-            window.location.href = '/result/' + origImageId;
-        }
-    });
 
 
 </script>
