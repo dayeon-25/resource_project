@@ -142,6 +142,7 @@ body {
 .footer {
     background: #43564A;
     padding: 40px 120px;
+    position: relative;
 }
 
 .footer-content {
@@ -172,21 +173,20 @@ body {
 
 /* 툴바 */
 .toolbar.stopped {
-    position: absolute;
-    top: auto;
-    transform: none;
+    position: fixed; /* absolute 대신 fixed 유지 */
+    bottom: auto;
 }
 
 .toolbar {
    position: fixed;
-    bottom: 120px;
+    bottom: 100px;
     right: 40px;
     width: 46px;
     height: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center;a
     gap: 3px;
     padding: 8px 12px;
     z-index: 1000;
@@ -219,9 +219,8 @@ body {
 .scroll-top-container {
     position: fixed;
     bottom: 50px;
-    left: 40px;
-    z-index: 1000;
-
+    right: 45px;
+    z-index: 999;
 }
 
 .scroll-top-btn {
@@ -235,6 +234,11 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+}
+
+.scroll-top-btn:hover {
+    background: #43564A;
+    border-color: #476251;
 }
 
 .scroll-top-btn img {

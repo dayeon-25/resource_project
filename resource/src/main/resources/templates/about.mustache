@@ -219,11 +219,6 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
         <div class="aggregate-image image2">
             <img src="/images/aggregate2.png" alt="순환골재 2">
         </div>
-
-        <div class="aggregate-image image3">
-            <img src="/images/aggregate3.png" alt="순환골재 3">
-        </div>
-
     </div>
      </div>
     </div>
@@ -237,59 +232,76 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 		const textElements = document.querySelectorAll('.texts p');
 		const images = document.querySelectorAll('.aggregate-image');
 
+		let lastScrollProgress = -1;
+		let rafId = null;
+
 		function handleScroll() {
 			const rect = section.getBoundingClientRect();
-			const sectionHeight = section.offsetHeight;
 			const windowHeight = window.innerHeight;
+			const sectionHeight = section.offsetHeight;
 
-			// 섹션이 뷰포트에 들어온 정도 계산
-			const sectionTop = rect.top;
-			const sectionVisible = windowHeight - sectionTop;
-			const scrollProgress = Math.max(0, Math.min(1, sectionVisible / windowHeight));
+			// 섹션이 화면에 들어온 정도 (0 ~ 1)
+			const scrollProgress = Math.max(0, Math.min(1,
+				(windowHeight - rect.top) / (windowHeight + sectionHeight)
+			));
 
-			// 텍스트 애니메이션 (0 ~ 0.5 구간)
+			// 변화가 미미하면 스킵 (최적화)
+			if (Math.abs(scrollProgress - lastScrollProgress) < 0.001) return;
+			lastScrollProgress = scrollProgress;
+
+			// 1단계: 텍스트 등장 (0.15 ~ 0.4)
 			textElements.forEach((text, index) => {
-				const startPoint = index * 0.1;
-				const endPoint = startPoint + 0.3;
+				const textStart = 0.15 + (index * 0.05);
+				const textEnd = textStart + 0.08;
 
-				if (scrollProgress >= startPoint && scrollProgress <= endPoint) {
-					const progress = (scrollProgress - startPoint) / (endPoint - startPoint);
-					text.style.opacity = progress;
-					text.style.transform = `translateY(${(1 - progress) * 30}px)`;
-				} else if (scrollProgress > endPoint) {
-					text.style.opacity = 1;
-					text.style.transform = 'translateY(0)';
+				let opacity, translateY;
+
+				if (scrollProgress < textStart) {
+					opacity = 0;
+					translateY = 30;
+				} else if (scrollProgress >= textStart && scrollProgress <= textEnd) {
+					const progress = (scrollProgress - textStart) / (textEnd - textStart);
+					opacity = progress;
+					translateY = (1 - progress) * 30;
 				} else {
-					text.style.opacity = 0;
-					text.style.transform = 'translateY(30px)';
+					opacity = 1;
+					translateY = 0;
 				}
+
+				text.style.opacity = opacity;
+				text.style.transform = `translateY(${translateY}px)`;
 			});
 
-			// 이미지 애니메이션 (0.5 ~ 1.0 구간)
-			if (scrollProgress > 0.5) {
-				const imageProgress = (scrollProgress - 0.5) / 0.5;
+			// 2단계: 이미지 등장 (0.5 ~ 0.7) - 각 이미지가 트리거 시점에 바로 나타남
+			images.forEach((img, index) => {
+				const imageTrigger = 0.5 + (index * 0.15);
 
-				images.forEach((img, index) => {
-					const imageStart = index * 0.2;
-
-					if (imageProgress >= imageStart) {
-						img.style.visibility = 'visible';
-					} else {
-						img.style.visibility = 'hidden';
-					}
-				});
-			} else {
-				images.forEach(img => {
+				if (scrollProgress >= imageTrigger) {
+					img.style.visibility = 'visible';
+					img.style.transform = 'translate(-50%, -50%) scale(1)';
+					img.classList.add('show');
+				} else {
 					img.style.visibility = 'hidden';
-				});
-			}
+					img.style.transform = 'translate(-50%, -50%) scale(0)';
+					img.classList.remove('show');
+				}
+			});
 		}
 
-		window.addEventListener('scroll', handleScroll);
-		handleScroll(); // 초기 실행
+		function onScroll() {
+			// 이전 요청 취소
+			if (rafId) {
+				cancelAnimationFrame(rafId);
+			}
+
+			// 새로운 애니메이션 프레임 요청
+			rafId = requestAnimationFrame(handleScroll);
+		}
+
+		window.addEventListener('scroll', onScroll, { passive: true });
+		handleScroll();
 	});
 </script>
-
 <!--순환 골재는 섹션 끝-->
 
 <!--사용 용도 섹션 시작-->
@@ -428,7 +440,6 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 		  });
 	   });
 
-	   // 초기 실행
 	   animateSection1();
 	   animateSection2();
 	});
@@ -446,25 +457,21 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
     </div>
 
     <div class="stats-main-content">
-
-    <!--왼쪽 숫자 카운터 섹션-->
     <div class="stats-left-section">
-
-    <div class="key-metrics">
-            <div class="metric-content">
+        <div class="top-metrics-area">
+            <div class="metric-item">
                 <p class="metric-label">연간 순환골재 생산량</p>
                 <h2 class="metric-value" data-target="5111">0</h2>
                 <span class="metric-unit">만톤</span>
-        	</div>
+            </div>
+            <div class="metric-item">
+                <p class="metric-label">전국 생산시설</p>
+                <h2 class="metric-value" data-target="187">0</h2>
+                <span class="metric-unit">개소</span>
+            </div>
+        </div>
 
-			<div class="metric-content">
-				<p class="metric-label">전국 생산시설</p>
-				<h2 class="metric-value" data-target="187">0</h2>
-				<span class="metric-unit">개소</span>
-			</div>
-		</div>
-
-    <!-- 왼쪽: 지도 -->
+        <!-- 왼쪽: 지도 -->
             <div class="korea-map-container">
             <h2 class="map-title">지역별 순환골재 생산량</h2>
             <p class="map-description">지도 위에 마우스를 올리면 지역별 생산 비중을 확인하실 수 있습니다.</p>
@@ -490,6 +497,9 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 						<span>5% 미만</span>
 					</div>
 				</div>
+				<div class="chart-explanation map-explanation">
+					경기도가 전체 생산량의 20%를 차지하며, 수도권을 중심으로 순환골재 생산이 활발히 이루어지고 있습니다.
+				</div>
 			</div>
         </div>
 
@@ -502,11 +512,14 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
         <div class="chart-card bar-chart-card">
             <div class="chart-header">
                 <h3>건설폐기물 재활용률 추이</h3>
-                <p>2018-2021년 재활용률 (%) = (재활용량/발생량) x 100</p>
+                <p>2018-2021년 재활용률 (%) </p>
             </div>
             <div class="chart-body">
                 <canvas id="usage-bar-chart"></canvas>
             </div>
+			<div class="chart-explanation">
+				건설폐기물 재활용률은 4년 연속 97% 이상을 유지하며 세계 최고 수준의 재활용 체계를 구축하고 있습니다.
+			</div>
         </div>
 
         <!-- 발생량 대비 사용량 라인 차트 -->
@@ -518,20 +531,26 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
             <div class="chart-body">
                 <canvas id="usage-line-chart"></canvas>
             </div>
+			<div class="chart-explanation">
+				건설폐기물 발생량은 감소 추세이나, 순환골재 사용량은 꾸준히 유지되며 재활용 효율성이 증가하고 있습니다.
+			</div>
         </div>
 
-        <!-- 용도별 사용량 도넛 차트 -->
-        <div class="chart-card donut-chart-card">
-                <div class="chart-header">
-                    <h2>용도별 순환골재 사용량</h2>
-                    <p>2020-2021년 평균 (단위:만톤)</p>
-                </div>
-            <div class="chart-body">
-                    <canvas id="usage-donut-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
+		<!-- 용도별 수평 바 차트 -->
+		<div class="chart-card usage-bar-card">
+			<div class="chart-header">
+				<h2>용도별 순환골재 사용량</h2>
+				<p>2020-2021년 평균 (단위: 만톤)</p>
+			</div>
+			<div class="chart-body">
+				<canvas id="usage-horizontal-bar-chart"></canvas>
+			</div>
+			<div class="chart-explanation">
+				성토용과 도로기층용이 전체의 65%를 차지하며, 토목 공사에서 순환골재 활용이 가장 활발합니다.
+			</div>
+		</div>
+	</div>
+	</div>
 
     <div class="insights-section">
         <div class="insight-card">
@@ -540,7 +559,7 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
         </div>
         <div class="insight-card">
             <h4>주요 용도</h4>
-            <p>성토용(38%)과 도로기층용(27%)이 전체 사용량의 65%를 차지하며 가장 높은 활용도를 보입니다.</p>
+            <p>성토용 (38%)과 도로기층용 (27%)이 전체 사용량의 65%를 차지하며 가장 높은 활용도를 보입니다.</p>
         </div>
         <div class="insight-card">
             <h4>환경 효과</h4>
@@ -550,7 +569,6 @@ const fadeElements = document.querySelectorAll('.carbon-neutrality-section .fade
 
 </section>
 <div id="tooltip"></div>
-
 <!--통계 섹션 끝-->
 
 <!--통계 섹션 JS-->
@@ -592,65 +610,88 @@ document.querySelectorAll('.metric-value').forEach(el => {
     statsObserver.observe(el);
 });
 
-// 라인 차트 - 발생량 대비 사용량
+// 라인 차트 - 발생량 대비 사용량 (새 디자인)
 new Chart(document.getElementById("usage-line-chart").getContext('2d'), {
     type: 'line',
     data: {
         labels: ["2020", "2021", "2022", "2023"],
-
         datasets: [
             {
                 label: "건설폐기물 발생량",
                 data: [8644, 8381, 7681, 6437],
                 borderColor: '#13a162',
-                backgroundColor: 'rgba(19, 161, 98, 0.1)',
+                backgroundColor: 'transparent',
                 borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 2,
-                pointHoverRadius: 4,
-                pointBackgroundColor: '#13a162',
-                pointBackgroundColor: '#13a162',
-                pointBorderWidth: 2
+                fill: false,
+                tension: 0.3,
+                pointRadius: 3,
+                pointHoverRadius: 7,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#13a162',
+                pointBorderWidth: 2,
+                pointHoverBackgroundColor: '#13a162',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 3
             },
             {
                 label: "순환골재 사용량",
                 data: [5024, 5217, 5333, 5111],
-                borderColor: '#d04522',
-                backgroundColor: 'rgba(208, 69, 34, 0.1)',
+                borderColor: '#f1512e',
+                backgroundColor: 'transparent',
                 borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 2,
-                pointHoverRadius: 4,
-                pointBackgroundColor: '#d04522',
-                pointBackgroundColor: '#d04522',
-                pointBorderWidth: 2
+                fill: false,
+                tension: 0.3,
+                pointRadius: 3,
+                pointHoverRadius: 7,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#f1512e',
+                pointBorderWidth: 2,
+                pointHoverBackgroundColor: '#f1512e',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 3
             }
         ]
     },
     options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+            mode: 'index',
+            intersect: false,
+        },
         plugins: {
             legend: {
                 display: true,
                 position: 'top',
+                align: 'start',
                 labels: {
                     usePointStyle: true,
-                    padding: 15,
+                    pointStyle: 'circle',
+                    padding: 20,
                     font: {
-                        size: 12,
-                        weight: '500'
-                    }
+                        size: 13,
+                        weight: '600'
+                    },
+                    boxWidth: 5,
+        			boxHeight: 5
                 }
             },
             tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                padding: 10,
-                titleColor: '#fff',
-                bodyColor: '#fff',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                titleColor: '#1a1a1a',
+                bodyColor: '#495057',
+                borderColor: '#e9ecef',
+                borderWidth: 1,
+                padding: 12,
+                titleFont: {
+                    size: 13,
+                    weight: '600'
+                },
+                bodyFont: {
+                    size: 12
+                },
                 displayColors: true,
+                boxPadding: 6,
                 callbacks: {
                     label: function(context) {
                         return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + '만톤';
@@ -662,9 +703,17 @@ new Chart(document.getElementById("usage-line-chart").getContext('2d'), {
             y: {
                 beginAtZero: true,
                 grid: {
-                    color: 'rgba(0, 0, 0, 0.05)'
+                    color: 'rgba(0, 0, 0, 0.05)',
+                    drawBorder: false
+                },
+                border: {
+                    display: false
                 },
                 ticks: {
+                    font: {
+                        size: 11
+                    },
+                    color: '#6c757d',
                     callback: function(value) {
                         return value.toLocaleString();
                     }
@@ -673,66 +722,86 @@ new Chart(document.getElementById("usage-line-chart").getContext('2d'), {
             x: {
                 grid: {
                     display: false
-                }
-            }
-        }
-    }
-});
-
-
-   // 도넛 차트 - 용도별 사용량
-new Chart(document.getElementById("usage-donut-chart").getContext('2d'), {
-    type: 'pie',
-    data: {
-        labels: ["성토용", "도로기층용", "복토용", "콘크리트용", "기타"],
-        datasets: [{
-            data: [38, 27, 21, 10, 4],
-            backgroundColor: [
-                '#035220',
-                '#4b5b70',
-                '#be563d',
-                '#a46645',
-                '#4e4c4c'
-            ],
-            borderWidth: 0,
-            hoverOffset: 15
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    usePointStyle: true,
-                    padding: 15,
+                },
+                border: {
+                    display: false
+                },
+                ticks: {
                     font: {
-                        size: 13,
+                        size: 12,
                         weight: '500'
-                    }
-                }
-            },
-            tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                padding: 12,
-                titleColor: '#fff',
-                bodyColor: '#fff',
-                displayColors: true,
-                callbacks: {
-                    label: function(context) {
-                        const label = context.label || '';
-                        const value = context.parsed || 0;
-                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                        const percentage = ((value / total) * 100).toFixed(1);
-                        return label + ': ' + value + '만톤 (' + percentage + '%)';
-                    }
+                    },
+                    color: '#495057'
                 }
             }
         }
     }
 });
+
+
+    // 용도별 수평 바 차트
+        new Chart(document.getElementById("usage-horizontal-bar-chart").getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ["성토용", "도로기층용", "복토용", "콘크리트용", "기타"],
+                datasets: [{
+                    label: "사용량 (만톤)",
+                    data: [38, 27, 21, 10, 4],
+                    backgroundColor: [
+                        '#2d6a4f',
+                        '#52796f',
+                        '#74c69d',
+                        '#95d5b2',
+                        '#d8f3dc'
+                    ],
+                    borderRadius: 6,
+                    barPercentage: 0.7,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#1a1a1a',
+                        bodyColor: '#495057',
+                        borderColor: '#e9ecef',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((context.parsed.x / total) * 100).toFixed(1);
+                                return context.parsed.x + '만톤 (' + percentage + '%)';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                        border: { display: false },
+                        ticks: {
+                            font: { size: 11 },
+                            color: '#6c757d'
+                        }
+                    },
+                    y: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: {
+                            font: { size: 12, weight: '500' },
+                            color: '#495057'
+                        }
+                    }
+                }
+            }
+        });
 
 //바차트 - 재활용률
 const ctx = document.getElementById("usage-bar-chart").getContext("2d");
@@ -754,17 +823,17 @@ new Chart(ctx, {
             label: "재활용률 (%)",
             data: [97.8, 98.0, 98.2, 98.4],
             backgroundColor: [
-                getGradient(ctx, 'rgba(241, 81, 46, 1)'),
-                getGradient(ctx, 'rgba(241, 81, 46, 1)'),
-                getGradient(ctx, 'rgba(241, 81, 46, 1)'),
-                getGradient(ctx, 'rgba(241, 81, 46, 1)')
+                getGradient(ctx, 'rgba(114, 147, 203, 1)'),  // 파스텔 블루
+                getGradient(ctx, 'rgba(114, 147, 203, 1)'),
+                getGradient(ctx, 'rgba(114, 147, 203, 1)'),
+                getGradient(ctx, 'rgba(114, 147, 203, 1)')
             ],
-            borderColor: '#f1512e',
+            borderColor: '#7293cb',
             borderWidth: 2,
-            borderRadius: 3,
-            barPercentage: 0.8,
+            borderRadius: 6,
+            barPercentage: 0.7,
             categoryPercentage: 0.6,
-            hoverBackgroundColor: 'rgba(241, 81, 46, 0.6)',
+            hoverBackgroundColor: 'rgba(114, 147, 203, 0.6)',
         }]
     },
     options: {
@@ -773,14 +842,16 @@ new Chart(ctx, {
         plugins: {
             legend: { display: false },
             tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                titleColor: '#1a1a1a',
+                bodyColor: '#495057',
+                borderColor: '#e9ecef',
+                borderWidth: 1,
                 padding: 12,
-                titleColor: '#fff',
-                bodyColor: '#fff',
                 displayColors: false,
                 callbacks: {
                     label: function(context) {
-                        return context.parsed.y + '%';
+                        return '재활용률: ' + context.parsed.y + '%';
                     }
                 }
             }
@@ -789,13 +860,28 @@ new Chart(ctx, {
             y: {
                 beginAtZero: true,
                 max: 100,
-                grid: { color: 'rgba(0,0,0,0.05)' },
+                grid: {
+                    color: 'rgba(0,0,0,0.05)',
+                    drawBorder: false
+                },
+                border: {
+                    display: false
+                },
                 ticks: {
+                    font: { size: 11 },
+                    color: '#6c757d',
                     callback: function(value) { return value + '%'; }
                 }
             },
             x: {
-                grid: { display: false }
+                grid: { display: false },
+                border: {
+                    display: false
+                },
+                ticks: {
+                    font: { size: 12, weight: '500' },
+                    color: '#495057'
+                }
             }
         }
     }
@@ -820,7 +906,7 @@ const regionColors = {
     "경상북도": "#023047",
     "경상남도": "#219ebc",
     "제주특별자치도": "#8ecae6"
-    };
+};
 
 const regionData = {
     "서울특별시": "10%",
@@ -879,21 +965,17 @@ fetch('/data/skorea-provinces-2018-topo.json')
                         .html(`
                             <strong>${d.properties.name}</strong><br/>
                             생산 비중: ${regionData[d.properties.name] || "-"}
-                        `);
+                        `)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
                 }
             })
-            .on("mouseover", function(event, d) {
-				d3.select(this)
-					.transition()
-					.duration(200)
-					.attr("fill", d => regionColors[d.properties.name] || "#ffd700");
-
-			})
-			.on("mouseout", function() {
-				d3.select(this)
-					.transition()
-					.duration(200)
-					.attr("fill", "#f0f0f0");
+            .on("mouseout", function() {
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .attr("fill", "#f0f0f0")
+                    .attr("stroke-width", 1);
 
                 tooltip.style("opacity", 0);
             });

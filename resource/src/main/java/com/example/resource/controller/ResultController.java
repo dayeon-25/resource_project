@@ -28,19 +28,34 @@ public class ResultController {
     @GetMapping("/result/{id}")
     public String getResult(@PathVariable Long id, Model model, Principal principal) {
 
+
         OrigImage origImage = origImageRepository.findById(id).orElse(null);
+
 
         if(!origImage.getMember().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }
 
+
         AnalysisResult analysisResult = analysisResultRepository.findByOrigImgId(origImage.getId());
 
+
         ResultDTO resultdto = mapperService.toResultDTO(analysisResult, origImage);
+
+
+        // ✅ result.total 값 가져오기
+        double total = resultdto.getTotal();  // ResultDTO에 getTotal()이 있다고 가정
+        // ✅ 기준치에 따라 적합 여부 판단
+        boolean isSuitable = total < 1.0;
+        model.addAttribute("isSuitable", isSuitable);
+
+
         model.addAttribute("result", resultdto);
+
 
         return "result2";
     }
+
 
     @GetMapping("/result/{id}/morphing")
     public String morphing(@PathVariable Long id, Model model, Principal principal) {

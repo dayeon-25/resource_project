@@ -82,8 +82,8 @@
 <!-- 이미지 업로드 및 분석 섹션 -->
 <section class="upload-section">
     <div class="upload1-header">
-        <h2 class="upload1-title">실시간 분석 </h2>
-        <p class="upload1-subtitle">이미지를 업로드하면 즉시 AI 분석이 시작됩니다</p>
+        <h2 class="upload1-title">이미지 분석 시작하기 </h2>
+        <p class="upload1-subtitle"> 골재 이미지를 업로드하면 즉시 AI 분석이 시작됩니다</p>
     </div>
 
     <!--요구사항 카드-->
@@ -111,13 +111,11 @@
                         <line x1="12" x2="12" y1="8" y2="12"></line>
                         <line x1="12" x2="12.01" y1="16" y2="16"></line>
                     </svg>
-                    <strong>이미지 품질</strong>
+                    <strong>화질 기준</strong>
                 </div>
                 <ul>
-                    <li>최소 해상도: 800x600px</li>
-                    <li>권장 해상도: 1920x1080px</li>
-                    <li>선명한 초점 필수</li>
-                    <li>적절한 조명 환경</li>
+                    <li>필수 해상도: 1920x1080px</li>
+                    <li>초점이 명확한 이미지</li>
                 </ul>
             </div>
 
@@ -128,13 +126,12 @@
                         <line x1="12" x2="12" y1="8" y2="12"></line>
                         <line x1="12" x2="12.01" y1="16" y2="16"></line>
                     </svg>
-                    <strong>촬영 규칙</strong>
+                    <strong>촬영 가이드</strong>
                 </div>
                 <ul>
-                    <li>근접 촬영 필수</li>
-                    <li>수직 또는 45도 각도</li>
-                    <li>그림자 최소화</li>
-                    <li>배경 단순화 권장</li>
+                    <li>가까운 거리에서 촬영</li>
+                    <li>정면에서 수직으로</li>
+                    <li>그림자 최소화 추천</li>
                 </ul>
             </div>
 
@@ -145,13 +142,11 @@
                         <line x1="12" x2="12" y1="8" y2="12"></line>
                         <line x1="12" x2="12.01" y1="16" y2="16"></line>
                     </svg>
-                    <strong>파일 규격</strong>
+                    <strong>업로드 조건</strong>
                 </div>
                 <ul>
-                    <li>형식: JPG, PNG, WEBP</li>
+                    <li>형식: JPG,JPEG, PNG, WEBP</li>
                     <li>최대 크기: 10MB</li>
-                    <li>색상: RGB 필수</li>
-                    <li>압축률: 85% 이상</li>
                 </ul>
             </div>
         </div>
@@ -216,7 +211,7 @@
                     </div>
 
                     <div class="analysis-complete-message" id="complete-message" style="display: none;">
-                        <p>분석이 완료되었습니다. 분석결과를 확인해주세요.</p>
+                        <p>분석이 완료되었습니다. 분석 결과를 확인해주세요.</p>
                         <button class="view-result-btn" onclick="alert('분석 결과 페이지로 이동합니다.')">분석 결과</button>
                     </div>
                 </div>
