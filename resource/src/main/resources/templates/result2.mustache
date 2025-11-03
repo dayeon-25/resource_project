@@ -16,12 +16,12 @@
 <div class="container">
     <div class="title_container">
         <p id="title">순환 골재 품질 분석 결과</p>
-        <p class="subtitle">AI 기반 불순물 검출 및 품질 </p>
+        <p class="subtitle">객체 인식 모델 기반 불순물 검출 및 품질 </p>
     </div>
     <div class="distinction_container">
         <div class="distinction_container_left">
             <h2 id="distinction_label">분석 완료 - 품질 {{result.suitable}}</h2>
-            <p style="font-size:16px; margin-bottom:1rem; color: #6b7280; font-weight: 500;">총 3개의 불순물이 검출되었습니다. 전체 비율 {{result.total}}%</p>
+            <p style="font-size:16px; margin-bottom:1rem; color: #6b7280; font-weight: 500;">총 {{result.count}}개의 불순물이 검출되었습니다. 전체 비율 {{result.total}}%</p>
             <div class="button_group">
                 <button id="view_detail_button">상세 분석 보기</button>
                 <button id="new_analyze_button">새로운 분석</button>
@@ -111,7 +111,7 @@
             <section class="section">
                 <h2 style="font-size: 22px; font-weight: bold;">1. 종합 분석 요약</h2>
                 <p style="margin-top: 12px; line-height: 1.6;">
-                    본 보고서는 R-CNN, PCA(주성분 분석), OpenCV 색상 기반 알고리즘으로 구성된 다중 AI 모델 시스템을 활용하여
+                    본 보고서는 R-CNN, PCA(주성분 분석), OpenCV 색상 기반 알고리즘으로 구성된 객체 인식 모델 시스템을 활용하여
                     업로드된 이미지 내 불순물의 종류와 개수 및 검출 비율을 분석한 결과를 제시합니다.<br><br>
                     아래는 최종 검출 결과를 요약한 것으로, 모델이 탐지한 불순물 수와 종합 판정 결과를 제공합니다.
                 </p>
@@ -153,7 +153,7 @@
 
                 <table>
                     <tr><th>불순물 종류</th><th>검출 비율</th></tr>
-                    <tr><td>목재</td><td>{{result.wood}}%</td></tr>
+                    <tr><td>폐목재</td><td>{{result.wood}}%</td></tr>
                     <tr><td>폐비닐</td><td>{{result.vinyl}}%</td></tr>
                     <tr><td>폐플라스틱</td><td>{{result.plastic}}%</td></tr>
                 </table>
@@ -169,7 +169,7 @@
             <section class="section">
                 <h2 style="font-size: 22px; font-weight: bold;">2. 모델별 상세 분석</h2>
                 <p style="margin-top: 8px; line-height: 1.6;">
-                    본 섹션에서는 각 AI 모델이 분석에 사용된 방식과 결과를 시각적으로 제시하며, 검출된 불순물의 개수, 신뢰도, 분석 특징을
+                    본 섹션에서는 각 모델이 분석에 사용된 방식과 결과를 시각적으로 제시하며 검출된 불순물의 개수 및 분석 특징을
                     상세하게 설명합니다.
                 </p>
             </section>
@@ -194,7 +194,6 @@
                     그림 2. R-CNN 검출 결과
                 </p>
 
-
                 <p style="margin-top: 12px; line-height: 1.6;">
                     R-CNN 모델은 본 샘플에서 {{result.count}}개의 불순물을 검출하였으며, 주로 경계가 명확한 불순물에서 우수한 검출 성능을 나타냈습니다.
                 </p>
@@ -208,8 +207,8 @@
             <section class="section">
                 <h3 style="font-size: 18px; font-weight: bold;">2.2 PCA 주성분 분석</h3>
                 <p style="margin-top: 4px; line-height: 1.6;">
-                    PCA(주성분 분석)는 이미지에서 색상, 밝기, 텍스처 등의 통계적 패턴을 기반으로 정상 영역과 비정상 영역을 분리하는 방식입니다.
-                    미세한 색상 변화에 민감하게 반응하며, 재료 표면의 이질적인 패턴을 효과적으로 찾아냅니다.
+                    PCA(주성분 분석)는 이미지에서 색상, 밝기, 텍스처 등의 통계적 패턴을 기반으로 특징을 추출하여 영역을 분리하는 방식으로,
+                    각 불순물의 이질적인 패턴을 효과적으로 찾아냅니다.
                 </p>
                 <div class="img-box">
                     {{#result.pca}}
@@ -222,15 +221,6 @@
                 <p style="text-align: center; font-size: 12px; color: gray; margin-top: 4px;">
                     그림 3. PCA 결과 시각화
                 </p>
-
-
-                <table>
-                    <tr><th>항목</th><th>값</th></tr>
-                    <tr><td>검출 수</td><td>{{result.count}}개</td></tr>
-                    <tr><td>PCA 차원 수</td><td>2차원 (PC1, PC2)</td></tr>
-                    <tr><td>PCA 기반 탐지 비율</td><td>{{result.total}}%</td></tr>
-                </table>
-
 
                 <p style="margin-top: 12px; line-height: 1.6;">
                     PCA는 차원 축소 후 <span style="color: #d35400;">산점도 그래프</span>로 시각화하여
@@ -247,7 +237,7 @@
                 <h3 style="font-size: 18px; font-weight: bold;">2.3 OpenCV 색상 기반 검출</h3>
                 <p style="margin-top: 4px; line-height: 1.6;">
                     OpenCV는 HSV 색공간에서 특정 색상 범위를 기준으로 불순물을 탐지합니다.
-                    본 분석에서는 순환골재 내부의 이질적인 색상 요소를 탐지하기 위한 색상 임계값을 설정하였습니다.
+                    본 분석에서는 순환골재 내부의 색상 요소를 탐지하기 위한 색상 임계값을 설정하였습니다.
                 </p>
                 <div class="img-box">
                     {{#result.opencvResult}}
@@ -260,15 +250,6 @@
                 <p style="text-align: center; font-size: 12px; color: gray; margin-top: 4px;">
                     그림 4. OpenCV 색상 검출 결과
                 </p>
-
-
-                <table>
-                    <tr><th>항목</th><th>값</th></tr>
-                    <tr><td>검출 수</td><td>{{result.count}}개</td></tr>
-                    <tr><td>색상 임계값</td><td>HSV(0-180 / 50-255 / 50-255)</td></tr>
-                    <tr><td>색상 기반 탐지 비율</td><td>{{result.total}}%</td></tr>
-                </table>
-
 
                 <p style="margin-top: 12px; line-height: 1.6;">
                     OpenCV는 불순물의 색상 특성에 기반하여 총 {{result.count}}개의 이상 영역을 검출하였습니다.
